@@ -12,4 +12,5 @@ class SwitchColors {
   static Color steel_gray_800 = Color.fromRGBO(35, 38, 51, 1);
   static Color steel_gray_900 = Color.fromRGBO(25, 27, 36, 1);
   static Color steel_gray_950 = Color.fromRGBO(9, 10, 19, 1);
+  static Color ui_blueziness_800 = Color.fromRGBO(40, 84, 234, 1);
 }

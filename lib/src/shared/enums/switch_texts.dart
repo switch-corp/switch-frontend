@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 
 class SwitchTexts {
   static TextStyle titleScreen(Color color) {
@@ -74,6 +73,24 @@ class SwitchTexts {
       fontSize: 22,
       fontWeight: FontWeight.w600,
       letterSpacing: 1.5,
+    );
+  }
+
+  static TextStyle fullLenghtButtonText() {
+    return GoogleFonts.inter(
+      color: Colors.white,
+      fontWeight: FontWeight.w600,
+      fontSize: 16,
+    );
+  }
+
+  static TextStyle linkDefault(Color color, bool underline) {
+    return GoogleFonts.inter(
+      color: color,
+      fontWeight: FontWeight.w600,
+      fontSize: 14,
+      decoration: underline ? TextDecoration.underline : null,
+      decorationColor: color,
     );
   }
 }
