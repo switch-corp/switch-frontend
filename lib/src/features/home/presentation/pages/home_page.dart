@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:switchfrontend/src/features/home/widgets/custom_actions_button.dart';
+import 'package:switchfrontend/src/features/home/widgets/cutom_menu_item_button.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 
@@ -48,7 +51,6 @@ class HomePage extends StatelessWidget {
                 ),
                 Container(
                   padding: EdgeInsets.all(4),
-                  // color: Color.fromARGB(255, 255, 0, 0),
                   child: Column(
                     children: [
                       Container(
@@ -56,44 +58,8 @@ class HomePage extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 12),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(8)),
-                                border: Border.all(
-                                  color: SwitchColors.steel_gray_600,
-                                ),
-                              ),
-                              width: (MediaQuery.of(context).size.width / 2) -
-                                  (2 * 12),
-                              height: 128,
-                              child: Text(
-                                'rooms',
-                                style: SwitchTexts.titleBody(
-                                    SwitchColors.steel_gray_100),
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 12),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(8)),
-                                border: Border.all(
-                                  color: SwitchColors.steel_gray_600,
-                                ),
-                              ),
-                              width: (MediaQuery.of(context).size.width / 2) -
-                                  (2 * 12),
-                              height: 128,
-                              child: Text(
-                                'switches',
-                                style: SwitchTexts.titleBody(
-                                    SwitchColors.steel_gray_100),
-                              ),
-                            )
+                            CustomMenuItemButton(label: 'rooms'),
+                            CustomMenuItemButton(label: 'switches'),
                           ],
                         ),
                       ),
@@ -102,44 +68,8 @@ class HomePage extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 12),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(8)),
-                                border: Border.all(
-                                  color: SwitchColors.steel_gray_600,
-                                ),
-                              ),
-                              width: (MediaQuery.of(context).size.width / 2) -
-                                  (2 * 12),
-                              height: 128,
-                              child: Text(
-                                'auto',
-                                style: SwitchTexts.titleBody(
-                                    SwitchColors.steel_gray_100),
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 12),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(8)),
-                                border: Border.all(
-                                  color: SwitchColors.steel_gray_600,
-                                ),
-                              ),
-                              width: (MediaQuery.of(context).size.width / 2) -
-                                  (2 * 12),
-                              height: 128,
-                              child: Text(
-                                'config',
-                                style: SwitchTexts.titleBody(
-                                    SwitchColors.steel_gray_100),
-                              ),
-                            )
+                            CustomMenuItemButton(label: 'auto'),
+                            CustomMenuItemButton(label: 'config'),
                           ],
                         ),
                       )
@@ -150,69 +80,103 @@ class HomePage extends StatelessWidget {
                   margin: EdgeInsets.fromLTRB(0, 28, 0, 32),
                   child: Row(
                     children: [
-                      Text(
-                        'Home',
-                        style: SwitchTexts.titleScreen(
-                            SwitchColors.steel_gray_100),
+                      Column(
+                        children: [
+                          Text(
+                            'Actions',
+                            style: SwitchTexts.titleScreen(
+                                SwitchColors.steel_gray_100),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      CustomActionButton(
+                        label: 'Do this',
+                        url:
+                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
+                      ),
+                      CustomActionButton(
+                        label: 'Do this',
+                        url:
+                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
+                      ),
+                      CustomActionButton(
+                        label: 'Do this',
+                        url:
+                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
+                      ),
+                      CustomActionButton(
+                        label: 'Do this',
+                        url:
+                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
                       ),
                     ],
                   ),
                 ),
-                Row(
-                  children: [
-                    Container(
-                      child: Column(
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Image(
-                            width: 36,
-                            height: 36,
-                            image: NetworkImage(
-                                "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg"),
+                          Text(
+                            'próximo evento em',
+                            style: SwitchTexts.titleGroup(
+                                SwitchColors.steel_gray_400),
                           ),
                           Text(
-                            'Open cafe',
-                            style: SwitchTexts.bodyDefaultBold(
-                                SwitchColors.steel_gray_100),
+                            '30:34 min',
+                            style: SwitchTexts.titleSection(
+                                SwitchColors.steel_gray_200),
                           )
                         ],
                       ),
-                    ),
-                    Container(
-                      child: Column(
-                        children: [
-                          Image(
-                            width: 36,
-                            height: 36,
-                            image: NetworkImage(
-                                "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg"),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
+                          border: Border.all(
+                            color: SwitchColors.steel_gray_600,
                           ),
-                          Text(
-                            'Open cafe',
-                            style: SwitchTexts.bodyDefaultBold(
-                                SwitchColors.steel_gray_100),
-                          )
-                        ],
+                        ),
+                        width: 115,
+                        // (MediaQuery.of(context).size.width / 2) - (2 * 12),
+                        height: 102,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Image(
+                                  width: 24,
+                                  height: 24,
+                                  image: NetworkImage(
+                                      "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg"),
+                                ),
+                              ],
+                            ),
+                            Flexible(
+                              child: Text(
+                                'Open cafe',
+                                style: SwitchTexts.bodyDefaultBold(
+                                    SwitchColors.steel_gray_100),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Container(
-                      child: Column(
-                        children: [
-                          Image(
-                            width: 36,
-                            height: 36,
-                            image: NetworkImage(
-                                "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg"),
-                          ),
-                          Text(
-                            'Open cafe',
-                            style: SwitchTexts.bodyDefaultBold(
-                                SwitchColors.steel_gray_100),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                )
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

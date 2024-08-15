@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 
 class SwitchTexts {
   static TextStyle titleScreen(Color color) {
@@ -38,8 +37,8 @@ class SwitchTexts {
   static TextStyle titleGroup(Color color) {
     return GoogleFonts.inter(
       color: color,
-      fontSize: 14,
-      letterSpacing: -1.5,
+      fontSize: 16,
+      letterSpacing: -.8,
     );
   }
 
@@ -73,7 +72,8 @@ class SwitchTexts {
       color: color,
       fontSize: 22,
       fontWeight: FontWeight.w600,
-      letterSpacing: 1.5,
+      height: 1,
+      letterSpacing: -0.9,
     );
   }
 }
