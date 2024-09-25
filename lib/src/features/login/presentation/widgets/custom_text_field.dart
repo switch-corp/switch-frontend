@@ -7,6 +7,9 @@ class CustomTextField extends StatelessWidget {
   final bool mandatory;
   final bool obscureText;
   final TextInputType keyboardType;
+  final Color textColor;
+  final String? Function(String?)? validator;
+
   const CustomTextField({
     super.key,
     required this.label,
@@ -14,6 +17,8 @@ class CustomTextField extends StatelessWidget {
     this.mandatory = false,
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
+    this.textColor = Colors.white,
+    this.validator,
   });
 
   @override
@@ -38,15 +43,26 @@ class CustomTextField extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 8),
-        TextField(
+        TextFormField(
           controller: controller,
           obscureText: obscureText,
           keyboardType: keyboardType,
+          cursorColor: SwitchColors.ui_blueziness_800, 
+          style: TextStyle(color: textColor),
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: SwitchColors.ui_blueziness_800),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey), 
+              borderRadius: BorderRadius.circular(8.0),
+            ),
           ),
+          validator: validator,
         ),
       ],
     );
