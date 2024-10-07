@@ -37,8 +37,8 @@ class SwitchTexts {
   static TextStyle titleGroup(Color color) {
     return GoogleFonts.inter(
       color: color,
-      fontSize: 14,
-      letterSpacing: -1.5,
+      fontSize: 16,
+      letterSpacing: -.8,
     );
   }
 
@@ -72,7 +72,8 @@ class SwitchTexts {
       color: color,
       fontSize: 22,
       fontWeight: FontWeight.w600,
-      letterSpacing: 1.5,
+      height: 1,
+      letterSpacing: -0.9,
     );
   }
 
