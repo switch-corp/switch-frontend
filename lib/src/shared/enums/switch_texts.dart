@@ -76,4 +76,22 @@ class SwitchTexts {
       letterSpacing: -0.9,
     );
   }
+
+  static TextStyle fullLenghtButtonText() {
+    return GoogleFonts.inter(
+      color: Colors.white,
+      fontWeight: FontWeight.w600,
+      fontSize: 16,
+    );
+  }
+
+  static TextStyle linkDefault(Color color, bool underline) {
+    return GoogleFonts.inter(
+      color: color,
+      fontWeight: FontWeight.w600,
+      fontSize: 14,
+      decoration: underline ? TextDecoration.underline : null,
+      decorationColor: color,
+    );
+  }
 }
