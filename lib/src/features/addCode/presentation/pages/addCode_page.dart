@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; 
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
-import 'package:switchfrontend/src/features/controlSwitch/presentation/pages/controlSwitch_page.dart';
+import 'package:switchfrontend/src/features/linkroom/presentation/pages/linkroom_page.dart';
 
 class AddCode extends StatefulWidget {
   @override
@@ -9,32 +10,41 @@ class AddCode extends StatefulWidget {
 }
 
 class _AddCodeState extends State<AddCode> {
-  TextEditingController _controller = TextEditingController();
-  ValueNotifier<bool> _fieldEmpty = ValueNotifier<bool>(true);
-  ValueNotifier<bool> _maxReached = ValueNotifier<bool>(false);
+  TextEditingController _codeController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  ValueNotifier<bool> _codeFieldEmpty = ValueNotifier<bool>(true);
+  ValueNotifier<bool> _nameFieldEmpty = ValueNotifier<bool>(true);
+  ValueNotifier<bool> _codeMaxReached = ValueNotifier<bool>(false);
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(() {
-      if (_controller.text.length > 25) {
-        _controller.text = _controller.text.substring(0, 25);
-        _controller.selection = TextSelection.fromPosition(
-          TextPosition(offset: _controller.text.length),
+
+    _codeController.addListener(() {
+      if (_codeController.text.length > 25) {
+        _codeController.text = _codeController.text.substring(0, 25);
+        _codeController.selection = TextSelection.fromPosition(
+          TextPosition(offset: _codeController.text.length),
         );
-        _maxReached.value = true;
+        _codeMaxReached.value = true;
       } else {
-        _maxReached.value = false;
+        _codeMaxReached.value = false;
       }
-      _fieldEmpty.value = _controller.text.isEmpty;
+      _codeFieldEmpty.value = _codeController.text.isEmpty;
+    });
+
+    _nameController.addListener(() {
+      _nameFieldEmpty.value = _nameController.text.isEmpty;
     });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
-    _fieldEmpty.dispose();
-    _maxReached.dispose();
+    _codeController.dispose();
+    _nameController.dispose();
+    _codeFieldEmpty.dispose();
+    _nameFieldEmpty.dispose();
+    _codeMaxReached.dispose();
     super.dispose();
   }
 
@@ -46,18 +56,19 @@ class _AddCodeState extends State<AddCode> {
         scaffoldBackgroundColor: SwitchColors.steel_gray_950,
         appBarTheme: AppBarTheme(
           backgroundColor: SwitchColors.steel_gray_950,
-          titleTextStyle: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(fontWeight: FontWeight.bold),
+          titleTextStyle: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
+              .copyWith(fontWeight: FontWeight.bold),
         ),
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text(
-            'Adicionar Código',
-          ),
+          title: Text('Adicionar Código', style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(fontWeight: FontWeight.bold).copyWith(fontSize: 18)),
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
         ),
         body: Center(
@@ -71,36 +82,61 @@ class _AddCodeState extends State<AddCode> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
+                      'Digite o nome do Switch',
+                      style: SwitchTexts.titleBody(SwitchColors.steel_gray_300),
+                    ),
+                    SizedBox(height: 20),
+                    TextField(
+                      controller: _nameController,
+                      textAlign: TextAlign.center,
+                      maxLength: 20, 
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'.{0,20}')),
+                      ],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: SwitchColors.steel_gray_700),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: SwitchColors.steel_gray_700),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: SwitchColors.ui_blueziness_800),
+                        ),
+                        hintText: '',
+                        hintStyle: TextStyle(color: SwitchColors.steel_gray_50),
+                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      cursorColor: Colors.blue,
+                    ),
+                    SizedBox(height: 20),
+                    Text(
                       'Digite o código do Switch',
                       style: SwitchTexts.titleBody(SwitchColors.steel_gray_300),
                     ),
                     SizedBox(height: 40),
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: TextField(
-                        controller: _controller,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: SwitchColors.steel_gray_700),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: SwitchColors.steel_gray_700),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: SwitchColors.steel_gray_700),
-                          ),
-                          hintText: '',
-                          hintStyle: TextStyle(color: SwitchColors.steel_gray_50),
+                    TextField(
+                      controller: _codeController,
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: SwitchColors.steel_gray_700),
                         ),
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                        cursorColor: Colors.blue,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: SwitchColors.steel_gray_700),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: SwitchColors.ui_blueziness_800),
+                        ),
+                        hintText: '',
+                        hintStyle: TextStyle(color: SwitchColors.steel_gray_50),
                       ),
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      cursorColor: Colors.blue,
                     ),
                     SizedBox(height: 20),
                     ValueListenableBuilder<bool>(
-                      valueListenable: _maxReached,
+                      valueListenable: _codeMaxReached,
                       builder: (context, isMaxReached, child) {
                         return isMaxReached
                             ? Padding(
@@ -119,19 +155,21 @@ class _AddCodeState extends State<AddCode> {
                       children: [
                         Expanded(
                           child: ValueListenableBuilder<bool>(
-                            valueListenable: _fieldEmpty,
-                            builder: (context, isFieldEmpty, child) {
+                            valueListenable: _codeFieldEmpty,
+                            builder: (context, isCodeFieldEmpty, child) {
                               return TextButton(
-                                onPressed: isFieldEmpty
+                                onPressed: isCodeFieldEmpty
                                     ? null
                                     : () {
-                                        _controller.clear();
-                                        _fieldEmpty.value = true;
+                                        _codeController.clear();
+                                        _nameController.clear();
+                                        _codeFieldEmpty.value = true;
+                                        _nameFieldEmpty.value = true;
                                       },
                                 style: TextButton.styleFrom(
                                   padding: EdgeInsets.symmetric(vertical: 16),
                                   side: BorderSide(
-                                    color: isFieldEmpty ? Colors.grey : Colors.blue,
+                                    color: isCodeFieldEmpty ? Colors.grey : Colors.blue,
                                   ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(6),
@@ -140,7 +178,7 @@ class _AddCodeState extends State<AddCode> {
                                 child: Text(
                                   'CANCELAR',
                                   style: TextStyle(
-                                    color: isFieldEmpty ? Colors.grey : Colors.white,
+                                    color: isCodeFieldEmpty ? Colors.grey : Colors.white,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -152,16 +190,16 @@ class _AddCodeState extends State<AddCode> {
                         SizedBox(width: 20),
                         Expanded(
                           child: ValueListenableBuilder<bool>(
-                            valueListenable: _fieldEmpty,
-                            builder: (context, isFieldEmpty, child) {
+                            valueListenable: _codeFieldEmpty,
+                            builder: (context, isCodeFieldEmpty, child) {
                               return InkWell(
-                                onTap: isFieldEmpty
+                                onTap: isCodeFieldEmpty || _nameFieldEmpty.value
                                     ? null
                                     : () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => ControlSwitch(switchCode: _controller.text),
+                                            builder: (context) => LinkRoom(),
                                           ),
                                         );
                                       },
@@ -169,14 +207,18 @@ class _AddCodeState extends State<AddCode> {
                                 child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 16),
                                   decoration: BoxDecoration(
-                                    color: isFieldEmpty ? Colors.grey : Color.fromRGBO(2, 79, 255, 1),
+                                    color: isCodeFieldEmpty || _nameFieldEmpty.value
+                                        ? Colors.grey
+                                        : Color.fromRGBO(2, 79, 255, 1),
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   alignment: Alignment.center,
                                   child: Text(
                                     'CONTINUAR',
                                     style: TextStyle(
-                                      color: isFieldEmpty ? Colors.black54 : Colors.white,
+                                      color: isCodeFieldEmpty || _nameFieldEmpty.value
+                                          ? Colors.black54
+                                          : Colors.white,
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
