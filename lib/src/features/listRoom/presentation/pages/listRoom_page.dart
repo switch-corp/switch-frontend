@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:switchfrontend/src/features/addRoom/presentation/pages/addRoom_page.dart';
 import 'package:switchfrontend/src/features/listSwitch/presentation/pages/listSwitch_page.dart';
 import 'package:switchfrontend/src/features/cardRoom/presentation/pages/cardRoom_page.dart';
+import 'package:switchfrontend/src/features/home/presentation/pages/home_page.dart';
+import 'package:switchfrontend/src/features/controlRoom/presentation/pages/controlRoom_page.dart'; // Adicione a importação para ControlRoom
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 
@@ -45,6 +47,18 @@ class _ListRoomState extends State<ListRoom> {
     );
   }
 
+  void _navigateToControlRoom(String roomTitle, String roomDescription) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ControlRoom(
+          roomName: roomTitle,
+          roomDescription: roomDescription,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,18 +66,23 @@ class _ListRoomState extends State<ListRoom> {
       appBar: AppBar(
         backgroundColor: SwitchColors.steel_gray_950,
         title: Padding(
-          padding: const EdgeInsets.only(left: 90.0),
+          padding: const EdgeInsets.only(left: 110.0),
           child: Text(
             'Rooms',
             style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(fontWeight: FontWeight.bold).copyWith(fontSize: 18),
           ),
         ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.grey[400]),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+leading: IconButton(
+  icon: Icon(Icons.arrow_back, color: Colors.grey[400]),
+  onPressed: () {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()),
+      (Route<dynamic> route) => false,
+    );
+  },
+),
+
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -86,6 +105,10 @@ class _ListRoomState extends State<ListRoom> {
                       rooms[index]['title']!,
                       rooms[index]['description']!,
                     ),
+                    onTap: () => _navigateToControlRoom(
+                      rooms[index]['title']!,
+                      rooms[index]['description']!,
+                    ), // Adiciona o evento onTap para navegação
                   );
                 },
               ),
@@ -110,45 +133,50 @@ class RoomCard extends StatelessWidget {
   final String title;
   final String description;
   final VoidCallback onEdit;
+  final VoidCallback onTap; // Adiciona o callback onTap
 
   const RoomCard({
     required this.title,
     required this.description,
     required this.onEdit,
+    required this.onTap, // Adiciona o parâmetro onTap
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.transparent, // Fundo transparente
-        border: Border.all(color: Colors.blueAccent.withOpacity(0.3)),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
-                IconButton(
-                  icon: Icon(Icons.edit, color: Colors.grey[400], size: 23),
-                  onPressed: onEdit,
-                ),
-              ],
-            ),
-            Text(
-              description,
-              style: TextStyle(color: Colors.grey, fontSize: 14),
-            ),
-          ],
+    return GestureDetector(
+      onTap: onTap, // Adiciona a navegação ao clicar no card
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.transparent, // Fundo transparente
+          border: Border.all(color: Colors.blueAccent.withOpacity(0.3)),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.edit, color: Colors.grey[400], size: 23),
+                    onPressed: onEdit,
+                  ),
+                ],
+              ),
+              Text(
+                description,
+                style: TextStyle(color: Colors.grey, fontSize: 14),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -27,16 +27,15 @@ class HomePage extends StatelessWidget {
       {'action': 'Abrir cortinas', 'time': '08:00'},
       {'action': 'Fechar janelas', 'time': '20:00'},
       {'action': 'Ligar aquecedor', 'time': '07:00'},
-      {'action': 'Desligar luzes', 'time': '23:00'},
-    ];
+    ];  // mostrar apenas as top 5 próximas
   }
 
   Widget _buildCarousel() {
     final automations = _getEnabledAutomations();
 
     return Container(
-      height: 120,
-      margin: EdgeInsets.only(top: 32),
+      height: 140,
+      margin: EdgeInsets.only(top: 15, bottom: 36),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: automations.length,
@@ -52,11 +51,11 @@ class HomePage extends StatelessWidget {
 
   Widget _buildCarouselItem(String action, String time) {
     return Container(
-      width: 120,
+      width: 138,
       margin: EdgeInsets.symmetric(horizontal: 8),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        border: Border.all(color: SwitchColors.steel_gray_600),
+        border: Border.all(color: Color.fromARGB(255, 1, 41, 74), width: 0.8),
         borderRadius: BorderRadius.circular(8),
         color: Colors.transparent,
       ),
@@ -88,123 +87,123 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-Widget _buildAutomationInfo(BuildContext context) {
-  String remainingTime = '1h30min';
 
-  return Container(
-    margin: EdgeInsets.only(top: 32),
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-    width: MediaQuery.of(context).size.width * 0.95,
-    height: 109,
-    child: Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'próximo evento em:',
-                style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 17),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 2),
-              Text(
-                remainingTime,
-                style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(width: 8),
-        Container(
-          width: 165,
-          height: 109,
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            border: Border.all(color: SwitchColors.steel_gray_600),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.power, color: SwitchColors.steel_gray_100, size: 24),
-              SizedBox(height: 4),
-              Text(
-                'Ativar luzes',
-                style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 18),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
-}
+  Widget _buildAutomationInfo(BuildContext context) {
+    String remainingTime = '1h30min';
 
-
-
-void _showLogoutDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        backgroundColor: SwitchColors.steel_gray_950,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8), 
-          side: BorderSide(color: SwitchColors.steel_gray_600, width: 1),
-        ),
-        title: Center(
-          child: Text(
-            'SWITCH',
-            style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 18),
-          ),
-        ),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Center(
-                child: Text(
-                  'você deseja fazer logout?',
-                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100),
+    return Container(
+      margin: EdgeInsets.only(top: 1),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+      width: MediaQuery.of(context).size.width * 0.95,
+      height: 125,
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'próximo evento em:',
+                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 17),
                   textAlign: TextAlign.center,
                 ),
-              ),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text(
-              'não',
-              style: SwitchTexts.titleBody(SwitchColors.ui_blueziness_800),
+                SizedBox(height: 10),
+                Text(
+                  remainingTime,
+                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-              );
-            },
-            child: Text(
-              'sim',
-              style: SwitchTexts.titleBody(SwitchColors.ui_blueziness_800),
+          SizedBox(width: 8),
+          Container(
+            width: 170,
+            height: 120,
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              border: Border.all(color: Color.fromARGB(255, 1, 41, 74), width: 0.8),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.power, color: SwitchColors.steel_gray_100, size: 24),
+                SizedBox(height: 15),
+                Text(
+                  'Ativar luzes',
+                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 18),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ),
         ],
-      );
-    },
-  );
-}
+      ),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: SwitchColors.steel_gray_950,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide(color: Color.fromARGB(255, 1, 35, 64), width: 0.9),
+          ),
+          title: Center(
+            child: Text(
+              'SWITCH',
+              style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 18),
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Center(
+                  child: Text(
+                    'você deseja fazer logout?',
+                    style: SwitchTexts.titleBody(SwitchColors.steel_gray_100),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'não',
+                style: SwitchTexts.titleBody(SwitchColors.ui_blueziness_800),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
+              child: Text(
+                'sim',
+                style: SwitchTexts.titleBody(SwitchColors.ui_blueziness_800),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
@@ -246,7 +245,7 @@ void _showLogoutDialog(BuildContext context) {
                     textAlign: TextAlign.left,
                   ),
                 ),
-                SizedBox(height: 19),
+                SizedBox(height: 28),
                 Container(
                   padding: EdgeInsets.all(4),
                   child: Column(
@@ -269,10 +268,10 @@ void _showLogoutDialog(BuildContext context) {
                                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                  border: Border.all(color: SwitchColors.steel_gray_600),
+                                  border: Border.all(color: Color.fromARGB(255, 0, 49, 92), width: 1.2),
                                 ),
                                 width: (MediaQuery.of(context).size.width / 2) - (2 * 12),
-                                height: 128,
+                                height: 170,
                                 child: Text(
                                   'switches',
                                   style: SwitchTexts.titleBody(SwitchColors.steel_gray_100),
@@ -292,10 +291,10 @@ void _showLogoutDialog(BuildContext context) {
                                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                  border: Border.all(color: SwitchColors.steel_gray_600),
+                                  border: Border.all(color: Color.fromARGB(255, 0, 49, 92), width: 1.2),
                                 ),
                                 width: (MediaQuery.of(context).size.width / 2) - (2 * 12),
-                                height: 128,
+                                height: 170,
                                 child: Text(
                                   'rooms',
                                   style: SwitchTexts.titleBody(SwitchColors.steel_gray_100),
@@ -305,44 +304,51 @@ void _showLogoutDialog(BuildContext context) {
                           ],
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ListSchedule(),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                    border: Border.all(color: SwitchColors.steel_gray_600),
-                                  ),
-                                  height: 128,
-                                  child: Text(
-                                    'automatizações',
-                                    style: SwitchTexts.titleBody(SwitchColors.steel_gray_100),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+Container(
+  margin: EdgeInsets.only(top: 8),
+  child: GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ListSchedule(),
+        ),
+      );
+    },
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        border: Border.all(color: Color.fromARGB(255, 0, 49, 92), width: 1.2),
+      ),
+      width: MediaQuery.of(context).size.width,
+      height: 170,
+      child: Align(
+        alignment: Alignment.topLeft, 
+        child: Text(
+          'automatizações',
+          style: SwitchTexts.titleBody(SwitchColors.steel_gray_100),
+        ),
+      ),
+    ),
+  ),
+),
+
                     ],
                   ),
                 ),
-                SizedBox(height: 16),
-                _buildCarousel(),
-                SizedBox(height: 20),
-                _buildAutomationInfo(context),
+              Container(
+  margin: const EdgeInsets.only(top: 20),
+  child: Divider(
+    color:  Color.fromARGB(255, 44, 73, 97), 
+    thickness: 0.6, 
+    indent: 10, 
+    endIndent: 10, 
+  ),
+),
+
+                _buildAutomationInfo(context), 
+                _buildCarousel(), 
               ],
             ),
           ),

@@ -6,7 +6,7 @@ class SwitchTexts {
     return GoogleFonts.inter(
       color: color,
       fontSize: 30,
-      letterSpacing: -0.75,
+      // letterSpacing: -0.75,
     );
   }
 
@@ -14,7 +14,7 @@ class SwitchTexts {
     return GoogleFonts.inter(
       color: color,
       fontSize: 18,
-      letterSpacing: -0.18,
+      // letterSpacing: -0.18,
     );
   }
 
@@ -22,7 +22,7 @@ class SwitchTexts {
     return GoogleFonts.inter(
       color: color,
       fontSize: 28,
-      letterSpacing: -1.25,
+      // letterSpacing: -1.25,
     );
   }
 
@@ -30,7 +30,7 @@ class SwitchTexts {
     return GoogleFonts.inter(
       color: color,
       fontSize: 18,
-      letterSpacing: -1,
+      // letterSpacing: -1,
     );
   }
 
@@ -38,7 +38,7 @@ class SwitchTexts {
     return GoogleFonts.inter(
       color: color,
       fontSize: 14,
-      letterSpacing: -1.5,
+      // letterSpacing: -1.5,
     );
   }
 
@@ -46,7 +46,7 @@ class SwitchTexts {
     return GoogleFonts.inter(
       color: color,
       fontSize: 16,
-      letterSpacing: -0.5,
+      // letterSpacing: -0.5,
     );
   }
 
@@ -55,7 +55,7 @@ class SwitchTexts {
       color: color,
       fontSize: 16,
       fontWeight: FontWeight.w600,
-      letterSpacing: 0.5,
+      // letterSpacing: 0.5,
     );
   }
 
@@ -63,7 +63,7 @@ class SwitchTexts {
     return GoogleFonts.inter(
       color: color,
       fontSize: 22,
-      letterSpacing: 1,
+      // letterSpacing: 1,
     );
   }
 
@@ -72,7 +72,7 @@ class SwitchTexts {
       color: color,
       fontSize: 22,
       fontWeight: FontWeight.w600,
-      letterSpacing: 1.5,
+      // letterSpacing: 1.5,
     );
   }
 

@@ -9,16 +9,9 @@ class Schedule extends StatefulWidget {
 }
 
 class _ScheduleState extends State<Schedule> {
-  String _selectedAction = 'Início e Fim';
-  TimeOfDay _startTime = TimeOfDay(hour: 7, minute: 30);
-  TimeOfDay _endTime = TimeOfDay(hour: 7, minute: 30);
   TimeOfDay _singleTime = TimeOfDay(hour: 7, minute: 30);
-
-  bool _isOnStart = true;
-  bool _isOnEnd = false;
-
+  bool _isActionOn = true; // Ação inicial como "on"
   final List<bool> _selectedDays = List.generate(7, (_) => false);
-  
   final TextStyle _labelStyle = TextStyle(color: Colors.white, fontSize: 16);
   final TextEditingController _nameController = TextEditingController();
   bool _isEdited = false; // Variável para rastrear se houve edição
@@ -32,17 +25,16 @@ class _ScheduleState extends State<Schedule> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-   backgroundColor: SwitchColors.steel_gray_950,
-appBar: AppBar(
-  backgroundColor: SwitchColors.steel_gray_950,
-  title: Padding(
-    padding: const EdgeInsets.only(left: 10.0), // Ajuste o valor conforme necessário
-    child: Text('Adicionar Automatização', style: TextStyle(color: Colors.white)),
-  ),
-  centerTitle: true,
-  iconTheme: IconThemeData(color: Colors.white),
-),
-
+      backgroundColor: SwitchColors.steel_gray_950,
+      appBar: AppBar(
+        backgroundColor: SwitchColors.steel_gray_950,
+        title: Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: Text('Adicionar Automatização', style: TextStyle(color: Colors.white)),
+        ),
+        centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -72,8 +64,7 @@ appBar: AppBar(
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: SwitchColors.ui_blueziness_800),
                   ),
-                  hintText: null,
-                  counterStyle: TextStyle(color: Colors.grey), // Define a cor do contador
+                  counterStyle: TextStyle(color: Colors.grey),
                 ),
                 onChanged: (_) {
                   setState(() {
@@ -83,67 +74,7 @@ appBar: AppBar(
               ),
             ),
             SizedBox(height: 20),
-            DropdownButton<String>(
-              dropdownColor: SwitchColors.steel_gray_950,
-              value: _selectedAction,
-              items: <String>['Início e Fim', 'Só uma Ação'].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedAction = newValue!;
-                  _isEdited = true; // Marca como editado
-                });
-              },
-            ),
-            SizedBox(height: 20),
-            if (_selectedAction == 'Início e Fim') ...[
-              _buildCard(
-                'Início',
-                _startTime,
-                _isOnStart,
-                (time) {
-                  setState(() {
-                    _startTime = time;
-                    _isEdited = true; // Marca como editado
-                  });
-                },
-                (bool value) {
-                  setState(() {
-                    _isOnStart = value;
-                    _isOnEnd = !value;
-                    _isEdited = true; // Marca como editado
-                  });
-                },
-              ),
-              SizedBox(height: 20),
-              _buildCard(
-                'Fim',
-                _endTime,
-                _isOnEnd,
-                (time) {
-                  setState(() {
-                    _endTime = time;
-                    _isEdited = true; // Marca como editado
-                  });
-                },
-                (bool value) {
-                  setState(() {
-                    _isOnEnd = value;
-                    _isOnStart = !value;
-                    _isEdited = true; // Marca como editado
-                  });
-                },
-              ),
-            ] else ...[
-              _buildSingleActionCard(),
-            ],
+            _buildSingleActionCard(),
             SizedBox(height: 20),
             Text(
               'Selecione os dias',
@@ -163,23 +94,17 @@ appBar: AppBar(
                 Expanded(
                   child: TextButton(
                     onPressed: _isEdited ? () {
-                      // Limpa o nome da automatização
+                      // Limpa o nome da automatização e redefine as configurações
                       _nameController.clear();
-
-                      // Redefine o horário para o padrão
-                      _startTime = TimeOfDay(hour: 7, minute: 30);
-                      _endTime = TimeOfDay(hour: 7, minute: 30);
                       _singleTime = TimeOfDay(hour: 7, minute: 30);
-
-                      // Desmarca todos os dias da semana
+                      _isActionOn = true; // Reseta a ação para "on"
                       for (int i = 0; i < _selectedDays.length; i++) {
                         _selectedDays[i] = false;
                       }
-
                       setState(() {
                         _isEdited = false; // Reseta o estado
                       });
-                    } : null, // Desabilita o botão se não houve edição
+                    } : null,
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 16),
                       backgroundColor: Colors.transparent,
@@ -201,18 +126,17 @@ appBar: AppBar(
                 SizedBox(width: 20),
                 Expanded(
                   child: TextButton(
-                    onPressed: _isEdited ? () {
-                      // Aqui você pode adicionar a lógica para continuar
+                    onPressed: _isEdited && _nameController.text.isNotEmpty ? () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => LinkSwitchRoom(),
                         ),
                       );
-                    } : null, // Desabilita o botão se não houve edição
+                    } : null,
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: _isEdited ? SwitchColors.ui_blueziness_800: Colors.grey, // Azul se editado, cinza caso contrário
+                      backgroundColor: (_isEdited && _nameController.text.isNotEmpty) ? SwitchColors.ui_blueziness_800 : Colors.grey,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
@@ -220,7 +144,7 @@ appBar: AppBar(
                     child: Text(
                       'CONTINUAR',
                       style: TextStyle(
-                        color: _isEdited ? Colors.white : Colors.black, // Branco se editado, transparente caso contrário
+                        color: (_isEdited && _nameController.text.isNotEmpty) ? Colors.white : Colors.black,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -235,88 +159,28 @@ appBar: AppBar(
     );
   }
 
-  Widget _buildCard(
-    String title,
-    TimeOfDay time,
-    bool isOn,
-    ValueChanged<TimeOfDay> onTimeChanged,
-    ValueChanged<bool> onSwitchChanged,
-  ) {
-    return Card(
-      color: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-        side: BorderSide(color: Colors.grey),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(color: Colors.white),
-                ),
-                SizedBox(height: 8),
-                GestureDetector(
-                  onTap: () async {
-                    TimeOfDay? pickedTime = await _selectTime(context, time);
-                    if (pickedTime != null) {
-                      onTimeChanged(pickedTime);
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Text(
-                      time.format(context),
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  isOn ? 'On' : 'Off',
-                  style: TextStyle(color: Colors.white),
-                ),
-                Switch(
-                  value: isOn,
-                  onChanged: onSwitchChanged,
-                  activeColor: SwitchColors.ui_blueziness_800,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildSingleActionCard() {
-    return Card(
-      color: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-        side: BorderSide(color: Colors.grey),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start, // Alinha o texto à esquerda
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0), // Ajusta o espaçamento
+          child: Text(
+            "Selecione o Horário e a Ação:", // Texto acima da caixa
+            style: TextStyle(color: Colors.white, fontSize: 16.0), // Estilo do texto
+          ),
+        ),
+        Card(
+          color: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: BorderSide(color: Colors.grey),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(height: 8),
                 GestureDetector(
                   onTap: () async {
                     TimeOfDay? pickedTime = await _selectTime(context, _singleTime);
@@ -339,29 +203,31 @@ appBar: AppBar(
                     ),
                   ),
                 ),
+                // Botão de alternância
+                Row(
+                  children: [
+                    Text(
+                      _isActionOn ? "on" : "off", // Texto de estado
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Switch(
+                      value: _isActionOn, // Controla o estado do botão
+                      onChanged: (value) {
+                        setState(() {
+                          _isActionOn = value; // Atualiza o estado ao alternar
+                          _isEdited = true; // Marca como editado ao mudar
+                        });
+                      },
+                      activeColor: SwitchColors.ui_blueziness_800, // Cor quando ativado
+                      inactiveThumbColor: Colors.grey, // Cor quando desativado
+                    ),
+                  ],
+                ),
               ],
             ),
-            Row(
-              children: [
-                Text(
-                  _isOnStart ? 'On' : 'Off',
-                  style: TextStyle(color: Colors.white),
-                ),
-                Switch(
-                  value: _isOnStart,
-                  onChanged: (bool value) {
-                    setState(() {
-                      _isOnStart = value;
-                      _isEdited = true; // Marca como editado
-                    });
-                  },
-                  activeColor: SwitchColors.ui_blueziness_800,
-                ),
-              ],
-            ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -393,35 +259,26 @@ appBar: AppBar(
     );
   }
 
-Future<TimeOfDay?> _selectTime(BuildContext context, TimeOfDay initialTime) {
-  return showTimePicker(
-    context: context,
-    initialTime: initialTime,
-    builder: (BuildContext context, Widget? child) {
-      return MediaQuery(
-        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-        child: Theme(
-          data: ThemeData(
-            brightness: Brightness.dark,
-            primaryColor: SwitchColors.ui_blueziness_800, // Cor do botão
-            dialogBackgroundColor: Colors.black, // Cor de fundo do diálogo
-            colorScheme: ColorScheme.dark(
-              primary: SwitchColors.ui_blueziness_800,
-              onPrimary: SwitchColors.steel_gray_50,
-              onSurface: Colors.grey, // Cor do círculo
+  Future<TimeOfDay?> _selectTime(BuildContext context, TimeOfDay initialTime) {
+    return showTimePicker(
+      context: context,
+      initialTime: initialTime,
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: Theme(
+            data: ThemeData(
+              brightness: Brightness.dark,
+              primaryColor: SwitchColors.ui_blueziness_800,
+              dialogBackgroundColor: Colors.black,
+              colorScheme: ColorScheme.dark(
+                primary: SwitchColors.ui_blueziness_800,
+              ),
             ),
-            textTheme: TextTheme(
-              bodyText1: TextStyle(color: Colors.white), // Texto em branco
-              bodyText2: TextStyle(color: Colors.white), // Texto em branco
-            ),
-            // Você pode adicionar mais estilos de texto se necessário
+            child: child ?? SizedBox.shrink(),
           ),
-          child: child!,
-        ),
-      );
-    },
-        helpText: 'selecione um horário:',
-  );
-}
-
+        );
+      },
+    );
+  }
 }
