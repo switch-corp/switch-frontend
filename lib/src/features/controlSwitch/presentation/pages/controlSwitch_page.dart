@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 import 'package:switchfrontend/src/features/listSwitch/presentation/pages/listSwitch_page.dart'; 
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class ControlSwitch extends StatefulWidget {
   final String switchCode;
@@ -16,10 +20,24 @@ class ControlSwitch extends StatefulWidget {
 class _ControlSwitchState extends State<ControlSwitch> {
   bool _switchOn = false;
 
-  void _toggleSwitch() {
+  void _toggleSwitch() async {
     setState(() {
       _switchOn = !_switchOn;
     });
+
+            var url =
+      Uri.https('switch-backend-2trd.onrender.com','/api/v1/switch/power/123456789');
+
+var response =  await http.post(
+  url,
+  headers: {'Content-Type': 'application/json'},
+  body: jsonEncode({"state":_switchOn}),
+);
+
+
+      print('Response status: ${response.statusCode}');
+print('Response body: ${response.body}');
+  
   }
 
 void _confirmDeleteSwitch() {
