@@ -5,11 +5,11 @@ import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 import 'package:switchfrontend/src/features/linkSwitchRoom/presentation/pages/linkSwitchRoom_page.dart';
 import 'package:switchfrontend/src/features/listSchedule/presentation/pages/listSchedule_page.dart';
 
-
 class CardSchedule extends StatefulWidget {
-  final String automationName; 
+  final String automationName;
 
-  const CardSchedule({Key? key, required this.automationName}) : super(key: key); 
+  const CardSchedule({Key? key, required this.automationName})
+      : super(key: key);
 
   @override
   _CardScheduleState createState() => _CardScheduleState();
@@ -17,22 +17,23 @@ class CardSchedule extends StatefulWidget {
 
 class _CardScheduleState extends State<CardSchedule> {
   String _selectedAction = 'Início e Fim';
-  TimeOfDay _startTime = TimeOfDay(hour: 7, minute: 30);
-  TimeOfDay _endTime = TimeOfDay(hour: 7, minute: 30);
-  TimeOfDay _singleTime = TimeOfDay(hour: 7, minute: 30);
-  
+  TimeOfDay _startTime = const TimeOfDay(hour: 7, minute: 30);
+  TimeOfDay _endTime = const TimeOfDay(hour: 7, minute: 30);
+  TimeOfDay _singleTime = const TimeOfDay(hour: 7, minute: 30);
+
   bool _isOnStart = true;
   bool _isOnEnd = false;
-  
+
   final List<bool> _selectedDays = List.generate(7, (_) => false);
-  final TextStyle _labelStyle = TextStyle(color: Colors.white, fontSize: 16);
+  final TextStyle _labelStyle =
+      const TextStyle(color: Colors.white, fontSize: 16);
   final TextEditingController _nameController = TextEditingController();
   bool _isEdited = false;
 
   @override
   void initState() {
     super.initState();
-    _nameController.text = widget.automationName; 
+    _nameController.text = widget.automationName;
   }
 
   @override
@@ -45,24 +46,27 @@ class _CardScheduleState extends State<CardSchedule> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: SwitchColors.steel_gray_950,
-appBar: AppBar(
-  backgroundColor: SwitchColors.steel_gray_950,
-  title: Padding(
-    padding: const EdgeInsets.only(left: 10.0),
-    child: Text('Editar Automatização', style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(fontWeight: FontWeight.bold).copyWith(fontSize: 18)),
-  ),
-  centerTitle: true,
-  iconTheme: IconThemeData(color: Colors.white),
-  actions: [
-    IconButton(
-      icon: Icon(Icons.delete, color: Color.fromARGB(255, 157, 50, 43)), 
-      onPressed: () {
-        _confirmDeleteAutomation();
-      },
-    ),
-  ],
-),
-
+      appBar: AppBar(
+        backgroundColor: SwitchColors.steel_gray_950,
+        title: Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: Text('Editar Automatização',
+              style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
+                  .copyWith(fontWeight: FontWeight.bold)
+                  .copyWith(fontSize: 18)),
+        ),
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete,
+                color: Color.fromARGB(255, 157, 50, 43)),
+            onPressed: () {
+              _confirmDeleteAutomation();
+            },
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -74,7 +78,7 @@ appBar: AppBar(
                 style: _labelStyle,
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             SizedBox(
               width: double.infinity,
               child: TextField(
@@ -83,16 +87,17 @@ appBar: AppBar(
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'.{0,20}')),
                 ],
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 cursorColor: SwitchColors.ui_blueziness_800,
                 decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: SwitchColors.ui_blueziness_800),
+                    borderSide:
+                        BorderSide(color: SwitchColors.ui_blueziness_800),
                   ),
-                  counterStyle: TextStyle(color: Colors.grey),
+                  counterStyle: const TextStyle(color: Colors.grey),
                 ),
                 onChanged: (_) {
                   setState(() {
@@ -101,14 +106,16 @@ appBar: AppBar(
                 },
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             DropdownButton<String>(
               dropdownColor: SwitchColors.steel_gray_950,
               value: _selectedAction,
-              items: <String>['Início e Fim', 'Só uma Ação'].map((String value) {
+              items:
+                  <String>['Início e Fim', 'Só uma Ação'].map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value, style: TextStyle(color: Colors.white)),
+                  child:
+                      Text(value, style: const TextStyle(color: Colors.white)),
                 );
               }).toList(),
               onChanged: (String? newValue) {
@@ -118,7 +125,7 @@ appBar: AppBar(
                 });
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             if (_selectedAction == 'Início e Fim') ...[
               _buildCard('Início', _startTime, _isOnStart, (time) {
                 setState(() {
@@ -132,7 +139,7 @@ appBar: AppBar(
                   _isEdited = true;
                 });
               }),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildCard('Fim', _endTime, _isOnEnd, (time) {
                 setState(() {
                   _endTime = time;
@@ -148,28 +155,34 @@ appBar: AppBar(
             ] else ...[
               _buildSingleActionCard(),
             ],
-            SizedBox(height: 20),
-            Text('Selecione os dias', style: TextStyle(color: Colors.white)),
-            SizedBox(height: 10),
+            const SizedBox(height: 20),
+            const Text('Selecione os dias',
+                style: TextStyle(color: Colors.white)),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: List.generate(7, (index) {
                 return _buildDayButton(index);
               }),
             ),
-            Spacer(),
+            const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: TextButton(
-                    onPressed: _isEdited ? () {
-                      _resetForm();
-                    } : null,
+                    onPressed: _isEdited
+                        ? () {
+                            _resetForm();
+                          }
+                        : null,
                     style: TextButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       backgroundColor: Colors.transparent,
-                      side: BorderSide(color: _isEdited ? SwitchColors.ui_blueziness_800 : Colors.grey),
+                      side: BorderSide(
+                          color: _isEdited
+                              ? SwitchColors.ui_blueziness_800
+                              : Colors.grey),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
@@ -184,20 +197,24 @@ appBar: AppBar(
                     ),
                   ),
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 Expanded(
                   child: TextButton(
-                    onPressed: _isEdited ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LinkSwitchRoom(),
-                        ),
-                      );
-                    } : null,
+                    onPressed: _isEdited
+                        ? () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LinkSwitchRoom(),
+                              ),
+                            );
+                          }
+                        : null,
                     style: TextButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: _isEdited ? SwitchColors.ui_blueziness_800 : Colors.grey,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: _isEdited
+                          ? SwitchColors.ui_blueziness_800
+                          : Colors.grey,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
@@ -220,77 +237,78 @@ appBar: AppBar(
     );
   }
 
-void _confirmDeleteAutomation() {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        backgroundColor: SwitchColors.steel_gray_950,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: Colors.grey),
-        ),
-title: Center(
-  child: Text(
-    'SWITCH',
-    style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(
-      fontWeight: FontWeight.bold,
-      fontSize: 18,
-    ),
-  ),
-),
-
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Center(
-child: Text(
-  'Você tem certeza que deseja excluir a automatização "${widget.automationName}"?',
-  style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
-      .copyWith(
-        fontWeight: FontWeight.bold,
-        fontSize: 18,
-      ),
-  textAlign: TextAlign.center,
-),
-
+  void _confirmDeleteAutomation() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: SwitchColors.steel_gray_950,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(color: Colors.grey),
+          ),
+          title: Center(
+            child: Text(
+              'SWITCH',
+              style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
               ),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text(
-              'cancelar',
-              style: TextStyle(color: SwitchColors.ui_blueziness_800, fontSize: 16)
             ),
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => ListSchedule()),
-                (route) => false,
-              );
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Center(
+                  child: Text(
+                    'Você tem certeza que deseja excluir a automatização "${widget.automationName}"?',
+                    style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
+                        .copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('cancelar',
+                  style: TextStyle(
+                      color: SwitchColors.ui_blueziness_800, fontSize: 16)),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => ListSchedule()),
+                  (route) => false,
+                );
 
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Automatização '${widget.automationName}' excluída.")),
-              );
-            },
-            child: Text(
-              'excluir',
-              style: TextStyle(color: SwitchColors.ui_blueziness_800, fontSize: 16),
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                      content: Text(
+                          "Automatização '${widget.automationName}' excluída.")),
+                );
+              },
+              child: Text(
+                'excluir',
+                style: TextStyle(
+                    color: SwitchColors.ui_blueziness_800, fontSize: 16),
+              ),
             ),
-          ),
-        ],
-      );
-    },
-  );
-}
+          ],
+        );
+      },
+    );
+  }
+
   Widget _buildCard(
     String title,
     TimeOfDay time,
@@ -302,7 +320,7 @@ child: Text(
       color: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        side: BorderSide(color: Colors.grey),
+        side: const BorderSide(color: Colors.grey),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -312,8 +330,8 @@ child: Text(
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: TextStyle(color: Colors.white)),
-                SizedBox(height: 8),
+                Text(title, style: const TextStyle(color: Colors.white)),
+                const SizedBox(height: 8),
                 GestureDetector(
                   onTap: () async {
                     TimeOfDay? pickedTime = await _selectTime(context, time);
@@ -322,19 +340,22 @@ child: Text(
                     }
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 16.0),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
-                    child: Text(time.format(context), style: TextStyle(color: Colors.white)),
+                    child: Text(time.format(context),
+                        style: const TextStyle(color: Colors.white)),
                   ),
                 ),
               ],
             ),
             Row(
               children: [
-                Text(isOn ? 'On' : 'Off', style: TextStyle(color: Colors.white)),
+                Text(isOn ? 'On' : 'Off',
+                    style: const TextStyle(color: Colors.white)),
                 Switch(
                   value: isOn,
                   onChanged: onSwitchChanged,
@@ -353,7 +374,7 @@ child: Text(
       color: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        side: BorderSide(color: Colors.grey),
+        side: const BorderSide(color: Colors.grey),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -371,12 +392,14 @@ child: Text(
                 }
               },
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 12.0, horizontal: 16.0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.white),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: Text(_singleTime.format(context), style: TextStyle(color: Colors.white)),
+                child: Text(_singleTime.format(context),
+                    style: const TextStyle(color: Colors.white)),
               ),
             ),
             Switch(
@@ -395,7 +418,7 @@ child: Text(
     );
   }
 
- Widget _buildDayButton(int index) {
+  Widget _buildDayButton(int index) {
     final days = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
     return GestureDetector(
       onTap: () {
@@ -405,16 +428,18 @@ child: Text(
         });
       },
       child: Container(
-        padding: EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
           border: Border.all(
-            color: _selectedDays[index] ? SwitchColors.ui_blueziness_800 : Colors.white,
+            color: _selectedDays[index]
+                ? SwitchColors.ui_blueziness_800
+                : Colors.white,
           ),
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Text(
           days[index],
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
@@ -423,45 +448,43 @@ child: Text(
     );
   }
 
-
-Future<TimeOfDay?> _selectTime(BuildContext context, TimeOfDay initialTime) {
-  return showTimePicker(
-    context: context,
-    initialTime: initialTime,
-    builder: (BuildContext context, Widget? child) {
-      return MediaQuery(
-        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-        child: Theme(
-          data: ThemeData(
-            brightness: Brightness.dark,
-            primaryColor: SwitchColors.ui_blueziness_800,
-            dialogBackgroundColor: Colors.black,
-            colorScheme: ColorScheme.dark(
-              primary: SwitchColors.ui_blueziness_800,
-              onPrimary: SwitchColors.steel_gray_50,
-              onSurface: Colors.grey,
+  Future<TimeOfDay?> _selectTime(BuildContext context, TimeOfDay initialTime) {
+    return showTimePicker(
+      context: context,
+      initialTime: initialTime,
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: Theme(
+            data: ThemeData(
+              brightness: Brightness.dark,
+              primaryColor: SwitchColors.ui_blueziness_800,
+              dialogBackgroundColor: Colors.black,
+              colorScheme: ColorScheme.dark(
+                primary: SwitchColors.ui_blueziness_800,
+                onPrimary: SwitchColors.steel_gray_50,
+                onSurface: Colors.grey,
+              ),
+              textTheme: const TextTheme(
+                bodyLarge: TextStyle(color: Colors.white),
+                bodyMedium: TextStyle(color: Colors.white),
+              ),
             ),
-            textTheme: TextTheme(
-              bodyText1: TextStyle(color: Colors.white), 
-              bodyText2: TextStyle(color: Colors.white),
-              
-            ),
+            child: child!,
           ),
-          child: child!,
-        ),
-      );
-    },
-        helpText: 'selecione um horário:',
-  );
-}
+        );
+      },
+      helpText: 'selecione um horário:',
+    );
+  }
 
   void _resetForm() {
     setState(() {
       _nameController.clear();
       _selectedAction = 'Início e Fim';
-      _startTime = TimeOfDay(hour: 7, minute: 30);
-      _endTime = TimeOfDay(hour: 7, minute: 30);
-      _singleTime = TimeOfDay(hour: 7, minute: 30);
+      _startTime = const TimeOfDay(hour: 7, minute: 30);
+      _endTime = const TimeOfDay(hour: 7, minute: 30);
+      _singleTime = const TimeOfDay(hour: 7, minute: 30);
       _isOnStart = true;
       _isOnEnd = false;
       _selectedDays.fillRange(0, _selectedDays.length, false);

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:switchfrontend/src/features/listswitch/presentation/pages/listswitch_page.dart'; // Importa a tela SwitchesPage
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
+
+import '../../../listSwitch/presentation/pages/listSwitch_page.dart';
 
 class LinkRoom extends StatefulWidget {
   @override
@@ -40,7 +41,9 @@ class _LinkRoomState extends State<LinkRoom> {
           padding: const EdgeInsets.only(left: 30.0),
           child: Text(
             'Vincular o Switch à Room',
-           style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(fontWeight: FontWeight.bold).copyWith(fontSize: 18),
+            style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
+                .copyWith(fontWeight: FontWeight.bold)
+                .copyWith(fontSize: 18),
           ),
         ),
         leading: IconButton(
@@ -68,7 +71,8 @@ class _LinkRoomState extends State<LinkRoom> {
                     title: rooms[index]['title']!,
                     description: rooms[index]['description']!,
                     isSelected: selectedRooms[index],
-                    onSelected: (isSelected) => _onRoomSelected(index, isSelected),
+                    onSelected: (isSelected) =>
+                        _onRoomSelected(index, isSelected),
                   );
                 },
               ),
@@ -89,7 +93,7 @@ class _LinkRoomState extends State<LinkRoom> {
                     },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 16),
-                      side: BorderSide(color: SwitchColors.ui_blueziness_800), 
+                      side: BorderSide(color: SwitchColors.ui_blueziness_800),
                       backgroundColor: Colors.transparent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
@@ -120,7 +124,9 @@ class _LinkRoomState extends State<LinkRoom> {
                         : null,
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: isAnyRoomSelected ? SwitchColors.ui_blueziness_800 : Colors.grey, // Fundo azul se habilitado
+                      backgroundColor: isAnyRoomSelected
+                          ? SwitchColors.ui_blueziness_800
+                          : Colors.grey, // Fundo azul se habilitado
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
@@ -128,7 +134,8 @@ class _LinkRoomState extends State<LinkRoom> {
                     child: Text(
                       'CONCLUIR',
                       style: TextStyle(
-                        color: isAnyRoomSelected ? Colors.white : Colors.black54,
+                        color:
+                            isAnyRoomSelected ? Colors.white : Colors.black54,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -165,7 +172,9 @@ class RoomCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.black,
           border: Border.all(
-            color: isSelected ? Colors.blueAccent : Colors.blueAccent.withOpacity(0.3),
+            color: isSelected
+                ? Colors.blueAccent
+                : Colors.blueAccent.withOpacity(0.3),
             width: isSelected ? 2.0 : 1.0,
           ),
           borderRadius: BorderRadius.circular(8),

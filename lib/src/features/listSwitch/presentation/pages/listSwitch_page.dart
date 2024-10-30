@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:switchfrontend/src/features/addCode/presentation/pages/addCode_page.dart';
-import 'package:switchfrontend/src/features/controlSwitch/presentation/pages/controlswitch_page.dart';
+import 'package:switchfrontend/src/features/controlSwitch/presentation/pages/controlSwitch_page.dart';
 import 'package:switchfrontend/src/features/home/presentation/pages/home_page.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
@@ -11,7 +11,7 @@ class SwitchesPage extends StatefulWidget {
 }
 
 class _SwitchesPageState extends State<SwitchesPage> {
-  Map<String, Map<String, String>> _switchStates = {
+  final Map<String, Map<String, String>> _switchStates = {
     'Sala 1': {
       'Interruptor da frente': 'on',
       'Interruptor do meio': 'off',
@@ -46,62 +46,64 @@ class _SwitchesPageState extends State<SwitchesPage> {
     }
   }
 
- Future<String?> _showEditDialog(String currentLabel) {
-  TextEditingController controller = TextEditingController(text: currentLabel);
-  return showDialog<String>(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        backgroundColor: SwitchColors.steel_gray_950,
-        title: Center(
-          child: Text(
-            'Editar Nome do Switch',
-            style: SwitchTexts.bodyDefaultBold(SwitchColors.steel_gray_100)
-                .copyWith(fontSize: 18),
-          ),
-        ),
-        content: TextField(
-          controller: controller,
-          style: SwitchTexts.titleBody(SwitchColors.steel_gray_100),
-          cursorColor: SwitchColors.ui_blueziness_800,
-          decoration: InputDecoration(
-            hintText: "Novo Nome do Switch",
-            hintStyle: SwitchTexts.titleBody(SwitchColors.steel_gray_500),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blue),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blueAccent),
-            ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+  Future<String?> _showEditDialog(String currentLabel) {
+    TextEditingController controller =
+        TextEditingController(text: currentLabel);
+    return showDialog<String>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: SwitchColors.steel_gray_950,
+          title: Center(
             child: Text(
-              'cancelar',
-              style: SwitchTexts.bodyDefaultBold(SwitchColors.ui_blueziness_800)
-                  .copyWith(fontSize: 16),
+              'Editar Nome do Switch',
+              style: SwitchTexts.bodyDefaultBold(SwitchColors.steel_gray_100)
+                  .copyWith(fontSize: 18),
             ),
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(controller.text);
-            },
-            child: Text(
-              'salvar',
-              style: SwitchTexts.bodyDefaultBold(SwitchColors.ui_blueziness_800)
-                  .copyWith(fontSize: 16),
+          content: TextField(
+            controller: controller,
+            style: SwitchTexts.titleBody(SwitchColors.steel_gray_100),
+            cursorColor: SwitchColors.ui_blueziness_800,
+            decoration: InputDecoration(
+              hintText: "Novo Nome do Switch",
+              hintStyle: SwitchTexts.titleBody(SwitchColors.steel_gray_500),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blueAccent),
+              ),
             ),
           ),
-        ],
-      );
-    },
-  );
-}
-
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'cancelar',
+                style:
+                    SwitchTexts.bodyDefaultBold(SwitchColors.ui_blueziness_800)
+                        .copyWith(fontSize: 16),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(controller.text);
+              },
+              child: Text(
+                'salvar',
+                style:
+                    SwitchTexts.bodyDefaultBold(SwitchColors.ui_blueziness_800)
+                        .copyWith(fontSize: 16),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +112,10 @@ class _SwitchesPageState extends State<SwitchesPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text('Switches', style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(fontWeight: FontWeight.bold).copyWith(fontSize: 18)),
+        title: Text('Switches',
+            style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
+                .copyWith(fontWeight: FontWeight.bold)
+                .copyWith(fontSize: 18)),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -170,7 +175,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
     Color iconColor;
     String displayText;
     String tooltipMessage;
-    String switchCode = "SAKSSNFC"; 
+    String switchCode = "SAKSSNFC";
 
     switch (status) {
       case 'on':
@@ -226,38 +231,38 @@ class _SwitchesPageState extends State<SwitchesPage> {
           ),
         ],
       ),
-     trailing: Tooltip(
-  message: tooltipMessage,
-  child: Container(
-    width: 30,
-    height: 30,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      border: Border.all(
-        color: iconColor,
-        width: 2.0, 
-      ),
-    ),
-    child: Center(
-      child: Text(
-        displayText,
-        style: TextStyle(
-          color: iconColor,
-          fontWeight: FontWeight.bold,
-          fontSize: status == 'error' ? 16 : 12,
+      trailing: Tooltip(
+        message: tooltipMessage,
+        child: Container(
+          width: 30,
+          height: 30,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: iconColor,
+              width: 2.0,
+            ),
+          ),
+          child: Center(
+            child: Text(
+              displayText,
+              style: TextStyle(
+                color: iconColor,
+                fontWeight: FontWeight.bold,
+                fontSize: status == 'error' ? 16 : 12,
+              ),
+            ),
+          ),
         ),
       ),
-    ),
-  ),
-),
-
       onTap: () {
         _navigateToControlSwitch(context, switchLabel, switchCode);
       },
     );
   }
 
-  void _navigateToControlSwitch(BuildContext context, String switchName, String switchCode) {
+  void _navigateToControlSwitch(
+      BuildContext context, String switchName, String switchCode) {
     Navigator.push(
       context,
       MaterialPageRoute(
