@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:switchfrontend/src/features/addCode/presentation/pages/addCode_page.dart';
-import 'package:switchfrontend/src/features/controlSwitch/presentation/pages/controlswitch_page.dart';
+import 'package:switchfrontend/src/features/controlSwitch/presentation/pages/controlSwitch_page.dart';
 import 'package:switchfrontend/src/features/home/presentation/pages/home_page.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
@@ -20,7 +20,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
     {'label': 'Interruptor do quintal', 'state': 'off'},
     {'label': 'Interruptor de trás', 'state': 'error'},
     {'label': 'Interruptor da frente 2', 'state': 'on'},
-   {'label': 'Interruptor novo', 'state': 'on'},
+    {'label': 'Interruptor novo', 'state': 'on'},
     {'label': 'Interruptor quarto térreo', 'state': 'off'},
     {'label': 'Interruptor de trás', 'state': 'error'},
     {'label': 'Interruptor da frente 5', 'state': 'on'}
@@ -36,7 +36,8 @@ class _SwitchesPageState extends State<SwitchesPage> {
     final newLabel = await _showEditDialog(oldLabel);
     if (newLabel != null && newLabel.isNotEmpty) {
       setState(() {
-        int index = _switchStates.indexWhere((switchState) => switchState['label'] == oldLabel);
+        int index = _switchStates
+            .indexWhere((switchState) => switchState['label'] == oldLabel);
         if (index != -1) {
           _switchStates[index]['label'] = newLabel;
         }
@@ -45,7 +46,8 @@ class _SwitchesPageState extends State<SwitchesPage> {
   }
 
   Future<String?> _showEditDialog(String currentLabel) {
-    TextEditingController controller = TextEditingController(text: currentLabel);
+    TextEditingController controller =
+        TextEditingController(text: currentLabel);
     return showDialog<String>(
       context: context,
       builder: (context) {
@@ -80,8 +82,9 @@ class _SwitchesPageState extends State<SwitchesPage> {
               },
               child: Text(
                 'cancelar',
-                style: SwitchTexts.bodyDefaultBold(SwitchColors.ui_blueziness_800)
-                    .copyWith(fontSize: 16),
+                style:
+                    SwitchTexts.bodyDefaultBold(SwitchColors.ui_blueziness_800)
+                        .copyWith(fontSize: 16),
               ),
             ),
             TextButton(
@@ -90,8 +93,9 @@ class _SwitchesPageState extends State<SwitchesPage> {
               },
               child: Text(
                 'salvar',
-                style: SwitchTexts.bodyDefaultBold(SwitchColors.ui_blueziness_800)
-                    .copyWith(fontSize: 16),
+                style:
+                    SwitchTexts.bodyDefaultBold(SwitchColors.ui_blueziness_800)
+                        .copyWith(fontSize: 16),
               ),
             ),
           ],
@@ -246,7 +250,8 @@ class _SwitchesPageState extends State<SwitchesPage> {
     );
   }
 
-  void _navigateToControlSwitch(BuildContext context, String switchName, String switchCode) {
+  void _navigateToControlSwitch(
+      BuildContext context, String switchName, String switchCode) {
     Navigator.push(
       context,
       MaterialPageRoute(

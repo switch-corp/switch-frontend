@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; 
+import 'package:flutter/services.dart';
+import 'package:switchfrontend/src/features/linkRoom/presentation/pages/linkRoom_page.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
-import 'package:switchfrontend/src/features/linkroom/presentation/pages/linkroom_page.dart';
 
 class AddCode extends StatefulWidget {
   @override
@@ -62,7 +62,10 @@ class _AddCodeState extends State<AddCode> {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Adicionar Código', style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(fontWeight: FontWeight.bold).copyWith(fontSize: 18)),
+          title: Text('Adicionar Código',
+              style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
+                  .copyWith(fontWeight: FontWeight.bold)
+                  .copyWith(fontSize: 18)),
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
@@ -89,19 +92,22 @@ class _AddCodeState extends State<AddCode> {
                     TextField(
                       controller: _nameController,
                       textAlign: TextAlign.center,
-                      maxLength: 20, 
+                      maxLength: 20,
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'.{0,20}')),
                       ],
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
-                          borderSide: BorderSide(color: SwitchColors.steel_gray_700),
+                          borderSide:
+                              BorderSide(color: SwitchColors.steel_gray_700),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: SwitchColors.steel_gray_700),
+                          borderSide:
+                              BorderSide(color: SwitchColors.steel_gray_700),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: SwitchColors.ui_blueziness_800),
+                          borderSide:
+                              BorderSide(color: SwitchColors.ui_blueziness_800),
                         ),
                         hintText: '',
                         hintStyle: TextStyle(color: SwitchColors.steel_gray_50),
@@ -120,13 +126,16 @@ class _AddCodeState extends State<AddCode> {
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
-                          borderSide: BorderSide(color: SwitchColors.steel_gray_700),
+                          borderSide:
+                              BorderSide(color: SwitchColors.steel_gray_700),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: SwitchColors.steel_gray_700),
+                          borderSide:
+                              BorderSide(color: SwitchColors.steel_gray_700),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: SwitchColors.ui_blueziness_800),
+                          borderSide:
+                              BorderSide(color: SwitchColors.ui_blueziness_800),
                         ),
                         hintText: '',
                         hintStyle: TextStyle(color: SwitchColors.steel_gray_50),
@@ -169,7 +178,9 @@ class _AddCodeState extends State<AddCode> {
                                 style: TextButton.styleFrom(
                                   padding: EdgeInsets.symmetric(vertical: 16),
                                   side: BorderSide(
-                                    color: isCodeFieldEmpty ? Colors.grey : Colors.blue,
+                                    color: isCodeFieldEmpty
+                                        ? Colors.grey
+                                        : Colors.blue,
                                   ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(6),
@@ -178,7 +189,9 @@ class _AddCodeState extends State<AddCode> {
                                 child: Text(
                                   'CANCELAR',
                                   style: TextStyle(
-                                    color: isCodeFieldEmpty ? Colors.grey : Colors.white,
+                                    color: isCodeFieldEmpty
+                                        ? Colors.grey
+                                        : Colors.white,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -207,7 +220,8 @@ class _AddCodeState extends State<AddCode> {
                                 child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 16),
                                   decoration: BoxDecoration(
-                                    color: isCodeFieldEmpty || _nameFieldEmpty.value
+                                    color: isCodeFieldEmpty ||
+                                            _nameFieldEmpty.value
                                         ? Colors.grey
                                         : Color.fromRGBO(2, 79, 255, 1),
                                     borderRadius: BorderRadius.circular(6),
@@ -216,7 +230,8 @@ class _AddCodeState extends State<AddCode> {
                                   child: Text(
                                     'CONTINUAR',
                                     style: TextStyle(
-                                      color: isCodeFieldEmpty || _nameFieldEmpty.value
+                                      color: isCodeFieldEmpty ||
+                                              _nameFieldEmpty.value
                                           ? Colors.black54
                                           : Colors.white,
                                       fontSize: 16,

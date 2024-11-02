@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:switchfrontend/src/features/listSchedule/presentation/pages/listSchedule_page.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 import 'package:switchfrontend/src/features/listSwitch/presentation/pages/listSwitch_page.dart';
 import 'package:switchfrontend/src/features/listRoom/presentation/pages/listRoom_page.dart';
-import 'package:switchfrontend/src/features/ListSchedule/presentation/pages/ListSchedule_page.dart';
 import 'package:switchfrontend/src/features/login/presentation/pages/login_page.dart';
 
 class SwitchIcon extends StatelessWidget {
@@ -162,12 +162,14 @@ class HomePage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Icon(Icons.access_time, color: SwitchColors.steel_gray_100, size: 16),
+              Icon(Icons.access_time,
+                  color: SwitchColors.steel_gray_100, size: 16),
               SizedBox(width: 4),
               Text(
                 time,
                 textAlign: TextAlign.center,
-                style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 13),
+                style: SwitchTexts.titleBody(SwitchColors.steel_gray_100)
+                    .copyWith(fontSize: 13),
               ),
             ],
           ),
@@ -175,7 +177,8 @@ class HomePage extends StatelessWidget {
             child: Text(
               action,
               textAlign: TextAlign.left,
-              style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 15),
+              style: SwitchTexts.titleBody(SwitchColors.steel_gray_100)
+                  .copyWith(fontSize: 15),
             ),
           ),
         ],
@@ -200,13 +203,15 @@ class HomePage extends StatelessWidget {
               children: [
                 Text(
                   'próximo evento em:',
-                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 17),
+                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100)
+                      .copyWith(fontSize: 17),
                   textAlign: TextAlign.left,
                 ),
                 SizedBox(height: 10),
                 Text(
                   remainingTime,
-                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(
+                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100)
+                      .copyWith(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
@@ -221,7 +226,8 @@ class HomePage extends StatelessWidget {
             height: 120,
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              border: Border.all(color: Color.fromARGB(255, 1, 41, 74), width: 0.8),
+              border:
+                  Border.all(color: Color.fromARGB(255, 1, 41, 74), width: 0.8),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Column(
@@ -231,7 +237,8 @@ class HomePage extends StatelessWidget {
                 SizedBox(height: 15),
                 Text(
                   'Ativar luzes',
-                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 18),
+                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100)
+                      .copyWith(fontSize: 18),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -255,7 +262,8 @@ class HomePage extends StatelessWidget {
           title: Center(
             child: Text(
               'SWITCH',
-              style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 18),
+              style: SwitchTexts.titleBody(SwitchColors.steel_gray_100)
+                  .copyWith(fontSize: 18),
             ),
           ),
           content: SingleChildScrollView(
@@ -332,7 +340,8 @@ class HomePage extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 16),
                         child: Text(
                           '${_getGreeting(hour)}, $userName!',
-                          style: SwitchTexts.titleBody(SwitchColors.steel_gray_100),
+                          style: SwitchTexts.titleBody(
+                              SwitchColors.steel_gray_100),
                           textAlign: TextAlign.left,
                         ),
                       ),
@@ -350,7 +359,8 @@ class HomePage extends StatelessWidget {
                                   label: 'switches',
                                   onTap: () => Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => SwitchesPage()),
+                                    MaterialPageRoute(
+                                        builder: (context) => SwitchesPage()),
                                   ),
                                 ),
                                 _buildCategoryTile(
@@ -359,7 +369,8 @@ class HomePage extends StatelessWidget {
                                   label: 'rooms',
                                   onTap: () => Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => ListRoom()),
+                                    MaterialPageRoute(
+                                        builder: (context) => ListRoom()),
                                   ),
                                 ),
                               ],
@@ -372,7 +383,8 @@ class HomePage extends StatelessWidget {
                               fullWidth: true,
                               onTap: () => Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => ListSchedule()),
+                                MaterialPageRoute(
+                                    builder: (context) => ListSchedule()),
                               ),
                             ),
                           ],
@@ -397,7 +409,11 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryTile(BuildContext context, {required Widget icon, required String label, required VoidCallback onTap, bool fullWidth = false}) {
+  Widget _buildCategoryTile(BuildContext context,
+      {required Widget icon,
+      required String label,
+      required VoidCallback onTap,
+      bool fullWidth = false}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -406,7 +422,9 @@ class HomePage extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: Color.fromARGB(255, 0, 49, 92), width: 2.2),
         ),
-        width: fullWidth ? double.infinity : (MediaQuery.of(context).size.width / 2) - (2 * 12),
+        width: fullWidth
+            ? double.infinity
+            : (MediaQuery.of(context).size.width / 2) - (2 * 12),
         height: 170,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

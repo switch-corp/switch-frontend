@@ -100,17 +100,16 @@ class _ListRoomState extends State<ListRoom> {
                 .copyWith(fontSize: 18),
           ),
         ),
-leading: IconButton(
-  icon: Icon(Icons.arrow_back, color: Colors.grey[400]),
-  onPressed: () {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => HomePage()),
-      (Route<dynamic> route) => false,
-    );
-  },
-),
-
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.grey[400]),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+              (Route<dynamic> route) => false,
+            );
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -143,77 +142,74 @@ leading: IconButton(
                         );
                       },
                     ),
-                    onTap: () => _navigateToControlRoom(
-                      rooms[index]['title']!,
-                      rooms[index]['description']!,
-                    ), // Adiciona o evento onTap para navegação
-                  );
-              ),
-            ),
-            Divider(color: Colors.grey),
-            ListTile(
-              title: Text(
-                'Adicionar room',
-                style: TextStyle(color: Colors.white),
-              ),
-              trailing: Icon(Icons.add, color: Colors.white),
-              onTap: _addRoom,
-            ),
-          ],
+                  ),
+                  Divider(color: Colors.grey),
+                  ListTile(
+                    title: Text(
+                      'Adicionar room',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    trailing: Icon(Icons.add, color: Colors.white),
+                    onTap: _addRoom,
+                  ),
+                ],
         ),
       ),
     );
- }
+  }
 }
 
 class RoomCard extends StatelessWidget {
   final String title;
   final String description;
   final VoidCallback onEdit;
-  final VoidCallback onTap; // Adiciona o callback onTap
 
   const RoomCard({
     required this.title,
     required this.description,
     required this.onEdit,
-    required this.onTap, // Adiciona o parâmetro onTap
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap, // Adiciona a navegação ao clicar no card
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.transparent, // Fundo transparente
-          border: Border.all(color: Colors.blueAccent.withOpacity(0.3)),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.transparent, // Fundo transparente
+        border: Border.all(color: Colors.blueAccent.withOpacity(0.3)),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width:
+                      MediaQuery.of(context).size.width / 2 - 32 - 16 - 23 - 16,
+                  child: Text(
                     title,
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    style: const TextStyle(color: Colors.white, fontSize: 24),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                   ),
-                  IconButton(
-                    icon: Icon(Icons.edit, color: Colors.grey[400], size: 23),
-                    onPressed: onEdit,
-                  ),
-                ],
-              ),
-              Text(
-                description,
-                style: TextStyle(color: Colors.grey, fontSize: 14),
-              ),
-            ],
-          ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.edit, color: Colors.grey[400], size: 23),
+                  onPressed: onEdit,
+                ),
+              ],
+            ),
+            Text(
+              description,
+              style: const TextStyle(color: Colors.grey, fontSize: 14),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ),
       ),
     );
