@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:switchfrontend/src/features/home/home.bloc.dart';
+import 'package:switchfrontend/src/features/home/models/home_data.model.dart';
+import 'package:switchfrontend/src/features/home/models/schedule.model.dart';
 import 'package:switchfrontend/src/features/listSchedule/presentation/pages/listSchedule_page.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
@@ -103,8 +106,34 @@ class AutomationIconPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String userName = "";
+
+  bool loading = false;
+  List<ScheduleModel> automations = [];
+
+  getData() async {
+    setState(() {
+      loading = true;
+    });
+
+    HomeDataModel data = await HomeBloc.getData();
+
+    setState(() {
+      userName = data.user.name;
+
+      automations = data.schedules;
+
+      loading = false;
+    });
+  }
 
   String _getGreeting(int hour) {
     if (hour < 12) {
@@ -116,33 +145,23 @@ class HomePage extends StatelessWidget {
     }
   }
 
-  List<Map<String, String>> _getEnabledAutomations() {
-    return [
-      {'action': 'Ativar luzes', 'time': '18:00'},
-      {'action': 'Desligar ar-condicionado', 'time': '22:00'},
-      {'action': 'Abrir cortinas', 'time': '08:00'},
-      {'action': 'Fechar janelas', 'time': '20:00'},
-      {'action': 'Ligar aquecedor', 'time': '07:00'},
-    ];
-  }
-
   Widget _buildCarousel() {
-    final automations = _getEnabledAutomations();
-
-    return Container(
-      height: 140,
-      margin: EdgeInsets.only(top: 15, bottom: 36),
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: automations.length,
-        itemBuilder: (context, index) {
-          return _buildCarouselItem(
-            automations[index]['action']!,
-            automations[index]['time']!,
-          );
-        },
-      ),
-    );
+    return automations.length > 0
+        ? Container(
+            height: 140,
+            margin: EdgeInsets.only(top: 15, bottom: 36),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: automations.length,
+              itemBuilder: (context, index) {
+                return _buildCarouselItem(
+                  automations[index].action,
+                  automations[index].time,
+                );
+              },
+            ),
+          )
+        : const SizedBox();
   }
 
   Widget _buildCarouselItem(String action, String time) {
@@ -307,11 +326,48 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Widget _buildCategoryTile(BuildContext context,
+      {required Widget icon,
+      required String label,
+      required VoidCallback onTap,
+      bool fullWidth = false}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Color.fromARGB(255, 0, 49, 92), width: 2.2),
+        ),
+        width: fullWidth
+            ? double.infinity
+            : (MediaQuery.of(context).size.width / 2) - (2 * 12),
+        height: 170,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            icon,
+            SizedBox(height: 8),
+            Text(
+              label,
+              style: SwitchTexts.titleBody(SwitchColors.steel_gray_100),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
     final hour = now.hour;
-    String userName = "Usuário";
 
     return Scaffold(
       body: SafeArea(
@@ -396,46 +452,20 @@ class HomePage extends StatelessWidget {
                         indent: 10,
                         endIndent: 10,
                       ),
-                      _buildAutomationInfo(context),
                       _buildCarousel(),
+                      Divider(
+                        color: Color.fromARGB(255, 44, 73, 97),
+                        thickness: 0.6,
+                        indent: 10,
+                        endIndent: 10,
+                      ),
+                      _buildAutomationInfo(context),
                     ],
                   ),
                 ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCategoryTile(BuildContext context,
-      {required Widget icon,
-      required String label,
-      required VoidCallback onTap,
-      bool fullWidth = false}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Color.fromARGB(255, 0, 49, 92), width: 2.2),
-        ),
-        width: fullWidth
-            ? double.infinity
-            : (MediaQuery.of(context).size.width / 2) - (2 * 12),
-        height: 170,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            icon,
-            SizedBox(height: 8),
-            Text(
-              label,
-              style: SwitchTexts.titleBody(SwitchColors.steel_gray_100),
-            ),
-          ],
         ),
       ),
     );
