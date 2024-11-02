@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:switchfrontend/src/features/addRoom/presentation/pages/addRoom_page.dart';
+import 'package:switchfrontend/src/features/listRoom/listRoom.bloc.dart';
+import 'package:switchfrontend/src/features/listRoom/models/room.model.dart';
 import 'package:switchfrontend/src/features/listSwitch/presentation/pages/listSwitch_page.dart';
 import 'package:switchfrontend/src/features/cardRoom/presentation/pages/cardRoom_page.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
@@ -11,10 +13,9 @@ class ListRoom extends StatefulWidget {
 }
 
 class _ListRoomState extends State<ListRoom> {
-  List<Map<String, String>> rooms = [
-    {"title": "Sala 1", "description": "Sala da parede rosa em que fica os equipamentos esportivos"},
-    {"title": "Sala 2", "description": "Sala que é assim e assado"},
-  ];
+  List<Room> rooms = [];
+
+  bool loading = false;
 
   void _addRoom() async {
     final result = await Navigator.push(
@@ -25,10 +26,29 @@ class _ListRoomState extends State<ListRoom> {
     if (result != null) {
       final roomData = result as Map<String, String>;
       setState(() {
-        rooms.add({
-          'title': roomData['title']!,
-          'description': roomData['description']!,
-        });
+        rooms.add(new Room(
+          id: "",
+          name: roomData['title']!,
+          description: roomData['description']!,
+        ));
+      });
+    }
+  }
+
+  void _getRooms() async {
+    setState(() {
+      loading = true;
+    });
+
+    try {
+      var response = await ListRoomBloc.getRooms();
+      setState(() {
+        rooms = response;
+        loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        loading = false;
       });
     }
   }
@@ -46,6 +66,12 @@ class _ListRoomState extends State<ListRoom> {
   }
 
   @override
+  void initState() {
+    _getRooms();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: SwitchColors.steel_gray_950, // Cor de fundo da tela
@@ -55,7 +81,9 @@ class _ListRoomState extends State<ListRoom> {
           padding: const EdgeInsets.only(left: 90.0),
           child: Text(
             'Rooms',
-            style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(fontWeight: FontWeight.bold).copyWith(fontSize: 18),
+            style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
+                .copyWith(fontWeight: FontWeight.bold)
+                .copyWith(fontSize: 18),
           ),
         ),
         leading: IconButton(
@@ -68,38 +96,45 @@ class _ListRoomState extends State<ListRoom> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          children: [
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  childAspectRatio: 1.0,
-                ),
-                itemCount: rooms.length,
-                itemBuilder: (context, index) {
-                  return RoomCard(
-                    title: rooms[index]['title']!,
-                    description: rooms[index]['description']!,
-                    onEdit: () => _navigateToCardRoom(
-                      rooms[index]['title']!,
-                      rooms[index]['description']!,
+          mainAxisAlignment:
+              loading ? MainAxisAlignment.center : MainAxisAlignment.start,
+          children: loading
+              ? [
+                  const Center(child: CircularProgressIndicator()),
+                ]
+              : [
+                  Expanded(
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16.0,
+                        mainAxisSpacing: 16.0,
+                        childAspectRatio: 1.0,
+                      ),
+                      itemCount: rooms.length,
+                      itemBuilder: (context, index) {
+                        return RoomCard(
+                          title: rooms[index].name,
+                          description: rooms[index].description,
+                          onEdit: () => _navigateToCardRoom(
+                            rooms[index].name,
+                            rooms[index].description,
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            ),
-            Divider(color: Colors.grey),
-            ListTile(
-              title: Text(
-                'Adicionar room',
-                style: TextStyle(color: Colors.white),
-              ),
-              trailing: Icon(Icons.add, color: Colors.white),
-              onTap: _addRoom,
-            ),
-          ],
+                  ),
+                  const Divider(color: Colors.grey),
+                  ListTile(
+                    title: const Text(
+                      'Adicionar room',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    trailing: const Icon(Icons.add, color: Colors.white),
+                    onTap: _addRoom,
+                  ),
+                ],
         ),
       ),
     );
@@ -134,9 +169,15 @@ class RoomCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  title,
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+                Container(
+                  width:
+                      MediaQuery.of(context).size.width / 2 - 32 - 16 - 23 - 16,
+                  child: Text(
+                    title,
+                    style: const TextStyle(color: Colors.white, fontSize: 24),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
                 ),
                 IconButton(
                   icon: Icon(Icons.edit, color: Colors.grey[400], size: 23),
@@ -146,7 +187,9 @@ class RoomCard extends StatelessWidget {
             ),
             Text(
               description,
-              style: TextStyle(color: Colors.grey, fontSize: 14),
+              style: const TextStyle(color: Colors.grey, fontSize: 14),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),

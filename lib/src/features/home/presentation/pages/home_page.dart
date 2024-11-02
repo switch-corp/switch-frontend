@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
 
     return Container(
       height: 120,
-      margin: EdgeInsets.only(top: 32),
+      margin: const EdgeInsets.only(top: 32),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: automations.length,
@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
   Widget _buildCarouselItem(String action, String time) {
     return Container(
       width: 120,
-      margin: EdgeInsets.symmetric(horizontal: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 8),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         border: Border.all(color: SwitchColors.steel_gray_600),
@@ -70,7 +70,7 @@ class HomePage extends StatelessWidget {
             children: [
               Icon(Icons.access_time,
                   color: SwitchColors.steel_gray_100, size: 16),
-              SizedBox(width: 4),
+              const SizedBox(width: 4),
               Text(
                 time,
                 textAlign: TextAlign.center,
@@ -98,7 +98,7 @@ class HomePage extends StatelessWidget {
     String remainingTime = '1h30min';
 
     return Container(
-      margin: EdgeInsets.only(top: 32),
+      margin: const EdgeInsets.only(top: 32),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       width: MediaQuery.of(context).size.width * 0.95,
       height: 109,
@@ -115,7 +115,7 @@ class HomePage extends StatelessWidget {
                       .copyWith(fontSize: 17),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   remainingTime,
                   style: SwitchTexts.titleBody(SwitchColors.steel_gray_100)
@@ -128,7 +128,7 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Container(
             width: 165,
             height: 109,
@@ -141,7 +141,7 @@ class HomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.power, color: SwitchColors.steel_gray_100, size: 24),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   'Ativar luzes',
                   style: SwitchTexts.titleBody(SwitchColors.steel_gray_100)
@@ -246,7 +246,7 @@ class HomePage extends StatelessWidget {
                     height: 36,
                   ),
                 ),
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
                   child: Text(
@@ -255,24 +255,35 @@ class HomePage extends StatelessWidget {
                     textAlign: TextAlign.left,
                   ),
                 ),
-                SizedBox(height: 19),
+                const SizedBox(height: 19),
                 Container(
-                  padding: EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(4),
                   child: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 8),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CustomMenuItemButton(label: 'rooms'),
+                            InkWell(
+                              onTap: () => {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ListRoom(),
+                                  ),
+                                )
+                              },
+                              child: CustomMenuItemButton(label: 'rooms'),
+                            ),
                             CustomMenuItemButton(label: 'switches'),
                           ],
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                        child: Row(
+                        margin: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomMenuItemButton(label: 'auto'),
                             CustomMenuItemButton(label: 'config'),
@@ -283,7 +294,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 28, 0, 32),
+                  margin: const EdgeInsets.fromLTRB(0, 28, 0, 32),
                   child: Row(
                     children: [
                       Column(
@@ -391,8 +402,10 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -425,7 +438,7 @@ class HomePage extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
+                            const Row(
                               children: [
                                 Image(
                                   width: 24,

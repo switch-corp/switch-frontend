@@ -128,9 +128,10 @@ class _SigninPageState extends State<SigninPage> {
                                 isLoading = true;
                               });
 
-                              AuthState state = await AuthBloc.login(
+                              AuthState state = await AuthBloc.signUp(
                                 _emailController.text,
                                 _passwordController.text,
+                                _usernameController.text,
                               );
 
                               if (state is FailureAuthState) {
