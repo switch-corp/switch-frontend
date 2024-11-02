@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:switchfrontend/src/features/addCode/presentation/pages/addCode_page.dart';
-import 'package:switchfrontend/src/features/controlSwitch/presentation/pages/controlSwitch_page.dart';
+import 'package:switchfrontend/src/features/controlSwitch/presentation/pages/controlswitch_page.dart';
 import 'package:switchfrontend/src/features/home/presentation/pages/home_page.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
@@ -11,44 +11,41 @@ class SwitchesPage extends StatefulWidget {
 }
 
 class _SwitchesPageState extends State<SwitchesPage> {
-  final Map<String, Map<String, String>> _switchStates = {
-    'Sala 1': {
-      'Interruptor da frente': 'on',
-      'Interruptor do meio': 'off',
-      'Interruptor de trás': 'error',
-      'Interruptor da frente 2': 'on',
-    },
-    'Room': {
-      'Interruptor da frente 1': 'error',
-      'Interruptor da frente 2': 'off',
-      'Interruptor da frente 3': 'on',
-      'Interruptor da frente 4': 'off',
-    }
-  };
+  List<Map<String, String>> _switchStates = [
+    {'label': 'Interruptor da frente', 'state': 'on'},
+    {'label': 'Interruptor do meio', 'state': 'off'},
+    {'label': 'Interruptor de trás', 'state': 'error'},
+    {'label': 'Interruptor da frente 2', 'state': 'on'},
+    {'label': 'Interruptor da cozinha', 'state': 'on'},
+    {'label': 'Interruptor do quintal', 'state': 'off'},
+    {'label': 'Interruptor de trás', 'state': 'error'},
+    {'label': 'Interruptor da frente 2', 'state': 'on'},
+   {'label': 'Interruptor novo', 'state': 'on'},
+    {'label': 'Interruptor quarto térreo', 'state': 'off'},
+    {'label': 'Interruptor de trás', 'state': 'error'},
+    {'label': 'Interruptor da frente 5', 'state': 'on'}
+  ];
 
-  void _addSwitch(String room, String switchLabel) {
+  void _addSwitch(String switchLabel) {
     setState(() {
-      if (_switchStates[room] != null) {
-        _switchStates[room]![switchLabel] = 'off';
-      } else {
-        _switchStates[room] = {switchLabel: 'off'};
-      }
+      _switchStates.add({'label': switchLabel, 'state': 'off'});
     });
   }
 
-  void _editSwitchName(String room, String oldLabel) async {
+  void _editSwitchName(String oldLabel) async {
     final newLabel = await _showEditDialog(oldLabel);
     if (newLabel != null && newLabel.isNotEmpty) {
       setState(() {
-        _switchStates[room]![newLabel] = _switchStates[room]![oldLabel]!;
-        _switchStates[room]!.remove(oldLabel);
+        int index = _switchStates.indexWhere((switchState) => switchState['label'] == oldLabel);
+        if (index != -1) {
+          _switchStates[index]['label'] = newLabel;
+        }
       });
     }
   }
 
   Future<String?> _showEditDialog(String currentLabel) {
-    TextEditingController controller =
-        TextEditingController(text: currentLabel);
+    TextEditingController controller = TextEditingController(text: currentLabel);
     return showDialog<String>(
       context: context,
       builder: (context) {
@@ -83,9 +80,8 @@ class _SwitchesPageState extends State<SwitchesPage> {
               },
               child: Text(
                 'cancelar',
-                style:
-                    SwitchTexts.bodyDefaultBold(SwitchColors.ui_blueziness_800)
-                        .copyWith(fontSize: 16),
+                style: SwitchTexts.bodyDefaultBold(SwitchColors.ui_blueziness_800)
+                    .copyWith(fontSize: 16),
               ),
             ),
             TextButton(
@@ -94,9 +90,8 @@ class _SwitchesPageState extends State<SwitchesPage> {
               },
               child: Text(
                 'salvar',
-                style:
-                    SwitchTexts.bodyDefaultBold(SwitchColors.ui_blueziness_800)
-                        .copyWith(fontSize: 16),
+                style: SwitchTexts.bodyDefaultBold(SwitchColors.ui_blueziness_800)
+                    .copyWith(fontSize: 16),
               ),
             ),
           ],
@@ -112,10 +107,13 @@ class _SwitchesPageState extends State<SwitchesPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text('Switches',
-            style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
-                .copyWith(fontWeight: FontWeight.bold)
-                .copyWith(fontSize: 18)),
+        title: Text(
+          'Switches',
+          style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -134,20 +132,16 @@ class _SwitchesPageState extends State<SwitchesPage> {
           children: [
             Expanded(
               child: ListView(
-                children: _switchStates.entries.map((entry) {
-                  String room = entry.key;
-                  Map<String, String> switches = entry.value;
+                children: _switchStates.map((switchState) {
+                  String switchLabel = switchState['label']!;
+                  String status = switchState['state']!;
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: switches.keys.map((switchLabel) {
-                      return Column(
-                        children: [
-                          _buildSwitch(room, switchLabel),
-                          Divider(color: Colors.grey[800], thickness: 1),
-                        ],
-                      );
-                    }).toList(),
+                    children: [
+                      _buildSwitch(switchLabel, status),
+                      Divider(color: Colors.blueAccent.withOpacity(0.3)),
+                    ],
                   );
                 }).toList(),
               ),
@@ -170,8 +164,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
     );
   }
 
-  Widget _buildSwitch(String room, String switchLabel) {
-    String status = _switchStates[room]![switchLabel]!;
+  Widget _buildSwitch(String switchLabel, String status) {
     Color iconColor;
     String displayText;
     String tooltipMessage;
@@ -179,19 +172,19 @@ class _SwitchesPageState extends State<SwitchesPage> {
 
     switch (status) {
       case 'on':
-        iconColor = Colors.green;
+        iconColor = Colors.blue; // Mudou a cor para azul
         displayText = 'ON';
         tooltipMessage = 'Switch está ligado';
         break;
       case 'off':
-        iconColor = Colors.grey;
+        iconColor = Colors.grey; // Mantido cinza
         displayText = 'OFF';
         tooltipMessage = 'Switch está desligado';
         break;
       case 'error':
       default:
-        iconColor = Colors.red;
-        displayText = '!';
+        iconColor = Colors.red; // Mantido vermelho para erro
+        displayText = '!'; // Indicação de erro
         tooltipMessage = 'Status desconhecido ou falha';
         break;
     }
@@ -214,7 +207,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
                 height: 24,
                 child: IconButton(
                   icon: Icon(Icons.edit, color: Colors.grey[400], size: 23),
-                  onPressed: () => _editSwitchName(room, switchLabel),
+                  onPressed: () => _editSwitchName(switchLabel),
                 ),
               ),
             ],
@@ -224,24 +217,16 @@ class _SwitchesPageState extends State<SwitchesPage> {
             switchCode,
             style: TextStyle(color: Colors.grey, fontSize: 14),
           ),
-          SizedBox(height: 4),
-          Text(
-            room,
-            style: TextStyle(color: Colors.grey, fontSize: 14),
-          ),
         ],
       ),
       trailing: Tooltip(
         message: tooltipMessage,
         child: Container(
-          width: 30,
-          height: 30,
+          width: 24,
+          height: 24,
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: iconColor,
-              width: 2.0,
-            ),
+            shape: BoxShape.rectangle,
+            color: iconColor.withOpacity(0.1), // Fundo leve para visualização
           ),
           child: Center(
             child: Text(
@@ -249,7 +234,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
               style: TextStyle(
                 color: iconColor,
                 fontWeight: FontWeight.bold,
-                fontSize: status == 'error' ? 16 : 12,
+                fontSize: status == 'error' ? 14 : 12,
               ),
             ),
           ),
@@ -261,8 +246,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
     );
   }
 
-  void _navigateToControlSwitch(
-      BuildContext context, String switchName, String switchCode) {
+  void _navigateToControlSwitch(BuildContext context, String switchName, String switchCode) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -283,7 +267,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
     );
 
     if (result != null) {
-      _addSwitch(result['room'], result['label']);
+      _addSwitch(result['label']);
     }
   }
 }

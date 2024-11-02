@@ -1,13 +1,107 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:switchfrontend/src/features/home/widgets/custom_actions_button.dart';
-import 'package:switchfrontend/src/features/home/widgets/cutom_menu_item_button.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 import 'package:switchfrontend/src/features/listSwitch/presentation/pages/listSwitch_page.dart';
-import 'package:switchfrontend/src/features/addRoom/presentation/pages/addRoom_page.dart';
 import 'package:switchfrontend/src/features/listRoom/presentation/pages/listRoom_page.dart';
+import 'package:switchfrontend/src/features/ListSchedule/presentation/pages/ListSchedule_page.dart';
 import 'package:switchfrontend/src/features/login/presentation/pages/login_page.dart';
+
+class SwitchIcon extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(40, 40),
+      painter: SwitchIconPainter(),
+    );
+  }
+}
+
+class SwitchIconPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.blueGrey
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.0;
+
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTWH(5, 10, 30, 20),
+        Radius.circular(10),
+      ),
+      paint,
+    );
+
+    paint.style = PaintingStyle.fill;
+    paint.color = Colors.blueAccent;
+    canvas.drawCircle(Offset(15, 20), 6, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class RoomIcon extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(40, 40),
+      painter: RoomIconPainter(),
+    );
+  }
+}
+
+class RoomIconPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.blueGrey
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.0;
+
+    canvas.drawRect(
+      Rect.fromLTWH(10, 8, 20, 24),
+      paint,
+    );
+
+    paint.style = PaintingStyle.fill;
+    paint.color = Colors.blueAccent;
+    canvas.drawCircle(Offset(25, 20), 2, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class AutomationIcon extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(40, 40),
+      painter: AutomationIconPainter(),
+    );
+  }
+}
+
+class AutomationIconPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.blueGrey
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.0;
+
+    canvas.drawCircle(Offset(12, 15), 6, paint);
+    canvas.drawCircle(Offset(28, 25), 6, paint);
+
+    paint.color = Colors.blueAccent;
+    paint.strokeWidth = 2.0;
+    canvas.drawLine(Offset(18, 15), Offset(22, 25), paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -29,7 +123,6 @@ class HomePage extends StatelessWidget {
       {'action': 'Abrir cortinas', 'time': '08:00'},
       {'action': 'Fechar janelas', 'time': '20:00'},
       {'action': 'Ligar aquecedor', 'time': '07:00'},
-      {'action': 'Desligar luzes', 'time': '23:00'},
     ];
   }
 
@@ -37,8 +130,8 @@ class HomePage extends StatelessWidget {
     final automations = _getEnabledAutomations();
 
     return Container(
-      height: 120,
-      margin: const EdgeInsets.only(top: 32),
+      height: 140,
+      margin: EdgeInsets.only(top: 15, bottom: 36),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: automations.length,
@@ -54,39 +147,35 @@ class HomePage extends StatelessWidget {
 
   Widget _buildCarouselItem(String action, String time) {
     return Container(
-      width: 120,
-      margin: const EdgeInsets.symmetric(horizontal: 8),
+      width: 138,
+      margin: EdgeInsets.symmetric(horizontal: 8),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        border: Border.all(color: SwitchColors.steel_gray_600),
+        border: Border.all(color: Color.fromARGB(255, 1, 41, 74), width: 0.8),
         borderRadius: BorderRadius.circular(8),
         color: Colors.transparent,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Icon(Icons.access_time,
-                  color: SwitchColors.steel_gray_100, size: 16),
-              const SizedBox(width: 4),
+              Icon(Icons.access_time, color: SwitchColors.steel_gray_100, size: 16),
+              SizedBox(width: 4),
               Text(
                 time,
                 textAlign: TextAlign.center,
-                style: SwitchTexts.titleBody(SwitchColors.steel_gray_100)
-                    .copyWith(fontSize: 13),
+                style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 13),
               ),
             ],
           ),
           Expanded(
-            child: Center(
-              child: Text(
-                action,
-                textAlign: TextAlign.center,
-                style: SwitchTexts.titleBody(SwitchColors.steel_gray_100)
-                    .copyWith(fontSize: 15),
-              ),
+            child: Text(
+              action,
+              textAlign: TextAlign.left,
+              style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 15),
             ),
           ),
         ],
@@ -98,54 +187,51 @@ class HomePage extends StatelessWidget {
     String remainingTime = '1h30min';
 
     return Container(
-      margin: const EdgeInsets.only(top: 32),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.only(top: 1),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
       width: MediaQuery.of(context).size.width * 0.95,
-      height: 109,
+      height: 125,
       child: Row(
         children: [
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'próximo evento em:',
-                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100)
-                      .copyWith(fontSize: 17),
-                  textAlign: TextAlign.center,
+                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 17),
+                  textAlign: TextAlign.left,
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: 10),
                 Text(
                   remainingTime,
-                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100)
-                      .copyWith(
+                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.left,
                 ),
               ],
             ),
           ),
           const SizedBox(width: 8),
           Container(
-            width: 165,
-            height: 109,
+            width: 170,
+            height: 120,
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              border: Border.all(color: SwitchColors.steel_gray_600),
+              border: Border.all(color: Color.fromARGB(255, 1, 41, 74), width: 0.8),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.power, color: SwitchColors.steel_gray_100, size: 24),
-                const SizedBox(height: 4),
+                SizedBox(height: 15),
                 Text(
                   'Ativar luzes',
-                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100)
-                      .copyWith(fontSize: 18),
+                  style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 18),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -164,13 +250,12 @@ class HomePage extends StatelessWidget {
           backgroundColor: SwitchColors.steel_gray_950,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
-            side: BorderSide(color: SwitchColors.steel_gray_600, width: 1),
+            side: BorderSide(color: Color.fromARGB(255, 1, 35, 64), width: 0.9),
           ),
           title: Center(
             child: Text(
               'SWITCH',
-              style: SwitchTexts.titleBody(SwitchColors.steel_gray_100)
-                  .copyWith(fontSize: 18),
+              style: SwitchTexts.titleBody(SwitchColors.steel_gray_100).copyWith(fontSize: 18),
             ),
           ),
           content: SingleChildScrollView(
@@ -218,252 +303,121 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final now = DateTime.now();
     final hour = now.hour;
-
-    String userName = "Usuário12131";
+    String userName = "Usuário";
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: SwitchColors.steel_gray_950,
-        elevation: 0,
-        toolbarHeight: 20,
-        automaticallyImplyLeading: false,
-      ),
       body: SafeArea(
         child: Container(
-          decoration: BoxDecoration(
-            color: SwitchColors.steel_gray_950,
-          ),
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: () => _showLogoutDialog(context),
-                  child: Image.asset(
-                    'lib/assets/logoswitchhome.png',
-                    width: 36,
-                    height: 36,
-                  ),
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(color: SwitchColors.steel_gray_950),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: () => _showLogoutDialog(context),
+                child: Image.asset(
+                  'lib/assets/logoswitchhome.png',
+                  width: 36,
+                  height: 36,
                 ),
-                const SizedBox(height: 50),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Text(
-                    '${_getGreeting(hour)}, $userName!',
-                    style: SwitchTexts.titleBody(SwitchColors.steel_gray_100),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                const SizedBox(height: 19),
-                Container(
-                  padding: const EdgeInsets.all(4),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: () => {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ListRoom(),
-                                  ),
-                                )
-                              },
-                              child: CustomMenuItemButton(label: 'rooms'),
-                            ),
-                            CustomMenuItemButton(label: 'switches'),
-                          ],
+                      SizedBox(height: 50),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: Text(
+                          '${_getGreeting(hour)}, $userName!',
+                          style: SwitchTexts.titleBody(SwitchColors.steel_gray_100),
+                          textAlign: TextAlign.left,
                         ),
                       ),
+                      SizedBox(height: 28),
                       Container(
-                        margin: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomMenuItemButton(label: 'auto'),
-                            CustomMenuItemButton(label: 'config'),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0, 28, 0, 32),
-                  child: Row(
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            'Actions',
-                            style: SwitchTexts.titleScreen(
-                                SwitchColors.steel_gray_100),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                      CustomActionButton(
-                        label: 'Do this',
-                        url:
-                            "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg",
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'próximo evento em',
-                            style: SwitchTexts.titleGroup(
-                                SwitchColors.steel_gray_400),
-                          ),
-                          Text(
-                            '30:34 min',
-                            style: SwitchTexts.titleSection(
-                                SwitchColors.steel_gray_200),
-                          )
-                        ],
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(8)),
-                          border: Border.all(
-                            color: SwitchColors.steel_gray_600,
-                          ),
-                        ),
-                        width: 115,
-                        // (MediaQuery.of(context).size.width / 2) - (2 * 12),
-                        height: 102,
+                        padding: EdgeInsets.all(4),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Row(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Image(
-                                  width: 24,
-                                  height: 24,
-                                  image: NetworkImage(
-                                      "https://i.pinimg.com/564x/40/a4/2f/40a42f4b27a14089b82a916aaff0b298.jpg"),
+                                _buildCategoryTile(
+                                  context,
+                                  icon: SwitchIcon(),
+                                  label: 'switches',
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => SwitchesPage()),
+                                  ),
+                                ),
+                                _buildCategoryTile(
+                                  context,
+                                  icon: RoomIcon(),
+                                  label: 'rooms',
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => ListRoom()),
+                                  ),
                                 ),
                               ],
                             ),
-                            Flexible(
-                              child: Text(
-                                'Open cafe',
-                                style: SwitchTexts.bodyDefaultBold(
-                                    SwitchColors.steel_gray_100),
+                            SizedBox(height: 8),
+                            _buildCategoryTile(
+                              context,
+                              icon: AutomationIcon(),
+                              label: 'automatizações',
+                              fullWidth: true,
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ListSchedule()),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
+                      Divider(
+                        color: Color.fromARGB(255, 44, 73, 97),
+                        thickness: 0.6,
+                        indent: 10,
+                        endIndent: 10,
+                      ),
+                      _buildAutomationInfo(context),
+                      _buildCarousel(),
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryTile(BuildContext context, {required Widget icon, required String label, required VoidCallback onTap, bool fullWidth = false}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Color.fromARGB(255, 0, 49, 92), width: 2.2),
+        ),
+        width: fullWidth ? double.infinity : (MediaQuery.of(context).size.width / 2) - (2 * 12),
+        height: 170,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            icon,
+            SizedBox(height: 8),
+            Text(
+              label,
+              style: SwitchTexts.titleBody(SwitchColors.steel_gray_100),
+            ),
+          ],
         ),
       ),
     );

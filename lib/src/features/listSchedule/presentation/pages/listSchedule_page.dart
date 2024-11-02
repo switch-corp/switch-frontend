@@ -199,7 +199,7 @@ class ScheduleCard extends StatelessWidget {
                   inactiveTrackColor: Colors.grey.withOpacity(0.5),
                 ),
                 Text(
-                  isEnabled ? 'habilitado' : 'desabilitado',
+                  isEnabled ? 'ativado' : 'desativado',
                   style: TextStyle(color: Colors.grey, fontSize: 12),
                 ),
               ],

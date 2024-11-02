@@ -6,34 +6,27 @@ import 'package:switchfrontend/src/features/linkSwitchRoom/presentation/pages/li
 import 'package:switchfrontend/src/features/listSchedule/presentation/pages/listSchedule_page.dart';
 
 class CardSchedule extends StatefulWidget {
-  final String automationName;
+  final String automationName; 
 
-  const CardSchedule({Key? key, required this.automationName})
-      : super(key: key);
+  const CardSchedule({Key? key, required this.automationName}) : super(key: key); 
 
   @override
   _CardScheduleState createState() => _CardScheduleState();
 }
 
 class _CardScheduleState extends State<CardSchedule> {
-  String _selectedAction = 'Início e Fim';
-  TimeOfDay _startTime = const TimeOfDay(hour: 7, minute: 30);
-  TimeOfDay _endTime = const TimeOfDay(hour: 7, minute: 30);
-  TimeOfDay _singleTime = const TimeOfDay(hour: 7, minute: 30);
-
-  bool _isOnStart = true;
-  bool _isOnEnd = false;
-
+  TimeOfDay _singleTime = TimeOfDay(hour: 7, minute: 30);
+  bool _isOnSingle = true;
+  
   final List<bool> _selectedDays = List.generate(7, (_) => false);
-  final TextStyle _labelStyle =
-      const TextStyle(color: Colors.white, fontSize: 16);
+  final TextStyle _labelStyle = TextStyle(color: Colors.white, fontSize: 16);
   final TextEditingController _nameController = TextEditingController();
   bool _isEdited = false;
 
   @override
   void initState() {
     super.initState();
-    _nameController.text = widget.automationName;
+    _nameController.text = widget.automationName; 
   }
 
   @override
@@ -50,23 +43,20 @@ class _CardScheduleState extends State<CardSchedule> {
         backgroundColor: SwitchColors.steel_gray_950,
         title: Padding(
           padding: const EdgeInsets.only(left: 10.0),
-          child: Text('Editar Automatização',
-              style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
-                  .copyWith(fontWeight: FontWeight.bold)
-                  .copyWith(fontSize: 18)),
+          child: Text('Editar Automatização', style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(fontWeight: FontWeight.bold).copyWith(fontSize: 18)),
         ),
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: Colors.white),
         actions: [
           IconButton(
-            icon: const Icon(Icons.delete,
-                color: Color.fromARGB(255, 157, 50, 43)),
+            icon: Icon(Icons.delete, color: Color.fromARGB(255, 157, 50, 43)), 
             onPressed: () {
               _confirmDeleteAutomation();
             },
           ),
         ],
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -78,7 +68,7 @@ class _CardScheduleState extends State<CardSchedule> {
                 style: _labelStyle,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             SizedBox(
               width: double.infinity,
               child: TextField(
@@ -87,17 +77,16 @@ class _CardScheduleState extends State<CardSchedule> {
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'.{0,20}')),
                 ],
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white),
                 cursorColor: SwitchColors.ui_blueziness_800,
                 decoration: InputDecoration(
-                  enabledBorder: const OutlineInputBorder(
+                  enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: SwitchColors.ui_blueziness_800),
+                    borderSide: BorderSide(color: SwitchColors.ui_blueziness_800),
                   ),
-                  counterStyle: const TextStyle(color: Colors.grey),
+                  counterStyle: TextStyle(color: Colors.grey),
                 ),
                 onChanged: (_) {
                   setState(() {
@@ -106,83 +95,31 @@ class _CardScheduleState extends State<CardSchedule> {
                 },
               ),
             ),
-            const SizedBox(height: 20),
-            DropdownButton<String>(
-              dropdownColor: SwitchColors.steel_gray_950,
-              value: _selectedAction,
-              items:
-                  <String>['Início e Fim', 'Só uma Ação'].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child:
-                      Text(value, style: const TextStyle(color: Colors.white)),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedAction = newValue!;
-                  _isEdited = true;
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-            if (_selectedAction == 'Início e Fim') ...[
-              _buildCard('Início', _startTime, _isOnStart, (time) {
-                setState(() {
-                  _startTime = time;
-                  _isEdited = true;
-                });
-              }, (bool value) {
-                setState(() {
-                  _isOnStart = value;
-                  _isOnEnd = !value;
-                  _isEdited = true;
-                });
-              }),
-              const SizedBox(height: 20),
-              _buildCard('Fim', _endTime, _isOnEnd, (time) {
-                setState(() {
-                  _endTime = time;
-                  _isEdited = true;
-                });
-              }, (bool value) {
-                setState(() {
-                  _isOnEnd = value;
-                  _isOnStart = !value;
-                  _isEdited = true;
-                });
-              }),
-            ] else ...[
-              _buildSingleActionCard(),
-            ],
-            const SizedBox(height: 20),
-            const Text('Selecione os dias',
-                style: TextStyle(color: Colors.white)),
-            const SizedBox(height: 10),
+            SizedBox(height: 20),
+            // Apenas o card de ação única
+            _buildSingleActionCard(),
+            SizedBox(height: 20),
+            Text('Selecione os dias', style: TextStyle(color: Colors.white)),
+            SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: List.generate(7, (index) {
                 return _buildDayButton(index);
               }),
             ),
-            const Spacer(),
+            Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: TextButton(
-                    onPressed: _isEdited
-                        ? () {
-                            _resetForm();
-                          }
-                        : null,
+                    onPressed: _isEdited ? () {
+                      _resetForm();
+                    } : null,
                     style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: EdgeInsets.symmetric(vertical: 16),
                       backgroundColor: Colors.transparent,
-                      side: BorderSide(
-                          color: _isEdited
-                              ? SwitchColors.ui_blueziness_800
-                              : Colors.grey),
+                      side: BorderSide(color: _isEdited ? SwitchColors.ui_blueziness_800 : Colors.grey),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
@@ -197,24 +134,20 @@ class _CardScheduleState extends State<CardSchedule> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 20),
+                SizedBox(width: 20),
                 Expanded(
                   child: TextButton(
-                    onPressed: _isEdited
-                        ? () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LinkSwitchRoom(),
-                              ),
-                            );
-                          }
-                        : null,
+                    onPressed: _isEdited ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LinkSwitchRoom(),
+                        ),
+                      );
+                    } : null,
                     style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: _isEdited
-                          ? SwitchColors.ui_blueziness_800
-                          : Colors.grey,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: _isEdited ? SwitchColors.ui_blueziness_800 : Colors.grey,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
@@ -245,7 +178,7 @@ class _CardScheduleState extends State<CardSchedule> {
           backgroundColor: SwitchColors.steel_gray_950,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(color: Colors.grey),
+            side: BorderSide(color: Colors.grey),
           ),
           title: Center(
             child: Text(
@@ -264,9 +197,9 @@ class _CardScheduleState extends State<CardSchedule> {
                     'Você tem certeza que deseja excluir a automatização "${widget.automationName}"?',
                     style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
                         .copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -278,9 +211,10 @@ class _CardScheduleState extends State<CardSchedule> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('cancelar',
-                  style: TextStyle(
-                      color: SwitchColors.ui_blueziness_800, fontSize: 16)),
+              child: Text(
+                'cancelar',
+                style: TextStyle(color: SwitchColors.ui_blueziness_800, fontSize: 16)
+              ),
             ),
             TextButton(
               onPressed: () {
@@ -292,15 +226,12 @@ class _CardScheduleState extends State<CardSchedule> {
                 );
 
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text(
-                          "Automatização '${widget.automationName}' excluída.")),
+                  SnackBar(content: Text("Automatização '${widget.automationName}' excluída.")),
                 );
               },
               child: Text(
                 'excluir',
-                style: TextStyle(
-                    color: SwitchColors.ui_blueziness_800, fontSize: 16),
+                style: TextStyle(color: SwitchColors.ui_blueziness_800, fontSize: 16),
               ),
             ),
           ],
@@ -309,114 +240,73 @@ class _CardScheduleState extends State<CardSchedule> {
     );
   }
 
-  Widget _buildCard(
-    String title,
-    TimeOfDay time,
-    bool isOn,
-    ValueChanged<TimeOfDay> onTimeChanged,
-    ValueChanged<bool> onSwitchChanged,
-  ) {
-    return Card(
-      color: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-        side: const BorderSide(color: Colors.grey),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: const TextStyle(color: Colors.white)),
-                const SizedBox(height: 8),
-                GestureDetector(
-                  onTap: () async {
-                    TimeOfDay? pickedTime = await _selectTime(context, time);
-                    if (pickedTime != null) {
-                      onTimeChanged(pickedTime);
-                    }
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12.0, horizontal: 16.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Text(time.format(context),
-                        style: const TextStyle(color: Colors.white)),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(isOn ? 'On' : 'Off',
-                    style: const TextStyle(color: Colors.white)),
-                Switch(
-                  value: isOn,
-                  onChanged: onSwitchChanged,
-                  activeColor: SwitchColors.ui_blueziness_800,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildSingleActionCard() {
-    return Card(
-      color: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-        side: const BorderSide(color: Colors.grey),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            GestureDetector(
-              onTap: () async {
-                TimeOfDay? pickedTime = await _selectTime(context, _singleTime);
-                if (pickedTime != null) {
-                  setState(() {
-                    _singleTime = pickedTime;
-                    _isEdited = true;
-                  });
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 12.0, horizontal: 16.0),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Text(_singleTime.format(context),
-                    style: const TextStyle(color: Colors.white)),
-              ),
-            ),
-            Switch(
-              value: _isOnStart,
-              onChanged: (bool value) {
-                setState(() {
-                  _isOnStart = value;
-                  _isEdited = true;
-                });
-              },
-              activeColor: SwitchColors.ui_blueziness_800,
-            ),
-          ],
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      // Texto posicionado acima do Card com Padding
+      Padding(
+        padding: const EdgeInsets.only(bottom: 8.0, left: 15.0), // Adiciona um pequeno padding
+        child: Text(
+          'Selecione o Horário e a Ação:',
+          style: TextStyle(color: Colors.white, fontSize: 16),
         ),
       ),
-    );
-  }
+      Card(
+        color: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(color: Colors.grey),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  TimeOfDay? pickedTime = await _selectTime(context, _singleTime);
+                  if (pickedTime != null) {
+                    setState(() {
+                      _singleTime = pickedTime;
+                      _isEdited = true;
+                    });
+                  }
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Text(_singleTime.format(context), style: TextStyle(color: Colors.white)),
+                ),
+              ),
+              Row(
+                children: [
+                  Text(
+                    _isOnSingle ? 'on' : 'off',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                  Switch(
+                    value: _isOnSingle,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _isOnSingle = value;
+                        _isEdited = true;
+                      });
+                    },
+                    activeColor: SwitchColors.ui_blueziness_800,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
 
   Widget _buildDayButton(int index) {
     final days = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
@@ -424,70 +314,44 @@ class _CardScheduleState extends State<CardSchedule> {
       onTap: () {
         setState(() {
           _selectedDays[index] = !_selectedDays[index];
-          _isEdited = true; // Marca como editado
+          _isEdited = true;
         });
       },
       child: Container(
-        padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
-          border: Border.all(
-            color: _selectedDays[index]
-                ? SwitchColors.ui_blueziness_800
-                : Colors.white,
-          ),
-          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(color: _selectedDays[index] ? SwitchColors.ui_blueziness_800 : Colors.grey),
+          borderRadius: BorderRadius.circular(8),
+          color: _selectedDays[index] ? SwitchColors.ui_blueziness_800 : Colors.transparent,
         ),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         child: Text(
           days[index],
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white),
         ),
       ),
     );
   }
 
-  Future<TimeOfDay?> _selectTime(BuildContext context, TimeOfDay initialTime) {
-    return showTimePicker(
+  Future<TimeOfDay?> _selectTime(BuildContext context, TimeOfDay initialTime) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
       initialTime: initialTime,
       builder: (BuildContext context, Widget? child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: Theme(
-            data: ThemeData(
-              brightness: Brightness.dark,
-              primaryColor: SwitchColors.ui_blueziness_800,
-              dialogBackgroundColor: Colors.black,
-              colorScheme: ColorScheme.dark(
-                primary: SwitchColors.ui_blueziness_800,
-                onPrimary: SwitchColors.steel_gray_50,
-                onSurface: Colors.grey,
-              ),
-              textTheme: const TextTheme(
-                bodyLarge: TextStyle(color: Colors.white),
-                bodyMedium: TextStyle(color: Colors.white),
-              ),
-            ),
-            child: child!,
-          ),
+          child: child!,
         );
       },
-      helpText: 'selecione um horário:',
     );
+    return pickedTime;
   }
 
   void _resetForm() {
     setState(() {
       _nameController.clear();
-      _selectedAction = 'Início e Fim';
-      _startTime = const TimeOfDay(hour: 7, minute: 30);
-      _endTime = const TimeOfDay(hour: 7, minute: 30);
-      _singleTime = const TimeOfDay(hour: 7, minute: 30);
-      _isOnStart = true;
-      _isOnEnd = false;
-      _selectedDays.fillRange(0, _selectedDays.length, false);
+      _singleTime = TimeOfDay.now();
+      _isOnSingle = true;
+      _selectedDays.fillRange(0, 7, false);
       _isEdited = false;
     });
   }
