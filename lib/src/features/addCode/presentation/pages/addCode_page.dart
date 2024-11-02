@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart'; 
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
-
-import '../../../linkRoom/presentation/pages/linkRoom_page.dart';
+import 'package:switchfrontend/src/features/linkroom/presentation/pages/linkroom_page.dart';
 
 class AddCode extends StatefulWidget {
   @override
@@ -11,11 +10,11 @@ class AddCode extends StatefulWidget {
 }
 
 class _AddCodeState extends State<AddCode> {
-  final TextEditingController _codeController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
-  final ValueNotifier<bool> _codeFieldEmpty = ValueNotifier<bool>(true);
-  final ValueNotifier<bool> _nameFieldEmpty = ValueNotifier<bool>(true);
-  final ValueNotifier<bool> _codeMaxReached = ValueNotifier<bool>(false);
+  TextEditingController _codeController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  ValueNotifier<bool> _codeFieldEmpty = ValueNotifier<bool>(true);
+  ValueNotifier<bool> _nameFieldEmpty = ValueNotifier<bool>(true);
+  ValueNotifier<bool> _codeMaxReached = ValueNotifier<bool>(false);
 
   @override
   void initState() {
@@ -63,13 +62,10 @@ class _AddCodeState extends State<AddCode> {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Adicionar Código',
-              style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
-                  .copyWith(fontWeight: FontWeight.bold)
-                  .copyWith(fontSize: 18)),
+          title: Text('Adicionar Código', style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(fontWeight: FontWeight.bold).copyWith(fontSize: 18)),
           centerTitle: true,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -81,7 +77,7 @@ class _AddCodeState extends State<AddCode> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Spacer(flex: 2),
+                Spacer(flex: 2),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -89,68 +85,62 @@ class _AddCodeState extends State<AddCode> {
                       'Digite o nome do Switch',
                       style: SwitchTexts.titleBody(SwitchColors.steel_gray_300),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     TextField(
                       controller: _nameController,
                       textAlign: TextAlign.center,
-                      maxLength: 20,
+                      maxLength: 20, 
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'.{0,20}')),
                       ],
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: SwitchColors.steel_gray_700),
+                          borderSide: BorderSide(color: SwitchColors.steel_gray_700),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: SwitchColors.steel_gray_700),
+                          borderSide: BorderSide(color: SwitchColors.steel_gray_700),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: SwitchColors.ui_blueziness_800),
+                          borderSide: BorderSide(color: SwitchColors.ui_blueziness_800),
                         ),
                         hintText: '',
                         hintStyle: TextStyle(color: SwitchColors.steel_gray_50),
                       ),
-                      style: const TextStyle(color: Colors.white, fontSize: 18),
+                      style: TextStyle(color: Colors.white, fontSize: 18),
                       cursorColor: Colors.blue,
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     Text(
                       'Digite o código do Switch',
                       style: SwitchTexts.titleBody(SwitchColors.steel_gray_300),
                     ),
-                    const SizedBox(height: 40),
+                    SizedBox(height: 40),
                     TextField(
                       controller: _codeController,
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: SwitchColors.steel_gray_700),
+                          borderSide: BorderSide(color: SwitchColors.steel_gray_700),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: SwitchColors.steel_gray_700),
+                          borderSide: BorderSide(color: SwitchColors.steel_gray_700),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: SwitchColors.ui_blueziness_800),
+                          borderSide: BorderSide(color: SwitchColors.ui_blueziness_800),
                         ),
                         hintText: '',
                         hintStyle: TextStyle(color: SwitchColors.steel_gray_50),
                       ),
-                      style: const TextStyle(color: Colors.white, fontSize: 18),
+                      style: TextStyle(color: Colors.white, fontSize: 18),
                       cursorColor: Colors.blue,
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     ValueListenableBuilder<bool>(
                       valueListenable: _codeMaxReached,
                       builder: (context, isMaxReached, child) {
                         return isMaxReached
-                            ? const Padding(
-                                padding: EdgeInsets.only(top: 8.0),
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
                                 child: Text(
                                   'Limite de 25 caracteres atingido!',
                                   style: TextStyle(color: Colors.red),
@@ -159,7 +149,7 @@ class _AddCodeState extends State<AddCode> {
                             : Container();
                       },
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -177,12 +167,9 @@ class _AddCodeState extends State<AddCode> {
                                         _nameFieldEmpty.value = true;
                                       },
                                 style: TextButton.styleFrom(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 16),
+                                  padding: EdgeInsets.symmetric(vertical: 16),
                                   side: BorderSide(
-                                    color: isCodeFieldEmpty
-                                        ? Colors.grey
-                                        : Colors.blue,
+                                    color: isCodeFieldEmpty ? Colors.grey : Colors.blue,
                                   ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(6),
@@ -191,9 +178,7 @@ class _AddCodeState extends State<AddCode> {
                                 child: Text(
                                   'CANCELAR',
                                   style: TextStyle(
-                                    color: isCodeFieldEmpty
-                                        ? Colors.grey
-                                        : Colors.white,
+                                    color: isCodeFieldEmpty ? Colors.grey : Colors.white,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -202,7 +187,7 @@ class _AddCodeState extends State<AddCode> {
                             },
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        SizedBox(width: 20),
                         Expanded(
                           child: ValueListenableBuilder<bool>(
                             valueListenable: _codeFieldEmpty,
@@ -220,21 +205,18 @@ class _AddCodeState extends State<AddCode> {
                                       },
                                 borderRadius: BorderRadius.circular(6),
                                 child: Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 16),
+                                  padding: EdgeInsets.symmetric(vertical: 16),
                                   decoration: BoxDecoration(
-                                    color: isCodeFieldEmpty ||
-                                            _nameFieldEmpty.value
+                                    color: isCodeFieldEmpty || _nameFieldEmpty.value
                                         ? Colors.grey
-                                        : const Color.fromRGBO(2, 79, 255, 1),
+                                        : Color.fromRGBO(2, 79, 255, 1),
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   alignment: Alignment.center,
                                   child: Text(
                                     'CONTINUAR',
                                     style: TextStyle(
-                                      color: isCodeFieldEmpty ||
-                                              _nameFieldEmpty.value
+                                      color: isCodeFieldEmpty || _nameFieldEmpty.value
                                           ? Colors.black54
                                           : Colors.white,
                                       fontSize: 16,
@@ -250,7 +232,7 @@ class _AddCodeState extends State<AddCode> {
                     ),
                   ],
                 ),
-                const Spacer(flex: 3),
+                Spacer(flex: 3),
               ],
             ),
           ),
