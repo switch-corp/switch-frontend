@@ -115,19 +115,107 @@ class _SigninPageState extends State<SigninPage> {
                           MaterialPageRoute(
                             builder: (context) => HomePage(),
                           ),
-                        );
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 32),
-                  Center(
-                    child: ClickableText(
-                      text: 'Já tem uma conta?\nFaça login',
-                      onClick: () => {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginPage(),
+                        ),
+                        const SizedBox(height: 20),
+                        CustomTextField(
+                          label: 'Nome',
+                          controller: _usernameController,
+                          mandatory: true,
+                          textColor: Colors.white,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'O nome é obrigatório';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        CustomTextField(
+                          label: 'Email',
+                          controller: _emailController,
+                          mandatory: true,
+                          textColor: Colors.white,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'O e-mail é obrigatório';
+                            } else if (!_emailRegex.hasMatch(value)) {
+                              return 'Insira um e-mail válido';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        CustomTextField(
+                          label: 'Senha',
+                          controller: _passwordController,
+                          mandatory: true,
+                          obscureText: true,
+                          textColor: Colors.white,
+                          validator: (value) {
+                            if (value == null || value.length < 8) {
+                              return 'A senha deve ter pelo menos 8 caracteres';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        CustomTextField(
+                          label: 'Confirmar senha',
+                          controller: _confirmPasswordController,
+                          mandatory: true,
+                          obscureText: true,
+                          textColor: Colors.white,
+                          validator: (value) {
+                            if (value == null ||
+                                value != _passwordController.text) {
+                              return 'As senhas não coincidem';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 32),
+                        FullLengthButton(
+                          text: 'continuar',
+                          onClick: () async {
+                            if (_formKey.currentState?.validate() == true) {
+                              setState(() {
+                                isLoading = true;
+                              });
+
+                              AuthState state = await AuthBloc.signUp(
+                                _emailController.text,
+                                _passwordController.text,
+                                _usernameController.text,
+                              );
+
+                              if (state is FailureAuthState) {
+                                setState(() {
+                                  isLoading = false;
+                                  isAuthError = true;
+                                });
+                              } else {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HomePage(),
+                                  ),
+                                );
+                              }
+                            }
+                          },
+                        ),
+                        const SizedBox(height: 32),
+                        Center(
+                          child: ClickableText(
+                            text: 'Já tem uma conta?\nFaça login',
+                            onClick: () => {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginPage(),
+                                ),
+                              )
+                            },
                           ),
                         )
                       },
