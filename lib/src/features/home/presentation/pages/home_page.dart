@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> {
       margin: EdgeInsets.symmetric(horizontal: 8),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        border: Border.all(color: Color.fromARGB(255, 1, 41, 74), width: 0.8),
+        border: Border.all(color: Color.fromARGB(255, 1, 41, 74), width: 1.1),
         borderRadius: BorderRadius.circular(8),
         color: Colors.transparent,
       ),
@@ -246,7 +246,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               border:
-                  Border.all(color: Color.fromARGB(255, 1, 41, 74), width: 0.8),
+                  Border.all(color: Color.fromARGB(255, 1, 41, 74), width: 0.9),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Column(
@@ -369,23 +369,29 @@ class _HomePageState extends State<HomePage> {
     final now = DateTime.now();
     final hour = now.hour;
 
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(color: SwitchColors.steel_gray_950),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () => _showLogoutDialog(context),
-                child: Image.asset(
-                  'lib/assets/logoswitchhome.png',
-                  width: 36,
-                  height: 36,
+  return Scaffold(
+    body: SafeArea(
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(color: SwitchColors.steel_gray_950),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () => _showLogoutDialog(context),
+                  child: Image.asset(
+                    'lib/assets/logoswitchhome.png',
+                    width: 36,
+                    height: 36,
+                  ),
                 ),
-              ),
+              ],
+            ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -448,17 +454,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Divider(
                         color: Color.fromARGB(255, 44, 73, 97),
-                        thickness: 0.6,
+                        thickness: 1.0,
                         indent: 10,
                         endIndent: 10,
                       ),
                       _buildCarousel(),
-                      Divider(
-                        color: Color.fromARGB(255, 44, 73, 97),
-                        thickness: 0.6,
-                        indent: 10,
-                        endIndent: 10,
-                      ),
                       _buildAutomationInfo(context),
                     ],
                   ),

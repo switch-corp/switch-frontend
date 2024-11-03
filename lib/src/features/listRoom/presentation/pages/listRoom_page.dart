@@ -5,7 +5,7 @@ import 'package:switchfrontend/src/features/listRoom/models/room.model.dart';
 import 'package:switchfrontend/src/features/listSwitch/presentation/pages/listSwitch_page.dart';
 import 'package:switchfrontend/src/features/cardRoom/presentation/pages/cardRoom_page.dart';
 import 'package:switchfrontend/src/features/home/presentation/pages/home_page.dart';
-import 'package:switchfrontend/src/features/controlRoom/presentation/pages/controlRoom_page.dart'; // Adicione a importação para ControlRoom
+import 'package:switchfrontend/src/features/controlRoom/presentation/pages/controlRoom_page.dart'; 
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 

@@ -49,7 +49,9 @@ class _LoginPageState extends State<LoginPage> {
                             'lib/assets/switch-logo-branco.svg'),
                       ),
                       isAuthError
-                          ? Text("Login ou senha incorretos")
+                          ? Text("Login ou senha incorretos", style: TextStyle(
+                                color: Colors.white, 
+                              ),)
                           : SizedBox(),
                       Center(
                         child: Text(

@@ -75,8 +75,11 @@ class _SigninPageState extends State<SigninPage> {
                                 mandatory: true,
                                 textColor: Colors.white,
                                 validator: (value) {
+                                  final nameRegex = RegExp(r"^[a-zA-ZÀ-ÿ\s'-]+$");
                                   if (value == null || value.isEmpty) {
                                     return 'O nome é obrigatório';
+                                  } else if (!nameRegex.hasMatch(value)) {
+                                    return 'O nome contém caracteres inválidos';
                                   }
                                   return null;
                                 },
