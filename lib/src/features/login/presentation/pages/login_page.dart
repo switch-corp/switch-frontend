@@ -12,7 +12,6 @@ import 'package:switchfrontend/src/shared/widgets/full-length-button.dart';
 import 'package:switchfrontend/src/features/login/auth.states.dart';
 import 'package:switchfrontend/src/features/splash_screen.dart'; 
 
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -50,11 +49,6 @@ class _LoginPageState extends State<LoginPage> {
                         child: SvgPicture.asset(
                             'lib/assets/switch-logo-branco.svg'),
                       ),
-                      isAuthError
-                          ? Text("Login ou senha incorretos", style: TextStyle(
-                                color: Colors.white, 
-                              ),)
-                          : SizedBox(),
                       Center(
                         child: Text(
                           'Login',
@@ -91,6 +85,17 @@ class _LoginPageState extends State<LoginPage> {
                           return null;
                         },
                       ),
+                      if (isAuthError)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            "Login ou senha incorretos",
+                            style: TextStyle(
+                              color: Colors.red, // Cor vermelha
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
                       const SizedBox(height: 32),
                       FullLengthButton(
                         text: 'continuar',
@@ -111,13 +116,12 @@ class _LoginPageState extends State<LoginPage> {
                                 isAuthError = true;
                               });
                             } else {
-                             Navigator.pushReplacement(
-  context,
-  MaterialPageRoute(
-    builder: (context) => SplashScreen(isPostAuth: true),
-  ),
-);
-
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SplashScreen(isPostAuth: true),
+                                ),
+                              );
                             }
                           }
                         },
