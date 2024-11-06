@@ -91,24 +91,27 @@ class _ListRoomState extends State<ListRoom> {
       backgroundColor: SwitchColors.steel_gray_950, 
       appBar: AppBar(
   backgroundColor: SwitchColors.steel_gray_950,
-  title: Padding(
-    padding: const EdgeInsets.only(left: 200),
-    child: Text(
-      'Rooms',
-      style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
-          .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
-    ),
+  title: Row(
+    children: [
+      Spacer(flex: 2), 
+      Text(
+        'Rooms',
+        style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
+            .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+      ),
+      Spacer(flex: 3),
+    ],
   ),
   leading: IconButton(
-    icon: Icon(Icons.arrow_back, color: Colors.grey[400]),
+    icon: Icon(Icons.arrow_back, color: Colors.white),
     onPressed: () {
-      Navigator.pushAndRemoveUntil(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
-        (Route<dynamic> route) => false,
       );
     },
   ),
+  automaticallyImplyLeading: false,
 ),
 
       body: Padding(
