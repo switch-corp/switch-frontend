@@ -3,8 +3,12 @@ import 'package:switchfrontend/src/features/listRoom/models/room.model.dart';
 
 class ListRoomBloc {
   static Future<List<Room>> getRooms() async {
-    var response = await ListRoomApi.getRooms();
+    try {
+      var response = await ListRoomApi.getRooms();
 
-    return response.map((map) => Room.fromMap(map)).toList();
+      return response.map((map) => Room.fromMap(map)).toList();
+    } catch (e) {
+      rethrow;
+    }
   }
 }

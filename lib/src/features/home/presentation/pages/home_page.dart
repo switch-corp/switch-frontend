@@ -369,29 +369,29 @@ class _HomePageState extends State<HomePage> {
     final now = DateTime.now();
     final hour = now.hour;
 
-  return Scaffold(
-    body: SafeArea(
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(color: SwitchColors.steel_gray_950),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: () => _showLogoutDialog(context),
-                  child: Image.asset(
-                    'lib/assets/logoswitchhome.png',
-                    width: 45,
-                    height: 45,
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(color: SwitchColors.steel_gray_950),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () => _showLogoutDialog(context),
+                    child: Image.asset(
+                      'lib/assets/logoswitchhome.png',
+                      width: 45,
+                      height: 45,
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -432,7 +432,8 @@ class _HomePageState extends State<HomePage> {
                                   onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => ListRoom()),
+                                      builder: (context) => ListRoom(),
+                                    ),
                                   ),
                                 ),
                               ],

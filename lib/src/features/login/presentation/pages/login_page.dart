@@ -10,8 +10,7 @@ import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 import 'package:switchfrontend/src/shared/widgets/clickable_text.dart';
 import 'package:switchfrontend/src/shared/widgets/full-length-button.dart';
 import 'package:switchfrontend/src/features/login/auth.states.dart';
-import 'package:switchfrontend/src/features/splash_screen.dart'; 
-
+import 'package:switchfrontend/src/features/splash_screen.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -51,9 +50,12 @@ class _LoginPageState extends State<LoginPage> {
                             'lib/assets/switch-logo-branco.svg'),
                       ),
                       isAuthError
-                          ? Text("Login ou senha incorretos", style: TextStyle(
-                                color: Colors.white, 
-                              ),)
+                          ? Text(
+                              "Login ou senha incorretos",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            )
                           : SizedBox(),
                       Center(
                         child: Text(
@@ -111,13 +113,13 @@ class _LoginPageState extends State<LoginPage> {
                                 isAuthError = true;
                               });
                             } else {
-                             Navigator.pushReplacement(
-  context,
-  MaterialPageRoute(
-    builder: (context) => SplashScreen(isPostAuth: true),
-  ),
-);
-
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SplashScreen(isPostAuth: true),
+                                ),
+                              );
                             }
                           }
                         },

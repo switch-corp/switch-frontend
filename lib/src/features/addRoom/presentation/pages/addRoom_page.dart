@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; 
+import 'package:flutter/services.dart';
+import 'package:switchfrontend/src/features/addRoom/addRoom.bloc.dart';
+import 'package:switchfrontend/src/features/addRoom/addRoom.states.dart';
+import 'package:switchfrontend/src/features/home/presentation/pages/home_page.dart';
 import 'package:switchfrontend/src/features/linkSwitch/presentation/pages/linkSwitch_page.dart';
+import 'package:switchfrontend/src/features/listRoom/presentation/pages/listRoom_page.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 
@@ -14,6 +18,9 @@ class _AddRoomState extends State<AddRoom> {
   TextEditingController _roomDescriptionController = TextEditingController();
   ValueNotifier<bool> _isRoomNameEmpty = ValueNotifier<bool>(true);
   ValueNotifier<bool> _isRoomDescriptionEmpty = ValueNotifier<bool>(true);
+
+  bool loading = false;
+  bool isError = false;
 
   @override
   void initState() {
@@ -50,12 +57,18 @@ class _AddRoomState extends State<AddRoom> {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Adicionar Room', style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(fontWeight: FontWeight.bold).copyWith(fontSize: 18)),
+          title: Text('Adicionar Room',
+              style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
+                  .copyWith(fontWeight: FontWeight.bold)
+                  .copyWith(fontSize: 18)),
           centerTitle: true,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ListRoom()),
+              );
             },
           ),
         ),
@@ -69,7 +82,7 @@ class _AddRoomState extends State<AddRoom> {
                   'Digite o nome da Room',
                   style: SwitchTexts.titleBody(SwitchColors.steel_gray_300),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TextField(
                   controller: _roomNameController,
                   textAlign: TextAlign.center,
@@ -79,25 +92,28 @@ class _AddRoomState extends State<AddRoom> {
                   ],
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(color: SwitchColors.steel_gray_700),
+                      borderSide:
+                          BorderSide(color: SwitchColors.steel_gray_700),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: SwitchColors.steel_gray_700),
+                      borderSide:
+                          BorderSide(color: SwitchColors.steel_gray_700),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: SwitchColors.ui_blueziness_800),
+                      borderSide:
+                          BorderSide(color: SwitchColors.ui_blueziness_800),
                     ),
                     hintStyle: TextStyle(color: SwitchColors.steel_gray_50),
                   ),
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
                   cursorColor: Colors.blue,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
                   'Digite a descrição da Room',
                   style: SwitchTexts.titleBody(SwitchColors.steel_gray_300),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TextField(
                   controller: _roomDescriptionController,
                   textAlign: TextAlign.center,
@@ -107,59 +123,32 @@ class _AddRoomState extends State<AddRoom> {
                   ],
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(color: SwitchColors.steel_gray_700),
+                      borderSide:
+                          BorderSide(color: SwitchColors.steel_gray_700),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: SwitchColors.steel_gray_700),
+                      borderSide:
+                          BorderSide(color: SwitchColors.steel_gray_700),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: SwitchColors.ui_blueziness_800),
+                      borderSide:
+                          BorderSide(color: SwitchColors.ui_blueziness_800),
                     ),
                     hintStyle: TextStyle(color: SwitchColors.steel_gray_50),
                   ),
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
                   cursorColor: Colors.blue,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
+                isError
+                    ? const Text(
+                        "Ocorreu um erro na criação do grupo, tente novamente mais tarde...",
+                        style: TextStyle(color: Colors.red),
+                      )
+                    : const SizedBox(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: ValueListenableBuilder<bool>(
-                        valueListenable: _isRoomNameEmpty,
-                        builder: (context, isRoomNameEmpty, child) {
-                          return TextButton(
-                            onPressed: isRoomNameEmpty
-                                ? null
-                                : () {
-                                    _roomNameController.clear();
-                                    _roomDescriptionController.clear();
-                                    _isRoomNameEmpty.value = true;
-                                    _isRoomDescriptionEmpty.value = true;
-                                    Navigator.pop(context); 
-                                  },
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 16),
-                              side: BorderSide(
-                                color: isRoomNameEmpty ? Colors.grey : Colors.blue,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                            ),
-                            child: Text(
-                              'CANCELAR',
-                              style: TextStyle(
-                                color: isRoomNameEmpty ? Colors.grey : Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    SizedBox(width: 20),
                     Expanded(
                       child: ValueListenableBuilder<bool>(
                         valueListenable: _isRoomNameEmpty,
@@ -170,31 +159,62 @@ class _AddRoomState extends State<AddRoom> {
                               return InkWell(
                                 onTap: isRoomNameEmpty || isRoomDescriptionEmpty
                                     ? null
-                                    : () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => LinkSwitches(
-                                              roomTitle: _roomNameController.text,
-                                              roomDescription: _roomDescriptionController.text,
-                                            ),
-                                          ),
+                                    : () async {
+                                        setState(() {
+                                          loading = true;
+                                        });
+
+                                        AddRoomState state =
+                                            await AddRoomBloc.createRoom(
+                                          _roomNameController.text,
+                                          _roomDescriptionController.text,
                                         );
+
+                                        if (state is SucessAddRoomState) {
+                                          setState(() {
+                                            loading = false;
+                                            _roomNameController.text = "";
+                                            _roomDescriptionController.text =
+                                                "";
+                                          });
+                                        } else if (state
+                                            is FailureAddRoomState) {
+                                          setState(() {
+                                            loading = false;
+                                            isError = true;
+                                          });
+                                        }
+
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (context) => LinkSwitches(
+                                        //       roomTitle:
+                                        //           _roomNameController.text,
+                                        //       roomDescription:
+                                        //           _roomDescriptionController
+                                        //               .text,
+                                        //     ),
+                                        //   ),
+                                        // );
                                       },
                                 borderRadius: BorderRadius.circular(6),
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 16),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 16),
                                   decoration: BoxDecoration(
-                                    color: isRoomNameEmpty || isRoomDescriptionEmpty
+                                    color: isRoomNameEmpty ||
+                                            isRoomDescriptionEmpty
                                         ? Colors.grey
-                                        : Color.fromRGBO(2, 79, 255, 1),
+                                        : const Color.fromRGBO(2, 79, 255, 1),
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   alignment: Alignment.center,
                                   child: Text(
                                     'CONTINUAR',
                                     style: TextStyle(
-                                      color: isRoomNameEmpty || isRoomDescriptionEmpty
+                                      color: isRoomNameEmpty ||
+                                              isRoomDescriptionEmpty
                                           ? Colors.black54
                                           : Colors.white,
                                       fontSize: 16,
