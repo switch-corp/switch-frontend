@@ -9,6 +9,7 @@ import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 import 'package:switchfrontend/src/shared/widgets/clickable_text.dart';
 import 'package:switchfrontend/src/shared/widgets/full-length-button.dart';
+import 'package:switchfrontend/src/features/splash_screen.dart'; 
 
 import '../../auth.states.dart';
 
@@ -149,12 +150,13 @@ class _SigninPageState extends State<SigninPage> {
                                         isAuthError = true;
                                       });
                                     } else {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => HomePage(),
-                                        ),
-                                      );
+Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(
+    builder: (context) => SplashScreen(isPostAuth: true),
+  ),
+);
+
                                     }
                                   }
                                 },
