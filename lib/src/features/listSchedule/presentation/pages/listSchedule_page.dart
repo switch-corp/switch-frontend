@@ -67,7 +67,7 @@ class _ListScheduleState extends State<ListSchedule> {
       appBar: AppBar(
         backgroundColor: SwitchColors.steel_gray_950,
         title: Padding(
-          padding: const EdgeInsets.only(left: 70.0),
+          padding: const EdgeInsets.only(left: 170),
           child: Text(
             'Automatizações',
             style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(fontWeight: FontWeight.bold).copyWith(fontSize: 18),

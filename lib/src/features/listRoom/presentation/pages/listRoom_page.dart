@@ -88,29 +88,29 @@ class _ListRoomState extends State<ListRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SwitchColors.steel_gray_950, // Cor de fundo da tela
+      backgroundColor: SwitchColors.steel_gray_950, 
       appBar: AppBar(
-        backgroundColor: SwitchColors.steel_gray_950,
-        title: Padding(
-          padding: const EdgeInsets.only(left: 110.0),
-          child: Text(
-            'Rooms',
-            style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
-                .copyWith(fontWeight: FontWeight.bold)
-                .copyWith(fontSize: 18),
-          ),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.grey[400]),
-          onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-              (Route<dynamic> route) => false,
-            );
-          },
-        ),
-      ),
+  backgroundColor: SwitchColors.steel_gray_950,
+  title: Padding(
+    padding: const EdgeInsets.only(left: 200),
+    child: Text(
+      'Rooms',
+      style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
+          .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+    ),
+  ),
+  leading: IconButton(
+    icon: Icon(Icons.arrow_back, color: Colors.grey[400]),
+    onPressed: () {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+        (Route<dynamic> route) => false,
+      );
+    },
+  ),
+),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

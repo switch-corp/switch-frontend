@@ -386,8 +386,8 @@ class _HomePageState extends State<HomePage> {
                   onTap: () => _showLogoutDialog(context),
                   child: Image.asset(
                     'lib/assets/logoswitchhome.png',
-                    width: 36,
-                    height: 36,
+                    width: 45,
+                    height: 45,
                   ),
                 ),
               ],

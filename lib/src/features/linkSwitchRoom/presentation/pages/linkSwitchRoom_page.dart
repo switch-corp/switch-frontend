@@ -30,7 +30,7 @@ class _LinkSwitchRoomState extends State<LinkSwitchRoom> {
   ];
 
   Set<String> selectedSwitches = {};
-  Set<int> expandedRooms = {}; // Controla quais salas estão expandidas
+  Set<int> expandedRooms = {};
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _LinkSwitchRoomState extends State<LinkSwitchRoom> {
       appBar: AppBar(
         backgroundColor: SwitchColors.steel_gray_950,
         title: Padding(
-          padding: const EdgeInsets.only(left: 30.0),
+          padding: const EdgeInsets.only(left: 120),
           child: Text(
             'Vincular Rooms e Switches',
             style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(fontWeight: FontWeight.bold).copyWith(fontSize: 18),
