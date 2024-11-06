@@ -49,14 +49,6 @@ class _LoginPageState extends State<LoginPage> {
                         child: SvgPicture.asset(
                             'lib/assets/switch-logo-branco.svg'),
                       ),
-                      isAuthError
-                          ? Text(
-                              "Login ou senha incorretos",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            )
-                          : SizedBox(),
                       Center(
                         child: Text(
                           'Login',
@@ -93,6 +85,17 @@ class _LoginPageState extends State<LoginPage> {
                           return null;
                         },
                       ),
+                      if (isAuthError)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            "Login ou senha incorretos",
+                            style: TextStyle(
+                              color: Colors.red, // Cor vermelha
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
                       const SizedBox(height: 32),
                       FullLengthButton(
                         text: 'continuar',
