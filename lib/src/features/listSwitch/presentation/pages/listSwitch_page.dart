@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:switchfrontend/src/features/addCode/presentation/pages/addCode_page.dart';
 import 'package:switchfrontend/src/features/controlSwitch/presentation/pages/controlSwitch_page.dart';
 import 'package:switchfrontend/src/features/home/presentation/pages/home_page.dart';
+import 'package:switchfrontend/src/features/listSwitch/list-switch.bloc.dart';
+import 'package:switchfrontend/src/features/listSwitch/models/switch.model.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 
 class SwitchesPage extends StatefulWidget {
+  const SwitchesPage({super.key});
+
   @override
   _SwitchesPageState createState() => _SwitchesPageState();
 }
 
 class _SwitchesPageState extends State<SwitchesPage> {
-  List<Map<String, String>> _switchStates = [
+  final List<Map<String, String>> _switchStates = [
     {'label': 'Interruptor da frente', 'state': 'on'},
     {'label': 'Interruptor do meio', 'state': 'off'},
     {'label': 'Interruptor de trás', 'state': 'error'},
@@ -25,6 +29,10 @@ class _SwitchesPageState extends State<SwitchesPage> {
     {'label': 'Interruptor de trás', 'state': 'error'},
     {'label': 'Interruptor da frente 5', 'state': 'on'}
   ];
+
+  List<SwitchModel> switches = [];
+
+  bool loading = false;
 
   void _addSwitch(String switchLabel) {
     setState(() {
@@ -43,6 +51,30 @@ class _SwitchesPageState extends State<SwitchesPage> {
         }
       });
     }
+  }
+
+  void _getSwitches() async {
+    setState(() {
+      loading = true;
+    });
+
+    try {
+      var response = await ListSwitchBloc.getSwitch();
+      setState(() {
+        switches = response;
+        loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        loading = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    _getSwitches();
+    super.initState();
   }
 
   Future<String?> _showEditDialog(String currentLabel) {
@@ -67,10 +99,10 @@ class _SwitchesPageState extends State<SwitchesPage> {
             decoration: InputDecoration(
               hintText: "Novo Nome do Switch",
               hintStyle: SwitchTexts.titleBody(SwitchColors.steel_gray_500),
-              enabledBorder: OutlineInputBorder(
+              enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue),
               ),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.blueAccent),
               ),
             ),
@@ -120,51 +152,52 @@ class _SwitchesPageState extends State<SwitchesPage> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => HomePage()),
+              MaterialPageRoute(builder: (context) => const HomePage()),
               (Route<dynamic> route) => false,
             );
           },
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                children: _switchStates.map((switchState) {
-                  String switchLabel = switchState['label']!;
-                  String status = switchState['state']!;
-
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildSwitch(switchLabel, status),
-                      Divider(color: Colors.blueAccent.withOpacity(0.3)),
-                    ],
-                  );
-                }).toList(),
-              ),
-            ),
-            Divider(color: Colors.grey),
-            SizedBox(height: 10),
-            ListTile(
-              title: Text(
-                'Adicionar switch',
-                style: TextStyle(color: Colors.white),
-              ),
-              trailing: Icon(Icons.add, color: Colors.white),
-              onTap: () {
-                _navigateToAddSwitch(context);
-              },
-            ),
-          ],
-        ),
-      ),
+          padding: const EdgeInsets.all(16.0),
+          child: !loading
+              ? Column(
+                  children: [
+                    Expanded(
+                      child: ListView(
+                        children: switches.map((switchState) {
+                          String switchLabel = switchState.name;
+                          String status = switchState.is_active ? 'on' : 'off';
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildSwitch(switchLabel, status),
+                              Divider(
+                                  color: Colors.blueAccent.withOpacity(0.3)),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    const Divider(color: Colors.grey),
+                    const SizedBox(height: 10),
+                    ListTile(
+                      title: const Text(
+                        'Adicionar switch',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      trailing: const Icon(Icons.add, color: Colors.white),
+                      onTap: () {
+                        _navigateToAddSwitch(context);
+                      },
+                    ),
+                  ],
+                )
+              : const SizedBox()),
     );
   }
 
@@ -203,10 +236,10 @@ class _SwitchesPageState extends State<SwitchesPage> {
               Expanded(
                 child: Text(
                   switchLabel,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: 24,
                 height: 24,
                 child: IconButton(
@@ -216,10 +249,10 @@ class _SwitchesPageState extends State<SwitchesPage> {
               ),
             ],
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(
             switchCode,
-            style: TextStyle(color: Colors.grey, fontSize: 14),
+            style: const TextStyle(color: Colors.grey, fontSize: 14),
           ),
         ],
       ),

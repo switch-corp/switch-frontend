@@ -10,10 +10,11 @@ import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 import 'package:switchfrontend/src/shared/widgets/clickable_text.dart';
 import 'package:switchfrontend/src/shared/widgets/full-length-button.dart';
 import 'package:switchfrontend/src/features/login/auth.states.dart';
-import 'package:switchfrontend/src/features/splash_screen.dart'; 
-
+import 'package:switchfrontend/src/features/splash_screen.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -32,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: SwitchColors.steel_gray_950,
         child: Padding(
@@ -43,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                   ? CrossAxisAlignment.center
                   : CrossAxisAlignment.start,
               children: isLoading
-                  ? [CircularProgressIndicator()]
+                  ? [const CircularProgressIndicator()]
                   : [
                       const SizedBox(height: 20),
                       Center(
@@ -51,10 +53,13 @@ class _LoginPageState extends State<LoginPage> {
                             'lib/assets/switch-logo-branco.svg'),
                       ),
                       isAuthError
-                          ? Text("Login ou senha incorretos", style: TextStyle(
-                                color: Colors.white, 
-                              ),)
-                          : SizedBox(),
+                          ? const Text(
+                              "Login ou senha incorretos",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            )
+                          : const SizedBox(),
                       Center(
                         child: Text(
                           'Login',
@@ -111,13 +116,13 @@ class _LoginPageState extends State<LoginPage> {
                                 isAuthError = true;
                               });
                             } else {
-                             Navigator.pushReplacement(
-  context,
-  MaterialPageRoute(
-    builder: (context) => SplashScreen(isPostAuth: true),
-  ),
-);
-
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SplashScreen(isPostAuth: true),
+                                ),
+                              );
                             }
                           }
                         },
