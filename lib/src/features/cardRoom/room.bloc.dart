@@ -7,4 +7,8 @@ class RoomBloc {
 
     return Room.fromMap(response);
   }
+
+  static deleteRoom(String id) async {
+    await RoomApi.deleteRoom(id);
+  }
 }

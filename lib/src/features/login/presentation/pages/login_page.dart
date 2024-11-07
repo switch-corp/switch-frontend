@@ -42,7 +42,15 @@ class _LoginPageState extends State<LoginPage> {
                   ? CrossAxisAlignment.center
                   : CrossAxisAlignment.start,
               children: isLoading
-                  ? [CircularProgressIndicator()]
+                  ? [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height - 32,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    ]
                   : [
                       const SizedBox(height: 20),
                       Center(
@@ -86,8 +94,8 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       ),
                       if (isAuthError)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 8.0),
                           child: Text(
                             "Login ou senha incorretos",
                             style: TextStyle(

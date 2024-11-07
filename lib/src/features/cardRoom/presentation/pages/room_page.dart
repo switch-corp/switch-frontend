@@ -126,13 +126,15 @@ class _RoomPageState extends State<RoomPage> {
               ),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
+              onPressed: () async {
+                setState(() {
+                  loading = true;
+                });
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Sala '${room!.name}' excluída.")),
-                );
+                await RoomBloc.deleteRoom(room!.id);
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pop(context);
               },
               child: Text(
                 'Excluir',
@@ -183,8 +185,15 @@ class _RoomPageState extends State<RoomPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: loading
+              ? MainAxisAlignment.spaceBetween
+              : MainAxisAlignment.start,
           children: loading
-              ? [const CircularProgressIndicator()]
+              ? [
+                  const SizedBox(),
+                  const Center(child: CircularProgressIndicator()),
+                  const SizedBox(),
+                ]
               : [
                   Center(
                     child: Text(

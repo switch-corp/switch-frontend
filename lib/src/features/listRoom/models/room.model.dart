@@ -16,7 +16,7 @@ class Room {
       id: map['_id'],
       description: map["description"],
       name: map["name"],
-      switches: [],
+      switches: RoomSwitch.fromMapList(map["switches"]),
     );
   }
 }
@@ -26,4 +26,10 @@ class RoomSwitch {
   String name;
 
   RoomSwitch({required this.id, required this.name});
+
+  static List<RoomSwitch> fromMapList(List<Map> list) {
+    return list
+        .map((map) => RoomSwitch(id: map["_id"], name: map["name"]))
+        .toList();
+  }
 }

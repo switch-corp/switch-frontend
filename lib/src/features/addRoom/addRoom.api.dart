@@ -9,17 +9,18 @@ class AddRoomApi {
       Uri url = Uri.parse('${dotenv.env['BASE_URL']!}/api/v1/rooms');
       final response = await http.post(
         url,
-        body: {
+        body: jsonEncode({
           "name": "$name",
           "description": "$description",
-          "switches": "[]"
-        },
+          "switches": [],
+        }),
         headers: {
           'Authorization': 'Bearer ${AuthBloc.userToken}',
+          'Content-Type': 'application/json',
         },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         final jsonResponse = json.decode(response.body);
 
         print(jsonResponse);

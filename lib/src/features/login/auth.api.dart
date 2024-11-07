@@ -17,9 +17,11 @@ class AuthApi {
         print('Access Token: $accessToken');
         return accessToken;
       } else {
+        print(response.statusCode);
         throw Exception();
       }
     } catch (e) {
+      print(e);
       rethrow;
     }
   }
