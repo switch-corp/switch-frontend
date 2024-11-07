@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:switchfrontend/src/features/addRoom/presentation/pages/addRoom_page.dart';
+import 'package:switchfrontend/src/features/cardRoom/presentation/pages/room_page.dart';
 import 'package:switchfrontend/src/features/listRoom/listRoom.bloc.dart';
 import 'package:switchfrontend/src/features/listRoom/models/room.model.dart';
-import 'package:switchfrontend/src/features/listSwitch/presentation/pages/listSwitch_page.dart';
-import 'package:switchfrontend/src/features/cardRoom/presentation/pages/cardRoom_page.dart';
 import 'package:switchfrontend/src/features/home/presentation/pages/home_page.dart';
-import 'package:switchfrontend/src/features/controlRoom/presentation/pages/controlRoom_page.dart'; 
+import 'package:switchfrontend/src/features/controlRoom/presentation/pages/controlRoom_page.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 
@@ -55,13 +54,12 @@ class _ListRoomState extends State<ListRoom> {
     }
   }
 
-  void _navigateToCardRoom(String roomTitle, String roomDescription) {
+  void _navigateToCardRoom(Room room) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CardRoom(
-          title: roomTitle,
-          description: roomDescription,
+        builder: (context) => RoomPage(
+          roomId: room.id,
         ),
       ),
     );
@@ -88,29 +86,31 @@ class _ListRoomState extends State<ListRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SwitchColors.steel_gray_950, 
+      backgroundColor: SwitchColors.steel_gray_950,
       appBar: AppBar(
-  backgroundColor: SwitchColors.steel_gray_950,
-  title: Padding(
-    padding: const EdgeInsets.only(left: 200),
-    child: Text(
-      'Rooms',
-      style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
-          .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
-    ),
-  ),
-  leading: IconButton(
-    icon: Icon(Icons.arrow_back, color: Colors.grey[400]),
-    onPressed: () {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-        (Route<dynamic> route) => false,
-      );
-    },
-  ),
-),
-
+        backgroundColor: SwitchColors.steel_gray_950,
+        title: Row(
+          children: [
+            const Spacer(flex: 2),
+            Text(
+              'Rooms',
+              style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
+                  .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            const Spacer(flex: 3),
+          ],
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          },
+        ),
+        automaticallyImplyLeading: false,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -135,21 +135,18 @@ class _ListRoomState extends State<ListRoom> {
                         return RoomCard(
                           title: rooms[index].name,
                           description: rooms[index].description,
-                          onEdit: () => _navigateToCardRoom(
-                            rooms[index].name,
-                            rooms[index].description,
-                          ),
+                          onEdit: () => _navigateToCardRoom(rooms[index]),
                         );
                       },
                     ),
                   ),
-                  Divider(color: Colors.grey),
+                  const Divider(color: Colors.grey),
                   ListTile(
-                    title: Text(
+                    title: const Text(
                       'Adicionar room',
                       style: TextStyle(color: Colors.white),
                     ),
-                    trailing: Icon(Icons.add, color: Colors.white),
+                    trailing: const Icon(Icons.add, color: Colors.white),
                     onTap: _addRoom,
                   ),
                 ],

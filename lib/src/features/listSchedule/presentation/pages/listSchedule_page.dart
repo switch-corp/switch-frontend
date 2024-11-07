@@ -65,25 +65,30 @@ class _ListScheduleState extends State<ListSchedule> {
     return Scaffold(
       backgroundColor: SwitchColors.steel_gray_950,
       appBar: AppBar(
-        backgroundColor: SwitchColors.steel_gray_950,
-        title: Padding(
-          padding: const EdgeInsets.only(left: 170),
-          child: Text(
-            'Automatizações',
-            style: SwitchTexts.titleBody(SwitchColors.steel_gray_50).copyWith(fontWeight: FontWeight.bold).copyWith(fontSize: 18),
-          ),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
-          },
-        ),
-        automaticallyImplyLeading: false,
+  backgroundColor: SwitchColors.steel_gray_950,
+  title: Row(
+    children: [
+      Spacer(flex: 2), 
+      Text(
+        'Automatizações',
+        style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
+            .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
       ),
+      Spacer(flex: 3), 
+    ],
+  ),
+  leading: IconButton(
+    icon: Icon(Icons.arrow_back, color: Colors.white),
+    onPressed: () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    },
+  ),
+  automaticallyImplyLeading: false,
+),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

@@ -45,21 +45,21 @@ class _LoginPageState extends State<LoginPage> {
                   ? CrossAxisAlignment.center
                   : CrossAxisAlignment.start,
               children: isLoading
-                  ? [const CircularProgressIndicator()]
+                  ? [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height - 32,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    ]
                   : [
                       const SizedBox(height: 20),
                       Center(
                         child: SvgPicture.asset(
                             'lib/assets/switch-logo-branco.svg'),
                       ),
-                      isAuthError
-                          ? const Text(
-                              "Login ou senha incorretos",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            )
-                          : const SizedBox(),
                       Center(
                         child: Text(
                           'Login',
@@ -96,6 +96,17 @@ class _LoginPageState extends State<LoginPage> {
                           return null;
                         },
                       ),
+                      if (isAuthError)
+                        const Padding(
+                          padding: EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            "Login ou senha incorretos",
+                            style: TextStyle(
+                              color: Colors.red, // Cor vermelha
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
                       const SizedBox(height: 32),
                       FullLengthButton(
                         text: 'continuar',

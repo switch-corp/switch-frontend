@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:switchfrontend/src/features/home/presentation/pages/home_page.dart';
-import 'package:switchfrontend/src/features/login/presentation/pages/login_page.dart'; // Importe a LoginPage
-import 'package:switchfrontend/src/features/login/presentation/pages/signin_page.dart'; // Importe a SigninPage
+import 'package:switchfrontend/src/features/login/presentation/pages/login_page.dart';
+import 'package:switchfrontend/src/features/login/presentation/pages/signin_page.dart';
 
 class SplashScreen extends StatefulWidget {
-  final bool isPostAuth; // Se for true, após login ou cadastro, vai para a HomePage
+  final bool isPostAuth;
   SplashScreen({this.isPostAuth = false});
 
   @override
@@ -20,22 +20,20 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _navigate() async {
-    await Future.delayed(Duration(seconds: 3)); // Delay para simular o carregamento
+    await Future.delayed(Duration(seconds: 3));
 
-    // Se for a splash após login/cadastro, vai para a HomePage
     if (widget.isPostAuth) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage(), // Navega para a HomePage
+          builder: (context) => HomePage(),
         ),
       );
     } else {
-      // Se for a splash inicial, vai para a LoginPage
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => LoginPage(), // Navega para a tela de login
+          builder: (context) => LoginPage(), 
         ),
       );
     }
@@ -44,14 +42,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.black.withOpacity(0.7),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset('lib/assets/switch-logo-branco.svg', height: 100), // Logo
+            SvgPicture.asset('lib/assets/switch-logo-branco.svg', height: 100), 
             SizedBox(height: 20),
-            CircularProgressIndicator(color: Colors.white), // Indicador de carregamento
+            CircularProgressIndicator(color: Colors.white),
           ],
         ),
       ),
