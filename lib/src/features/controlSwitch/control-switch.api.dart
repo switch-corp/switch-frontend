@@ -32,4 +32,23 @@ class ControlSwitchApi {
       rethrow;
     }
   }
+
+  static Future<void> deleteSwitch(String switchId) async {
+    try {
+      Uri url = Uri.parse('${dotenv.env['BASE_URL']!}/api/v1/switch/$switchId');
+      final response = await http.delete(url, headers: {
+        'Authorization': 'Bearer ${AuthBloc.userToken}',
+        'Content-Type': 'application/json',
+      });
+
+      if (response.statusCode == 204) {
+        return;
+      } else {
+        throw Exception(
+            'Error: ${response.statusCode} - ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

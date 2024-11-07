@@ -157,11 +157,14 @@ class _SwitchesPageState extends State<SwitchesPage> {
                         children: _switches.map((switchState) {
                           String switchLabel = switchState.name;
                           bool status = switchState.is_active;
-                          String switchCode = switchState.arduino_id;
+                          String arduinoCode = switchState.arduino_id;
+                          String switchId = switchState.id;
+
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildSwitch(switchLabel, status, switchCode),
+                              _buildSwitch(
+                                  switchLabel, status, arduinoCode, switchId),
                               Divider(
                                   color: Colors.blueAccent.withOpacity(0.3)),
                             ],
@@ -187,7 +190,8 @@ class _SwitchesPageState extends State<SwitchesPage> {
     );
   }
 
-  Widget _buildSwitch(String switchLabel, bool status, String switchCode) {
+  Widget _buildSwitch(
+      String switchLabel, bool status, String arduinoCode, String switchId) {
     Color iconColor;
     String displayText;
     String tooltipMessage;
@@ -236,7 +240,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
           ),
           const SizedBox(height: 4),
           Text(
-            switchCode,
+            arduinoCode,
             style: const TextStyle(color: Colors.grey, fontSize: 14),
           ),
         ],
@@ -263,20 +267,22 @@ class _SwitchesPageState extends State<SwitchesPage> {
         ),
       ),
       onTap: () {
-        _navigateToControlSwitch(context, switchLabel, switchCode, status);
+        _navigateToControlSwitch(
+            context, switchLabel, arduinoCode, status, switchId);
       },
     );
   }
 
   void _navigateToControlSwitch(BuildContext context, String switchName,
-      String switchCode, bool switchState) {
+      String arduinoCode, bool switchState, String switchId) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ControlSwitch(
           switchName: switchName,
-          switchCode: switchCode,
+          arduinoCode: arduinoCode,
           switchState: switchState,
+          switchId: switchId,
         ),
       ),
     );

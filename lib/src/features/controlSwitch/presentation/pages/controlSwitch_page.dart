@@ -8,15 +8,17 @@ import 'package:switchfrontend/src/features/listSwitch/presentation/pages/listSw
 import 'package:http/http.dart' as http;
 
 class ControlSwitch extends StatefulWidget {
-  final String switchCode;
+  final String arduinoCode;
   final String switchName;
   final bool switchState;
+  final String switchId;
 
   const ControlSwitch(
       {super.key,
-      required this.switchCode,
+      required this.arduinoCode,
       required this.switchName,
-      required this.switchState});
+      required this.switchState,
+      required this.switchId});
 
   @override
   _ControlSwitchState createState() => _ControlSwitchState();
@@ -25,11 +27,14 @@ class ControlSwitch extends StatefulWidget {
 class _ControlSwitchState extends State<ControlSwitch> {
   bool _switchOn = false;
   String _arduinoId = '';
+  String _switchId = '';
 
   @override
   void initState() {
     _switchOn = widget.switchState;
-    _arduinoId = widget.switchCode;
+    _arduinoId = widget.arduinoCode;
+    _switchId = widget.switchId;
+
     super.initState();
   }
 
@@ -39,6 +44,21 @@ class _ControlSwitchState extends State<ControlSwitch> {
     });
 
     ControlSwitchApi.powerSwitch(_arduinoId, _switchOn);
+  }
+
+  void handleDelete() async {
+    ControlSwitchApi.deleteSwitch(_switchId);
+
+    Navigator.pop(context);
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const SwitchesPage()),
+      (route) => false,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Switch '${widget.switchName}' excluído.")),
+    );
   }
 
   void _confirmDeleteSwitch() {
@@ -82,19 +102,7 @@ class _ControlSwitchState extends State<ControlSwitch> {
               ),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SwitchesPage()),
-                  (route) => false,
-                );
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text("Switch '${widget.switchName}' excluído.")),
-                );
-              },
+              onPressed: () => handleDelete(),
               child: Text(
                 'excluir',
                 style: SwitchTexts.titleBody(SwitchColors.ui_blueziness_800),
@@ -157,7 +165,7 @@ class _ControlSwitchState extends State<ControlSwitch> {
               ),
               const SizedBox(height: 10),
               Text(
-                widget.switchCode,
+                widget.arduinoCode,
                 style: TextStyle(
                   fontSize: 14,
                   color: SwitchColors.steel_gray_300,
