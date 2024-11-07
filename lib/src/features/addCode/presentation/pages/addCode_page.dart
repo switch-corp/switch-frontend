@@ -5,16 +5,18 @@ import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 
 class AddCode extends StatefulWidget {
+  const AddCode({super.key});
+
   @override
   _AddCodeState createState() => _AddCodeState();
 }
 
 class _AddCodeState extends State<AddCode> {
-  TextEditingController _codeController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
-  ValueNotifier<bool> _codeFieldEmpty = ValueNotifier<bool>(true);
-  ValueNotifier<bool> _nameFieldEmpty = ValueNotifier<bool>(true);
-  ValueNotifier<bool> _codeMaxReached = ValueNotifier<bool>(false);
+  final TextEditingController _codeController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final ValueNotifier<bool> _codeFieldEmpty = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _nameFieldEmpty = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _codeMaxReached = ValueNotifier<bool>(false);
 
   @override
   void initState() {
@@ -68,7 +70,7 @@ class _AddCodeState extends State<AddCode> {
                   .copyWith(fontSize: 18)),
           centerTitle: true,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -80,7 +82,7 @@ class _AddCodeState extends State<AddCode> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Spacer(flex: 2),
+                const Spacer(flex: 2),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -88,7 +90,7 @@ class _AddCodeState extends State<AddCode> {
                       'Digite o nome do Switch',
                       style: SwitchTexts.titleBody(SwitchColors.steel_gray_300),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextField(
                       controller: _nameController,
                       textAlign: TextAlign.center,
@@ -112,15 +114,15 @@ class _AddCodeState extends State<AddCode> {
                         hintText: '',
                         hintStyle: TextStyle(color: SwitchColors.steel_gray_50),
                       ),
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      style: const TextStyle(color: Colors.white, fontSize: 18),
                       cursorColor: Colors.blue,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Text(
                       'Digite o código do Switch',
                       style: SwitchTexts.titleBody(SwitchColors.steel_gray_300),
                     ),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                     TextField(
                       controller: _codeController,
                       textAlign: TextAlign.center,
@@ -140,16 +142,16 @@ class _AddCodeState extends State<AddCode> {
                         hintText: '',
                         hintStyle: TextStyle(color: SwitchColors.steel_gray_50),
                       ),
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      style: const TextStyle(color: Colors.white, fontSize: 18),
                       cursorColor: Colors.blue,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ValueListenableBuilder<bool>(
                       valueListenable: _codeMaxReached,
                       builder: (context, isMaxReached, child) {
                         return isMaxReached
-                            ? Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
+                            ? const Padding(
+                                padding: EdgeInsets.only(top: 8.0),
                                 child: Text(
                                   'Limite de 25 caracteres atingido!',
                                   style: TextStyle(color: Colors.red),
@@ -158,7 +160,7 @@ class _AddCodeState extends State<AddCode> {
                             : Container();
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -176,7 +178,8 @@ class _AddCodeState extends State<AddCode> {
                                         _nameFieldEmpty.value = true;
                                       },
                                 style: TextButton.styleFrom(
-                                  padding: EdgeInsets.symmetric(vertical: 16),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 16),
                                   side: BorderSide(
                                     color: isCodeFieldEmpty
                                         ? Colors.grey
@@ -200,7 +203,7 @@ class _AddCodeState extends State<AddCode> {
                             },
                           ),
                         ),
-                        SizedBox(width: 20),
+                        const SizedBox(width: 20),
                         Expanded(
                           child: ValueListenableBuilder<bool>(
                             valueListenable: _codeFieldEmpty,
@@ -212,18 +215,22 @@ class _AddCodeState extends State<AddCode> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => LinkRoom(),
+                                            builder: (context) => LinkRoom(
+                                              switchCode: _codeController.text,
+                                              switchName: _nameController.text,
+                                            ),
                                           ),
                                         );
                                       },
                                 borderRadius: BorderRadius.circular(6),
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 16),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 16),
                                   decoration: BoxDecoration(
                                     color: isCodeFieldEmpty ||
                                             _nameFieldEmpty.value
                                         ? Colors.grey
-                                        : Color.fromRGBO(2, 79, 255, 1),
+                                        : const Color.fromRGBO(2, 79, 255, 1),
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   alignment: Alignment.center,
@@ -247,7 +254,7 @@ class _AddCodeState extends State<AddCode> {
                     ),
                   ],
                 ),
-                Spacer(flex: 3),
+                const Spacer(flex: 3),
               ],
             ),
           ),

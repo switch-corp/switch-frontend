@@ -16,7 +16,7 @@ class Room {
       id: map['_id'],
       description: map["description"],
       name: map["name"],
-      switches: RoomSwitch.fromMapList(map["switches"]),
+      switches: [],
     );
   }
 }

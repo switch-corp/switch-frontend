@@ -15,42 +15,27 @@ class SwitchesPage extends StatefulWidget {
 }
 
 class _SwitchesPageState extends State<SwitchesPage> {
-  final List<Map<String, String>> _switchStates = [
-    {'label': 'Interruptor da frente', 'state': 'on'},
-    {'label': 'Interruptor do meio', 'state': 'off'},
-    {'label': 'Interruptor de trás', 'state': 'error'},
-    {'label': 'Interruptor da frente 2', 'state': 'on'},
-    {'label': 'Interruptor da cozinha', 'state': 'on'},
-    {'label': 'Interruptor do quintal', 'state': 'off'},
-    {'label': 'Interruptor de trás', 'state': 'error'},
-    {'label': 'Interruptor da frente 2', 'state': 'on'},
-    {'label': 'Interruptor novo', 'state': 'on'},
-    {'label': 'Interruptor quarto térreo', 'state': 'off'},
-    {'label': 'Interruptor de trás', 'state': 'error'},
-    {'label': 'Interruptor da frente 5', 'state': 'on'}
-  ];
-
-  List<SwitchModel> switches = [];
+  List<SwitchModel> _switches = [];
 
   bool loading = false;
 
   void _addSwitch(String switchLabel) {
     setState(() {
-      _switchStates.add({'label': switchLabel, 'state': 'off'});
+      _switches.add({'label': switchLabel, 'state': 'off'} as SwitchModel);
     });
   }
 
   void _editSwitchName(String oldLabel) async {
-    final newLabel = await _showEditDialog(oldLabel);
-    if (newLabel != null && newLabel.isNotEmpty) {
-      setState(() {
-        int index = _switchStates
-            .indexWhere((switchState) => switchState['label'] == oldLabel);
-        if (index != -1) {
-          _switchStates[index]['label'] = newLabel;
-        }
-      });
-    }
+    // final newLabel = await _showEditDialog(oldLabel);
+    // if (newLabel != null && newLabel.isNotEmpty) {
+    //   setState(() {
+    //     int index = _switches
+    //         .indexWhere((switchState) => switchState['label'] == oldLabel);
+    //     if (index != -1) {
+    //       _switches[index]['label'] = newLabel;
+    //     }
+    //   });
+    // }
   }
 
   void _getSwitches() async {
@@ -61,7 +46,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
     try {
       var response = await ListSwitchBloc.getSwitch();
       setState(() {
-        switches = response;
+        _switches = response;
         loading = false;
       });
     } catch (e) {
@@ -169,7 +154,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
                   children: [
                     Expanded(
                       child: ListView(
-                        children: switches.map((switchState) {
+                        children: _switches.map((switchState) {
                           String switchLabel = switchState.name;
                           bool status = switchState.is_active;
                           String switchCode = switchState.arduino_id;
@@ -301,7 +286,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AddCode(),
+        builder: (context) => const AddCode(),
       ),
     );
 

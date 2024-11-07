@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:switchfrontend/src/features/listSwitch/presentation/list-switch.api.dart';
 import 'package:switchfrontend/src/features/listSwitch/presentation/pages/listSwitch_page.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 
 class LinkRoom extends StatefulWidget {
+  final String switchCode;
+  final String switchName;
+
+  const LinkRoom(
+      {super.key, required this.switchCode, required this.switchName});
+
   @override
   _LinkRoomState createState() => _LinkRoomState();
 }
 
 class _LinkRoomState extends State<LinkRoom> {
+  String _switchCode = '';
+  String _switchName = '';
+
   List<Map<String, String>> rooms = [
     {"title": "Sala 1", "description": "Sala da parede rosa"},
     {"title": "Sala 2", "description": "Sala que é assim e assado"},
@@ -18,6 +28,8 @@ class _LinkRoomState extends State<LinkRoom> {
 
   @override
   void initState() {
+    _switchCode = widget.switchCode;
+    _switchName = widget.switchName;
     super.initState();
     selectedRooms = List<bool>.filled(rooms.length, false);
   }
@@ -26,6 +38,17 @@ class _LinkRoomState extends State<LinkRoom> {
     setState(() {
       selectedRooms[index] = isSelected;
     });
+  }
+
+  void _onAddRoom(String name, String arduinoId) {
+    ListSwitchApi.addSwitch(name, arduinoId);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SwitchesPage(),
+      ),
+    );
   }
 
   @override
@@ -46,7 +69,7 @@ class _LinkRoomState extends State<LinkRoom> {
           ),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -58,7 +81,7 @@ class _LinkRoomState extends State<LinkRoom> {
           children: [
             Expanded(
               child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 16.0,
                   mainAxisSpacing: 16.0,
@@ -76,29 +99,22 @@ class _LinkRoomState extends State<LinkRoom> {
                 },
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SwitchesPage(),
-                        ),
-                      );
-                    },
+                    onPressed: () => _onAddRoom(_switchName, _switchCode),
                     style: TextButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       side: BorderSide(color: SwitchColors.ui_blueziness_800),
                       backgroundColor: Colors.transparent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'VINCULAR DEPOIS',
                       style: TextStyle(
                         color: Colors.white,
@@ -108,21 +124,12 @@ class _LinkRoomState extends State<LinkRoom> {
                     ),
                   ),
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 Expanded(
                   child: TextButton(
-                    onPressed: isAnyRoomSelected
-                        ? () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SwitchesPage(),
-                              ),
-                            );
-                          }
-                        : null,
+                    onPressed: () => _onAddRoom(_switchName, _switchCode),
                     style: TextButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       backgroundColor: isAnyRoomSelected
                           ? SwitchColors.ui_blueziness_800
                           : Colors.grey, // Fundo azul se habilitado
@@ -157,6 +164,7 @@ class RoomCard extends StatelessWidget {
   final ValueChanged<bool> onSelected;
 
   const RoomCard({
+    super.key,
     required this.title,
     required this.description,
     required this.isSelected,
@@ -186,11 +194,11 @@ class RoomCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(color: Colors.white, fontSize: 18),
+                style: const TextStyle(color: Colors.white, fontSize: 18),
               ),
               Text(
                 description,
-                style: TextStyle(color: Colors.grey, fontSize: 14),
+                style: const TextStyle(color: Colors.grey, fontSize: 14),
               ),
               Switch(
                 value: isSelected,

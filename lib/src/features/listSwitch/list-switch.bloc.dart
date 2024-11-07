@@ -9,4 +9,9 @@ class ListSwitchBloc {
 
     return response.map((map) => SwitchModel.fromMap(map)).toList();
   }
+
+  static Future<SwitchModel> addSwitch(String name, String arduinoId) async {
+    var response = await ListSwitchApi.addSwitch(name, arduinoId);
+    return SwitchModel.fromMap(response);
+  }
 }
