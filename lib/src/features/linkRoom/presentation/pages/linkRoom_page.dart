@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:switchfrontend/src/features/listRoom/listRoom.bloc.dart';
+import 'package:switchfrontend/src/features/listRoom/models/room.model.dart';
 import 'package:switchfrontend/src/features/listSwitch/presentation/list-switch.api.dart';
 import 'package:switchfrontend/src/features/listSwitch/presentation/pages/listSwitch_page.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
@@ -16,22 +18,38 @@ class LinkRoom extends StatefulWidget {
 }
 
 class _LinkRoomState extends State<LinkRoom> {
+  bool loading = false;
   String _switchCode = '';
   String _switchName = '';
-
-  List<Map<String, String>> rooms = [
-    {"title": "Sala 1", "description": "Sala da parede rosa"},
-    {"title": "Sala 2", "description": "Sala que é assim e assado"},
-  ];
+  List<Room> _rooms = [];
 
   List<bool> selectedRooms = [];
+
+  void getRooms() async {
+    setState(() {
+      loading = true;
+    });
+
+    try {
+      var response = await ListRoomBloc.getRooms();
+      setState(() {
+        _rooms = response;
+        loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        loading = false;
+      });
+    }
+  }
 
   @override
   void initState() {
     _switchCode = widget.switchCode;
     _switchName = widget.switchName;
+    getRooms();
     super.initState();
-    selectedRooms = List<bool>.filled(rooms.length, false);
+    selectedRooms = List<bool>.filled(_rooms.length, false);
   }
 
   void _onRoomSelected(int index, bool isSelected) {
@@ -87,12 +105,14 @@ class _LinkRoomState extends State<LinkRoom> {
                   mainAxisSpacing: 16.0,
                   childAspectRatio: 1.0,
                 ),
-                itemCount: rooms.length,
+                itemCount: _rooms.length,
                 itemBuilder: (context, index) {
                   return RoomCard(
-                    title: rooms[index]['title']!,
-                    description: rooms[index]['description']!,
-                    isSelected: selectedRooms[index],
+                    title: _rooms[index].name,
+                    description: _rooms[index].description,
+                    isSelected: selectedRooms.isNotEmpty
+                        ? (selectedRooms[index] == true ? true : false)
+                        : false,
                     onSelected: (isSelected) =>
                         _onRoomSelected(index, isSelected),
                   );

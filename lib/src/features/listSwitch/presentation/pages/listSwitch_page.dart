@@ -25,20 +25,14 @@ class _SwitchesPageState extends State<SwitchesPage> {
     });
   }
 
-  void _editSwitchName(String oldLabel) async {
-    // final newLabel = await _showEditDialog(oldLabel);
-    // if (newLabel != null && newLabel.isNotEmpty) {
-    //   setState(() {
-    //     int index = _switches
-    //         .indexWhere((switchState) => switchState['label'] == oldLabel);
-    //     if (index != -1) {
-    //       _switches[index]['label'] = newLabel;
-    //     }
-    //   });
-    // }
+  void _editSwitchName(String switchId, String oldLabel) async {
+    final newLabel = await showEditDialog(oldLabel);
+    if (newLabel != null && newLabel.isNotEmpty) {
+      ListSwitchBloc.renameSwitch(newLabel, switchId);
+    }
   }
 
-  void _getSwitches() async {
+  void getSwitches() async {
     setState(() {
       loading = true;
     });
@@ -58,11 +52,11 @@ class _SwitchesPageState extends State<SwitchesPage> {
 
   @override
   void initState() {
-    _getSwitches();
+    getSwitches();
     super.initState();
   }
 
-  Future<String?> _showEditDialog(String currentLabel) {
+  Future<String?> showEditDialog(String currentLabel) {
     TextEditingController controller =
         TextEditingController(text: currentLabel);
     return showDialog<String>(
@@ -163,7 +157,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildSwitch(
+                              buildSwitch(
                                   switchLabel, status, arduinoCode, switchId),
                               Divider(
                                   color: Colors.blueAccent.withOpacity(0.3)),
@@ -181,7 +175,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
                       ),
                       trailing: const Icon(Icons.add, color: Colors.white),
                       onTap: () {
-                        _navigateToAddSwitch(context);
+                        navigateToAddSwitch(context);
                       },
                     ),
                   ],
@@ -190,7 +184,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
     );
   }
 
-  Widget _buildSwitch(
+  Widget buildSwitch(
       String switchLabel, bool status, String arduinoCode, String switchId) {
     Color iconColor;
     String displayText;
@@ -233,7 +227,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
                 height: 24,
                 child: IconButton(
                   icon: Icon(Icons.edit, color: Colors.grey[400], size: 23),
-                  onPressed: () => _editSwitchName(switchLabel),
+                  onPressed: () => _editSwitchName(switchId, switchLabel),
                 ),
               ),
             ],
@@ -267,13 +261,13 @@ class _SwitchesPageState extends State<SwitchesPage> {
         ),
       ),
       onTap: () {
-        _navigateToControlSwitch(
+        navigateToControlSwitch(
             context, switchLabel, arduinoCode, status, switchId);
       },
     );
   }
 
-  void _navigateToControlSwitch(BuildContext context, String switchName,
+  void navigateToControlSwitch(BuildContext context, String switchName,
       String arduinoCode, bool switchState, String switchId) {
     Navigator.push(
       context,
@@ -288,7 +282,7 @@ class _SwitchesPageState extends State<SwitchesPage> {
     );
   }
 
-  void _navigateToAddSwitch(BuildContext context) async {
+  void navigateToAddSwitch(BuildContext context) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(

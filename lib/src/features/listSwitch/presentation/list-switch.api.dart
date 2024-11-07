@@ -49,4 +49,26 @@ class ListSwitchApi {
       rethrow;
     }
   }
+
+  static Future<void> renameSwitch(String switchId, String newName) async {
+    try {
+      Uri url = Uri.parse('${dotenv.env['BASE_URL']!}/api/v1/switch/update');
+      final response = await http.patch(url, headers: {
+        'Authorization': 'Bearer ${AuthBloc.userToken}',
+        'Conten-Type': 'application/json',
+        'switch_id': switchId
+      }, body: {
+        'name': newName
+      });
+
+      if (response.statusCode == 204) {
+        return;
+      } else {
+        throw Exception(
+            'Error: ${response.statusCode} - ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

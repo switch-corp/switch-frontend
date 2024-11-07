@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:switchfrontend/src/features/linkRoom/presentation/pages/linkRoom_page.dart';
+import 'package:switchfrontend/src/features/home/presentation/pages/home_page.dart';
+import 'package:switchfrontend/src/features/listSwitch/presentation/list-switch.api.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 
@@ -17,6 +18,17 @@ class _AddCodeState extends State<AddCode> {
   final ValueNotifier<bool> _codeFieldEmpty = ValueNotifier<bool>(true);
   final ValueNotifier<bool> _nameFieldEmpty = ValueNotifier<bool>(true);
   final ValueNotifier<bool> _codeMaxReached = ValueNotifier<bool>(false);
+
+  void _onAddRoom(String name, String arduinoId) {
+    ListSwitchApi.addSwitch(name, arduinoId);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const HomePage(),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -212,15 +224,8 @@ class _AddCodeState extends State<AddCode> {
                                 onTap: isCodeFieldEmpty || _nameFieldEmpty.value
                                     ? null
                                     : () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => LinkRoom(
-                                              switchCode: _codeController.text,
-                                              switchName: _nameController.text,
-                                            ),
-                                          ),
-                                        );
+                                        _onAddRoom(_nameController.text,
+                                            _codeController.text);
                                       },
                                 borderRadius: BorderRadius.circular(6),
                                 child: Container(
@@ -235,7 +240,7 @@ class _AddCodeState extends State<AddCode> {
                                   ),
                                   alignment: Alignment.center,
                                   child: Text(
-                                    'CONTINUAR',
+                                    'CONCLUIR',
                                     style: TextStyle(
                                       color: isCodeFieldEmpty ||
                                               _nameFieldEmpty.value
