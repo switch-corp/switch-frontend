@@ -6,8 +6,8 @@ class AuthApi {
   static Future<String> login(String email, String password) async {
     try {
       Uri url = Uri.parse('${dotenv.env['BASE_URL']!}/api/v1/auth/signin');
-      final response = await http
-          .post(url, body: {"email": "$email", "password": "$password"});
+      final response =
+          await http.post(url, body: {"email": email, "password": password});
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
@@ -17,8 +17,8 @@ class AuthApi {
         print('Access Token: $accessToken');
         return accessToken;
       } else {
-        print(response.statusCode);
-        throw Exception();
+        throw Exception(
+            'Error: ${response.statusCode} - ${response.reasonPhrase}');
       }
     } catch (e) {
       print(e);
@@ -31,7 +31,7 @@ class AuthApi {
     try {
       Uri url = Uri.parse('${dotenv.env['BASE_URL']!}/api/v1/auth/signup');
       final response = await http.post(url,
-          body: {"email": "$email", "password": "$password", "name": "$name"});
+          body: {"email": email, "password": password, "name": name});
 
       Map<String, dynamic> jsonResponse = json.decode(response.body);
 

@@ -10,15 +10,16 @@ class ControlSwitchApi {
     try {
       Uri url = Uri.parse(
           '${dotenv.env['BASE_URL']!}/api/v1/switch/power/$arduinoId');
-      final response = await http.post(url, headers: {
-        'Authorization': 'Bearer ${AuthBloc.userToken}',
-      }, body: {
-        'state': state
-      });
+      final response = await http.post(url,
+          headers: {
+            'Authorization': 'Bearer ${AuthBloc.userToken}',
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({'state': state}));
 
       print(response);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         print(jsonResponse);
 
@@ -32,16 +33,3 @@ class ControlSwitchApi {
     }
   }
 }
-
-
-// var url = Uri.https(
-//         'switch-backend-2trd.onrender.com', '/api/v1/switch/power/123456789');
-
-//     var response = await http.post(
-//       url,
-//       headers: {'Content-Type': 'application/json'},
-//       body: jsonEncode({"state": _switchOn}),
-//     );
-
-//     print('Response status: ${response.statusCode}');
-//     print('Response body: ${response.body}');

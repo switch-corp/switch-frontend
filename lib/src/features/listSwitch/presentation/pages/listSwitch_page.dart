@@ -171,11 +171,12 @@ class _SwitchesPageState extends State<SwitchesPage> {
                       child: ListView(
                         children: switches.map((switchState) {
                           String switchLabel = switchState.name;
-                          String status = switchState.is_active ? 'on' : 'off';
+                          bool status = switchState.is_active;
+                          String switchCode = switchState.arduino_id;
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildSwitch(switchLabel, status),
+                              _buildSwitch(switchLabel, status, switchCode),
                               Divider(
                                   color: Colors.blueAccent.withOpacity(0.3)),
                             ],
@@ -201,13 +202,12 @@ class _SwitchesPageState extends State<SwitchesPage> {
     );
   }
 
-  Widget _buildSwitch(String switchLabel, String status) {
+  Widget _buildSwitch(String switchLabel, bool status, String switchCode) {
     Color iconColor;
     String displayText;
     String tooltipMessage;
-    String switchCode = "SAKSSNFC";
 
-    switch (status) {
+    switch (status ? 'on' : 'off') {
       case 'on':
         iconColor = Colors.blue; // Mudou a cor para azul
         displayText = 'ON';
@@ -278,19 +278,20 @@ class _SwitchesPageState extends State<SwitchesPage> {
         ),
       ),
       onTap: () {
-        _navigateToControlSwitch(context, switchLabel, switchCode);
+        _navigateToControlSwitch(context, switchLabel, switchCode, status);
       },
     );
   }
 
-  void _navigateToControlSwitch(
-      BuildContext context, String switchName, String switchCode) {
+  void _navigateToControlSwitch(BuildContext context, String switchName,
+      String switchCode, bool switchState) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ControlSwitch(
           switchName: switchName,
           switchCode: switchCode,
+          switchState: switchState,
         ),
       ),
     );

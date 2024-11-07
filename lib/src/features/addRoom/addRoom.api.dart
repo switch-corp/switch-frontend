@@ -10,8 +10,8 @@ class AddRoomApi {
       final response = await http.post(
         url,
         body: jsonEncode({
-          "name": "$name",
-          "description": "$description",
+          "name": name,
+          "description": description,
           "switches": [],
         }),
         headers: {

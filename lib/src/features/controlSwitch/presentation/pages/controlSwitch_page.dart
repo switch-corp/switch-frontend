@@ -1,16 +1,22 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:switchfrontend/src/features/controlSwitch/control-switch.api.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
-import 'package:switchfrontend/src/features/listSwitch/presentation/pages/listSwitch_page.dart'; 
+import 'package:switchfrontend/src/features/listSwitch/presentation/pages/listSwitch_page.dart';
 import 'package:http/http.dart' as http;
 
 class ControlSwitch extends StatefulWidget {
   final String switchCode;
   final String switchName;
+  final bool switchState;
 
-  ControlSwitch({required this.switchCode, required this.switchName});
+  const ControlSwitch(
+      {super.key,
+      required this.switchCode,
+      required this.switchName,
+      required this.switchState});
 
   @override
   _ControlSwitchState createState() => _ControlSwitchState();
@@ -18,25 +24,21 @@ class ControlSwitch extends StatefulWidget {
 
 class _ControlSwitchState extends State<ControlSwitch> {
   bool _switchOn = false;
+  String _arduinoId = '';
+
+  @override
+  void initState() {
+    _switchOn = widget.switchState;
+    _arduinoId = widget.switchCode;
+    super.initState();
+  }
 
   void _toggleSwitch() async {
     setState(() {
       _switchOn = !_switchOn;
     });
 
-            var url =
-      Uri.https('switch-backend-2trd.onrender.com','/api/v1/switch/power/123456789');
-
-var response =  await http.post(
-  url,
-  headers: {'Content-Type': 'application/json'},
-  body: jsonEncode({"state":_switchOn}),
-);
-
-
-      print('Response status: ${response.statusCode}');
-print('Response body: ${response.body}');
-  
+    ControlSwitchApi.powerSwitch(_arduinoId, _switchOn);
   }
 
   void _confirmDeleteSwitch() {
@@ -84,7 +86,7 @@ print('Response body: ${response.body}');
                 Navigator.pop(context);
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => SwitchesPage()),
+                  MaterialPageRoute(builder: (context) => const SwitchesPage()),
                   (route) => false,
                 );
 
