@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:switchfrontend/src/features/login/auth.bloc.dart';
 
 class ListScheduleApi {
-  static Future<List> getSwitches() async {
+  static Future<List> getSchedules() async {
     try {
       Uri url = Uri.parse('${dotenv.env['BASE_URL']!}/api/v1/usergroups');
       final response = await http.get(url, headers: {

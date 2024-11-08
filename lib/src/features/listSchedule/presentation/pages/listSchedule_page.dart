@@ -27,7 +27,7 @@ class _ListScheduleState extends State<ListSchedule> {
   void _addSchedule() async {
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Schedule()),
+      MaterialPageRoute(builder: (context) => const Schedule()),
     );
   }
 
@@ -54,7 +54,7 @@ class _ListScheduleState extends State<ListSchedule> {
     });
 
     try {
-      var response = await ListScheduleBloc.getSwitches();
+      var response = await ListScheduleBloc.getSchedules();
       setState(() {
         _schedules = response;
       });
@@ -105,8 +105,8 @@ class _ListScheduleState extends State<ListSchedule> {
                     children: [
                       ScheduleCard(
                         title: _schedules[index].eventName,
-                        eventDate: _schedules[index].eventDate,
-                        days: [_schedules[index].eventDate],
+                        eventDate: _schedules[index].eventDate.eventDate,
+                        days: [_schedules[index].eventDate.dayOfWeek],
                         isEnabled: _schedules[index].isActive,
                         onToggle: (value) => _toggleSchedule(index, value),
                         onEdit: () => _editSchedule(index),
