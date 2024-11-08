@@ -11,4 +11,8 @@ class RoomBloc {
   static deleteRoom(String id) async {
     await RoomApi.deleteRoom(id);
   }
+
+  static updateRoom(String id, String name, String description) async {
+    await RoomApi.updateRoom(id, name, description);
+  }
 }

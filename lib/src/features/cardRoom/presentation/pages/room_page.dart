@@ -58,19 +58,34 @@ class _RoomPageState extends State<RoomPage> {
       context,
       MaterialPageRoute(
         builder: (context) => LinkSwitches(
+          roomId: room!.id,
           roomTitle: _titleController.text,
           roomDescription: _descriptionController.text,
         ),
       ),
-    ).then((result) {});
+    ).then((result) {
+      getData();
+    });
   }
 
   void _cancel() {
     Navigator.pop(context);
   }
 
-  void _conclude() {
-    Navigator.pop(context);
+  void _conclude() async {
+    setState(() {
+      loading = true;
+    });
+
+    await RoomBloc.updateRoom(
+      room!.id,
+      _titleController.text,
+      _descriptionController.text,
+    );
+
+    setState(() {
+      loading = false;
+    });
   }
 
   void _onTitleChanged(String value) {
@@ -150,6 +165,7 @@ class _RoomPageState extends State<RoomPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: SwitchColors.steel_gray_950,
       appBar: AppBar(
         backgroundColor: SwitchColors.steel_gray_950,
@@ -308,29 +324,6 @@ class _RoomPageState extends State<RoomPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(
-                        child: TextButton(
-                          onPressed: _cancel,
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            side: BorderSide(
-                              color: SwitchColors.ui_blueziness_800,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                          ),
-                          child: const Text(
-                            'CANCELAR',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
                       Expanded(
                         child: TextButton(
                           onPressed: _hasChanges ? _conclude : null,
