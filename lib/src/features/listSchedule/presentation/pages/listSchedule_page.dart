@@ -1,42 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:switchfrontend/src/features/home/presentation/pages/home_page.dart';
+import 'package:switchfrontend/src/features/listSchedule/list-schedule.bloc.dart';
+import 'package:switchfrontend/src/features/listSchedule/models/schedule.model.dart';
 import 'package:switchfrontend/src/features/schedule/presentation/pages/schedule_page.dart';
 import 'package:switchfrontend/src/features/cardSchedule/presentation/pages/cardSchedule_page.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 
 class ListSchedule extends StatefulWidget {
+  const ListSchedule({super.key});
+
   @override
   _ListScheduleState createState() => _ListScheduleState();
 }
 
 class _ListScheduleState extends State<ListSchedule> {
-  List<Map<String, dynamic>> schedules = [
-    {
-      "title": "Automatização 1",
-      "description": "Ativa luzes",
-      "enabled": false,
-      "startTime": "18:00",
-      "endTime": null,
-      "days": ["Segunda", "Quarta", "Sexta"]
-    },
-    {
-      "title": "Automatização 2",
-      "description": "Desliga ar-condicionado",
-      "enabled": false,
-      "startTime": "23:00",
-      "endTime": null,
-      "days": ["Terça", "Quinta"]
-    },
-    {
-      "title": "Automatização 3",
-      "description": "Liga ventilador",
-      "enabled": false,
-      "startTime": "15:00",
-      "endTime": "16:00",
-      "days": ["Sábado"]
-    },
-  ];
+  List<ScheduleModel> _schedules = [];
+  bool loading = false;
+
+  @override
+  void initState() {
+    getSchedules();
+    super.initState();
+  }
 
   void _addSchedule() async {
     await Navigator.push(
@@ -47,7 +33,7 @@ class _ListScheduleState extends State<ListSchedule> {
 
   void _toggleSchedule(int index, bool? value) {
     setState(() {
-      schedules[index]['enabled'] = value!;
+      _schedules[index].isActive = value!;
     });
   }
 
@@ -55,9 +41,28 @@ class _ListScheduleState extends State<ListSchedule> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CardSchedule(automationName: schedules[index]['title']),
+        builder: (context) => CardSchedule(
+          automationName: _schedules[index].eventName,
+        ),
       ),
     );
+  }
+
+  void getSchedules() async {
+    setState(() {
+      loading = true;
+    });
+
+    try {
+      var response = await ListScheduleBloc.getSwitches();
+      setState(() {
+        _schedules = response;
+      });
+    } catch (e) {
+      setState(() {
+        loading = false;
+      });
+    }
   }
 
   @override
@@ -65,62 +70,60 @@ class _ListScheduleState extends State<ListSchedule> {
     return Scaffold(
       backgroundColor: SwitchColors.steel_gray_950,
       appBar: AppBar(
-  backgroundColor: SwitchColors.steel_gray_950,
-  title: Row(
-    children: [
-      Spacer(flex: 2), 
-      Text(
-        'Automatizações',
-        style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
-            .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+        backgroundColor: SwitchColors.steel_gray_950,
+        title: Row(
+          children: [
+            const Spacer(flex: 2),
+            Text(
+              'Automatizações',
+              style: SwitchTexts.titleBody(SwitchColors.steel_gray_50)
+                  .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            const Spacer(flex: 3),
+          ],
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          },
+        ),
+        automaticallyImplyLeading: false,
       ),
-      Spacer(flex: 3), 
-    ],
-  ),
-  leading: IconButton(
-    icon: Icon(Icons.arrow_back, color: Colors.white),
-    onPressed: () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
-    },
-  ),
-  automaticallyImplyLeading: false,
-),
-
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: schedules.length,
+                itemCount: _schedules.length,
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
                       ScheduleCard(
-                        title: schedules[index]['title']!,
-                        startTime: schedules[index]['startTime']!,
-                        endTime: schedules[index]['endTime'],
-                        days: schedules[index]['days'],
-                        isEnabled: schedules[index]['enabled'],
+                        title: _schedules[index].eventName,
+                        eventDate: _schedules[index].eventDate,
+                        days: [_schedules[index].eventDate],
+                        isEnabled: _schedules[index].isActive,
                         onToggle: (value) => _toggleSchedule(index, value),
                         onEdit: () => _editSchedule(index),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                     ],
                   );
                 },
               ),
             ),
-            Divider(color: Colors.grey),
+            const Divider(color: Colors.grey),
             ListTile(
-              title: Text(
+              title: const Text(
                 'Adicionar Automatização',
                 style: TextStyle(color: Colors.white),
               ),
-              trailing: Icon(Icons.add, color: Colors.white),
+              trailing: const Icon(Icons.add, color: Colors.white),
               onTap: _addSchedule,
             ),
           ],
@@ -132,17 +135,16 @@ class _ListScheduleState extends State<ListSchedule> {
 
 class ScheduleCard extends StatelessWidget {
   final String title;
-  final String startTime;
-  final String? endTime;
+  final String eventDate;
   final List<String> days;
   final bool isEnabled;
   final ValueChanged<bool?> onToggle;
   final VoidCallback onEdit;
 
   const ScheduleCard({
+    super.key,
     required this.title,
-    required this.startTime,
-    this.endTime,
+    required this.eventDate,
     required this.days,
     required this.isEnabled,
     required this.onToggle,
@@ -151,7 +153,6 @@ class ScheduleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String scheduleTime = endTime != null ? "$startTime - $endTime" : "$startTime";
     String daysOfWeek = days.join(", ");
 
     return Container(
@@ -174,15 +175,18 @@ class ScheduleCard extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: TextStyle(color: Colors.white, fontSize: 18),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 18),
                       ),
                       Text(
-                        scheduleTime,
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                        eventDate,
+                        style:
+                            const TextStyle(color: Colors.grey, fontSize: 14),
                       ),
                       Text(
-                        "$daysOfWeek",
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                        daysOfWeek,
+                        style:
+                            const TextStyle(color: Colors.grey, fontSize: 14),
                       ),
                     ],
                   ),
@@ -205,7 +209,7 @@ class ScheduleCard extends StatelessWidget {
                 ),
                 Text(
                   isEnabled ? 'ativado' : 'desativado',
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
                 ),
               ],
             ),

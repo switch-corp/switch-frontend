@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:switchfrontend/src/features/home/presentation/pages/home_page.dart';
-import 'package:switchfrontend/src/features/login/presentation/pages/login_page.dart';
-import 'package:switchfrontend/src/features/login/presentation/pages/signin_page.dart';
-import 'package:switchfrontend/src/features/splash_screen.dart'; 
+import 'package:switchfrontend/src/features/splash_screen.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
