@@ -34,23 +34,27 @@ class RoomApi {
   static deleteRoom(String id) async {
     try {
       Uri url = Uri.parse('${dotenv.env['BASE_URL']!}/api/v1/rooms/$id');
-      final response = await http.get(
+      await http.delete(
         url,
         headers: {
           'Authorization': 'Bearer ${AuthBloc.userToken}',
           'Content-Type': 'application/json',
         },
       );
+    } catch (e) {
+      rethrow;
+    }
+  }
 
-      if (response.statusCode == 200) {
-        final jsonResponse = json.decode(response.body);
-
-        print(jsonResponse);
-
-        return jsonResponse;
-      } else {
-        throw Exception();
-      }
+  static updateRoom(String id, String name, String description) async {
+    try {
+      Uri url = Uri.parse('${dotenv.env['BASE_URL']!}/api/v1/rooms/$id');
+      await http.patch(url, headers: {
+        'Authorization': 'Bearer ${AuthBloc.userToken}',
+      }, body: {
+        "name": name,
+        "description": description,
+      });
     } catch (e) {
       rethrow;
     }

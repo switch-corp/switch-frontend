@@ -27,7 +27,7 @@ class HomeApi {
         Map<String, dynamic> user = jsonResponse["users"][0];
         List schedules = jsonResponse["schedules"];
 
-        return new HomeDataModel(
+        return HomeDataModel(
             user: UserModel.fromMap(user),
             schedules: schedules
                 .map(
