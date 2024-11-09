@@ -24,4 +24,29 @@ class ListScheduleApi {
       rethrow;
     }
   }
+
+  static Future<void> createSchedule(
+      String eventName, String eventDate, List<String> switches) async {
+    try {
+      Uri url = Uri.parse('${dotenv.env['BASE_URL']!}/api/v1/schedule/create');
+      final response = await http.post(url,
+          headers: {
+            'Authorization': 'Bearer ${AuthBloc.userToken}',
+            'Content-Type': 'application/json'
+          },
+          body: jsonEncode({
+            "event_name": eventName,
+            "event_date": eventDate,
+            "switches": switches
+          }));
+
+      if (response.statusCode == 201) {
+        return;
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

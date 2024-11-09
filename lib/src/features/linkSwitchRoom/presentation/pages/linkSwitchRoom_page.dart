@@ -6,7 +6,14 @@ import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
 import 'package:switchfrontend/src/features/listSchedule/presentation/pages/listSchedule_page.dart';
 
 class LinkSwitchRoom extends StatefulWidget {
-  const LinkSwitchRoom({super.key});
+  final TimeOfDay timeOfDay;
+  final List<bool> selectedDays;
+  final String eventName;
+  const LinkSwitchRoom(
+      {super.key,
+      required this.eventName,
+      required this.selectedDays,
+      required this.timeOfDay});
 
   @override
   _LinkSwitchRoomState createState() => _LinkSwitchRoomState();
@@ -18,8 +25,8 @@ class _LinkSwitchRoomState extends State<LinkSwitchRoom> {
       "title": "Sala 1",
       "description": "Sala de reunião 302",
       "switches": [
-        {"code": "0iucfg7801", "name": "Switch 1"},
-        {"code": "cefij979", "name": "Switch 2"},
+        {"code": "672651303a4bce069af83d18", "name": "Switch 1"},
+        {"code": "672ae4787a92616b09494418", "name": "Switch 2"},
       ],
     },
     {
@@ -35,14 +42,16 @@ class _LinkSwitchRoomState extends State<LinkSwitchRoom> {
   Set<String> selectedSwitches = {};
   Set<int> expandedRooms = {};
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
+  Future<void> addSchedule() async {
+    await ListScheduleBloc.createSchedule(widget.eventName, widget.timeOfDay,
+        widget.selectedDays, selectedSwitches.toList());
 
-  void addSchedule() {
-    ListScheduleBloc.getSchedules();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ListSchedule(),
+      ),
+    );
   }
 
   @override
@@ -184,14 +193,8 @@ class _LinkSwitchRoomState extends State<LinkSwitchRoom> {
                 Expanded(
                   child: TextButton(
                     onPressed: selectedSwitches.isNotEmpty
-                        ? () {
-                            // Ação do botão CONTINUAR
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ListSchedule(),
-                              ),
-                            );
+                        ? () async {
+                            await addSchedule();
                           }
                         : null, // Desabilita o botão se não houver seleção
                     style: TextButton.styleFrom(

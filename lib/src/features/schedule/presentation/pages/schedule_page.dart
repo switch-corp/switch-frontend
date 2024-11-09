@@ -142,7 +142,10 @@ class _ScheduleState extends State<Schedule> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => LinkSwitchRoom(),
+                                builder: (context) => LinkSwitchRoom(
+                                    eventName: _nameController.text,
+                                    selectedDays: _selectedDays,
+                                    timeOfDay: _singleTime),
                               ),
                             );
                           }
