@@ -37,7 +37,7 @@ class _ListScheduleState extends State<ListSchedule> {
       loading = true;
     });
 
-    await ListScheduleBloc.removeSchedule(id, active);
+    await ListScheduleBloc.deactivateSchedule(id, active);
 
     setState(() {
       loading = false;
@@ -49,7 +49,18 @@ class _ListScheduleState extends State<ListSchedule> {
     });
   }
 
-  void _deleteSchedule(String id, bool active) async {}
+  void _deleteSchedule(String id, bool active) async {
+    setState(() {
+      loading = true;
+    });
+
+    await ListScheduleBloc.deactivateSchedule(id, active);
+
+    setState(() {
+      _schedules.removeWhere((schedule) => schedule.id == id);
+      loading = false;
+    });
+  }
 
   void getSchedules() async {
     setState(() {

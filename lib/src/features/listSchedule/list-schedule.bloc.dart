@@ -17,8 +17,12 @@ class ListScheduleBloc {
     await ListScheduleApi.createSchedule(eventName, dateEvent, switches);
   }
 
-  static Future<void> removeSchedule(String id, bool active) async {
-    await ListScheduleApi.removeSchedule(id, active);
+  static Future<void> deactivateSchedule(String id, bool active) async {
+    await ListScheduleApi.activateSchedule(id, active);
+  }
+
+  static Future<void> deleteSwitch(String id) async {
+    await ListScheduleApi.deleteSwitch(id);
   }
 }
 
