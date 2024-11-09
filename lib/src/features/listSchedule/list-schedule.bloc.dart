@@ -16,6 +16,10 @@ class ListScheduleBloc {
 
     await ListScheduleApi.createSchedule(eventName, dateEvent, switches);
   }
+
+  static Future<void> removeSchedule(String id, bool active) async {
+    await ListScheduleApi.removeSchedule(id, active);
+  }
 }
 
 String dataToCronString(TimeOfDay time, List<bool> daysWeek) {

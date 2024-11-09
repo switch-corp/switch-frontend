@@ -49,4 +49,27 @@ class ListScheduleApi {
       rethrow;
     }
   }
+
+  static Future<void> removeSchedule(String id, bool active) async {
+    try {
+      Uri url =
+          Uri.parse('${dotenv.env['BASE_URL']!}/api/v1/schedule/update/$id');
+      final response = await http.put(url,
+          headers: {
+            'Authorization': 'Bearer ${AuthBloc.userToken}',
+            'Content-Type': 'application/json'
+          },
+          body: jsonEncode({
+            "is_active": !active,
+          }));
+
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
