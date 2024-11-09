@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:switchfrontend/src/features/home/presentation/pages/home_page.dart';
 import 'package:switchfrontend/src/features/listSchedule/list-schedule.bloc.dart';
 import 'package:switchfrontend/src/features/listSchedule/models/schedule.model.dart';
+import 'package:switchfrontend/src/features/listSchedule/presentation/list-schedule.api.dart';
 import 'package:switchfrontend/src/features/schedule/presentation/pages/schedule_page.dart';
 import 'package:switchfrontend/src/features/cardSchedule/presentation/pages/cardSchedule_page.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
@@ -31,21 +32,34 @@ class _ListScheduleState extends State<ListSchedule> {
     );
   }
 
-  void _toggleSchedule(int index, bool? value) {
+  void _toggleSchedule(String id, bool active) async {
     setState(() {
-      _schedules[index].isActive = value!;
+      loading = true;
+    });
+
+    await ListScheduleBloc.deactivateSchedule(id, active);
+
+    setState(() {
+      loading = false;
+      for (int i = 0; i < _schedules.length; i++) {
+        if (_schedules[i].id == id) {
+          _schedules[i].isActive = !active;
+        }
+      }
     });
   }
 
-  void _editSchedule(int index) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CardSchedule(
-          automationName: _schedules[index].eventName,
-        ),
-      ),
-    );
+  void _deleteSchedule(String id, bool active) async {
+    setState(() {
+      loading = true;
+    });
+
+    await ListScheduleBloc.deactivateSchedule(id, active);
+
+    setState(() {
+      _schedules.removeWhere((schedule) => schedule.id == id);
+      loading = false;
+    });
   }
 
   void getSchedules() async {
@@ -57,6 +71,7 @@ class _ListScheduleState extends State<ListSchedule> {
       var response = await ListScheduleBloc.getSchedules();
       setState(() {
         _schedules = response;
+        loading = false;
       });
     } catch (e) {
       setState(() {
@@ -96,37 +111,47 @@ class _ListScheduleState extends State<ListSchedule> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: _schedules.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      ScheduleCard(
-                        title: _schedules[index].eventName,
-                        eventDate: _schedules[index].eventDate.eventDate,
-                        days: [_schedules[index].eventDate.dayOfWeek],
-                        isEnabled: _schedules[index].isActive,
-                        onToggle: (value) => _toggleSchedule(index, value),
-                        onEdit: () => _editSchedule(index),
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-                  );
-                },
-              ),
-            ),
-            const Divider(color: Colors.grey),
-            ListTile(
-              title: const Text(
-                'Adicionar Automatização',
-                style: TextStyle(color: Colors.white),
-              ),
-              trailing: const Icon(Icons.add, color: Colors.white),
-              onTap: _addSchedule,
-            ),
-          ],
+          children: loading
+              ? [
+                  const Center(child: CircularProgressIndicator()),
+                ]
+              : [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _schedules.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            ScheduleCard(
+                              title: _schedules[index].eventName,
+                              eventDate: _schedules[index].eventDate.eventDate,
+                              days: [_schedules[index].eventDate.dayOfWeek],
+                              isEnabled: _schedules[index].isActive,
+                              onToggle: (value) => _toggleSchedule(
+                                _schedules[index].id,
+                                _schedules[index].isActive,
+                              ),
+                              onEdit: () => _deleteSchedule(
+                                _schedules[index].id,
+                                _schedules[index].isActive,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                  const Divider(color: Colors.grey),
+                  ListTile(
+                    title: const Text(
+                      'Adicionar Automatização',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    trailing: const Icon(Icons.add, color: Colors.white),
+                    onTap: _addSchedule,
+                  ),
+                ],
         ),
       ),
     );
@@ -192,7 +217,7 @@ class ScheduleCard extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.edit, color: Colors.grey[400], size: 23),
+                  icon: Icon(Icons.delete, color: Colors.red, size: 23),
                   onPressed: onEdit,
                 ),
               ],
