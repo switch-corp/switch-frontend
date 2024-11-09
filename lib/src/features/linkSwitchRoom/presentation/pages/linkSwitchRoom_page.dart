@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:switchfrontend/src/features/listRoom/listRoom.bloc.dart';
+import 'package:switchfrontend/src/features/listRoom/models/room.model.dart';
 import 'package:switchfrontend/src/features/listSchedule/list-schedule.bloc.dart';
 import 'package:switchfrontend/src/shared/enums/switch_texts.dart';
 import 'package:switchfrontend/src/shared/enums/switch_colors.dart';
@@ -20,25 +22,8 @@ class LinkSwitchRoom extends StatefulWidget {
 }
 
 class _LinkSwitchRoomState extends State<LinkSwitchRoom> {
-  List<Map<String, dynamic>> rooms = [
-    {
-      "title": "Sala 1",
-      "description": "Sala de reunião 302",
-      "switches": [
-        {"code": "672651303a4bce069af83d18", "name": "Switch 1"},
-        {"code": "672ae4787a92616b09494418", "name": "Switch 2"},
-      ],
-    },
-    {
-      "title": "Sala 2",
-      "description": "Sala da parede azul",
-      "switches": [
-        {"code": "dsa245gr3", "name": "Switch 3"},
-        {"code": "afi45fndv", "name": "Switch 4"},
-      ],
-    },
-  ];
-
+  List<Room> rooms = [];
+  bool loading = false;
   Set<String> selectedSwitches = {};
   Set<int> expandedRooms = {};
 
@@ -52,6 +37,29 @@ class _LinkSwitchRoomState extends State<LinkSwitchRoom> {
         builder: (context) => const ListSchedule(),
       ),
     );
+  }
+
+  Future<void> getRooms() async {
+    setState(() {
+      loading = true;
+    });
+    try {
+      var response = await ListRoomBloc.getRooms();
+      setState(() {
+        rooms = response;
+        loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        loading = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    getRooms();
+    super.initState();
   }
 
   @override
@@ -85,16 +93,15 @@ class _LinkSwitchRoomState extends State<LinkSwitchRoom> {
                 itemCount: rooms.length,
                 itemBuilder: (context, roomIndex) {
                   bool isExpanded = expandedRooms.contains(roomIndex);
-                  bool allSelected = rooms[roomIndex]['switches'].every(
-                      (switchItem) =>
-                          selectedSwitches.contains(switchItem['code']));
+                  bool allSelected = rooms[roomIndex].switches.every(
+                      (switchItem) => selectedSwitches.contains(switchItem.id));
 
                   return ExpansionTile(
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          rooms[roomIndex]['title'],
+                          rooms[roomIndex].name,
                           style: const TextStyle(color: Colors.white),
                         ),
                         Checkbox(
@@ -102,15 +109,15 @@ class _LinkSwitchRoomState extends State<LinkSwitchRoom> {
                           onChanged: (bool? value) {
                             setState(() {
                               if (value == true) {
-                                rooms[roomIndex]['switches']
-                                    .forEach((switchItem) {
-                                  selectedSwitches.add(switchItem['code']);
-                                });
+                                for (var switchItem
+                                    in rooms[roomIndex].switches) {
+                                  selectedSwitches.add(switchItem.id);
+                                }
                               } else {
-                                rooms[roomIndex]['switches']
-                                    .forEach((switchItem) {
-                                  selectedSwitches.remove(switchItem['code']);
-                                });
+                                for (var switchItem
+                                    in rooms[roomIndex].switches) {
+                                  selectedSwitches.remove(switchItem.id);
+                                }
                               }
                             });
                           },
@@ -119,28 +126,28 @@ class _LinkSwitchRoomState extends State<LinkSwitchRoom> {
                       ],
                     ),
                     subtitle: Text(
-                      rooms[roomIndex]['description'],
+                      rooms[roomIndex].description,
                       style: const TextStyle(color: Colors.grey),
                     ),
                     iconColor: SwitchColors.ui_blueziness_800,
                     children:
-                        rooms[roomIndex]['switches'].map<Widget>((switchItem) {
+                        rooms[roomIndex].switches.map<Widget>((switchItem) {
                       return SwitchListTile(
                         title: Text(
-                          switchItem['name'],
+                          switchItem.name,
                           style: const TextStyle(color: Colors.white),
                         ),
                         subtitle: Text(
-                          '${switchItem['code']}',
+                          switchItem.id,
                           style: const TextStyle(color: Colors.grey),
                         ),
-                        value: selectedSwitches.contains(switchItem['code']),
+                        value: selectedSwitches.contains(switchItem.id),
                         onChanged: (bool value) {
                           setState(() {
                             if (value) {
-                              selectedSwitches.add(switchItem['code']);
+                              selectedSwitches.add(switchItem.id);
                             } else {
-                              selectedSwitches.remove(switchItem['code']);
+                              selectedSwitches.remove(switchItem.id);
                             }
                           });
                         },
