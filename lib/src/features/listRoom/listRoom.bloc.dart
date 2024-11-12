@@ -6,7 +6,10 @@ class ListRoomBloc {
     try {
       var response = await ListRoomApi.getRooms();
 
-      return response.map((map) => Room.fromMap(map)).toList();
+      return response.map((map) {
+        map["state"] = false;
+        return Room.fromMap(map);
+      }).toList();
     } catch (e) {
       rethrow;
     }

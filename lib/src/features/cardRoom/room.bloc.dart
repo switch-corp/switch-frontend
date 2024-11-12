@@ -15,4 +15,8 @@ class RoomBloc {
   static updateRoom(String id, String name, String description) async {
     await RoomApi.updateRoom(id, name, description);
   }
+
+  static toggleRoom(String id, bool state) async {
+    await RoomApi.powerSwitch(id, state);
+  }
 }

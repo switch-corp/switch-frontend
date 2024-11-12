@@ -24,16 +24,17 @@ class _ListRoomState extends State<ListRoom> {
       MaterialPageRoute(builder: (context) => AddRoom()),
     );
 
-    if (result != null) {
-      final roomData = result as Map<String, String>;
-      setState(() {
-        rooms.add(new Room(
-          id: "",
-          name: roomData['title']!,
-          description: roomData['description']!,
-        ));
-      });
-    }
+    // if (result != null) {
+    //   final roomData = result as Map<String, String>;
+    //   setState(() {
+    //     rooms.add(new Room(
+    //       id: "",
+    //       name: roomData['title']!,
+    //       description: roomData['description']!,
+    //       state:
+    //     ));
+    //   });
+    // }
   }
 
   void _getRooms() async {
@@ -65,13 +66,15 @@ class _ListRoomState extends State<ListRoom> {
     );
   }
 
-  void _navigateToControlRoom(String roomTitle, String roomDescription) {
+  void _navigateToControlRoom(
+      String roomTitle, String roomDescription, String roomId) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ControlRoom(
           roomName: roomTitle,
           roomDescription: roomDescription,
+          roomId: roomId,
         ),
       ),
     );
@@ -136,6 +139,11 @@ class _ListRoomState extends State<ListRoom> {
                           title: rooms[index].name,
                           description: rooms[index].description,
                           onEdit: () => _navigateToCardRoom(rooms[index]),
+                          onTap: () => _navigateToControlRoom(
+                            rooms[index].name,
+                            rooms[index].description,
+                            rooms[index].id,
+                          ),
                         );
                       },
                     ),
@@ -160,53 +168,61 @@ class RoomCard extends StatelessWidget {
   final String title;
   final String description;
   final VoidCallback onEdit;
+  final VoidCallback onTap;
 
   const RoomCard({
     required this.title,
     required this.description,
     required this.onEdit,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.transparent, // Fundo transparente
-        border: Border.all(color: Colors.blueAccent.withOpacity(0.3)),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width:
-                      MediaQuery.of(context).size.width / 2 - 32 - 16 - 23 - 16,
-                  child: Text(
-                    title,
-                    style: const TextStyle(color: Colors.white, fontSize: 24),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.transparent, // Fundo transparente
+          border: Border.all(color: Colors.blueAccent.withOpacity(0.3)),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width / 2 -
+                        32 -
+                        16 -
+                        23 -
+                        16,
+                    child: Text(
+                      title,
+                      style: const TextStyle(color: Colors.white, fontSize: 24),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.edit, color: Colors.grey[400], size: 23),
-                  onPressed: onEdit,
-                ),
-              ],
-            ),
-            Text(
-              description,
-              style: const TextStyle(color: Colors.grey, fontSize: 14),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
+                  IconButton(
+                    icon: Icon(Icons.edit, color: Colors.grey[400], size: 23),
+                    onPressed: onEdit,
+                  ),
+                ],
+              ),
+              Text(
+                description,
+                style: const TextStyle(color: Colors.grey, fontSize: 14),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -31,6 +31,17 @@ class RoomApi {
     }
   }
 
+  static powerSwitch(String roomId, bool state) async {
+    Uri url =
+        Uri.parse('${dotenv.env['BASE_URL']!}/api/v1/rooms/power/$roomId');
+    await http.post(url,
+        headers: {
+          'Authorization': 'Bearer ${AuthBloc.userToken}',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'state': state}));
+  }
+
   static deleteRoom(String id) async {
     try {
       Uri url = Uri.parse('${dotenv.env['BASE_URL']!}/api/v1/rooms/$id');

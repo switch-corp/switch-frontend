@@ -3,12 +3,14 @@ class Room {
   String name;
   String description;
   List<RoomSwitch> switches;
+  bool state;
 
   Room({
     required this.id,
     required this.description,
     required this.name,
     this.switches = const [],
+    this.state = false,
   });
 
   static Room fromMap(Map<String, dynamic> map) {
@@ -22,6 +24,7 @@ class Room {
       description: map["description"],
       name: map["name"],
       switches: list,
+      state: map["state"],
     );
   }
 }

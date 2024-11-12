@@ -370,103 +370,101 @@ class _HomePageState extends State<HomePage> {
     final hour = now.hour;
 
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(color: SwitchColors.steel_gray_950),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: () => _showLogoutDialog(context),
-                    child: Image.asset(
-                      'lib/assets/logoswitchhome.png',
-                      width: 45,
-                      height: 45,
-                    ),
-                  ),
-                ],
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 50),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: Text(
-                          '${_getGreeting(hour)}, $userName!',
-                          style: SwitchTexts.titleBody(
-                              SwitchColors.steel_gray_100),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      SizedBox(height: 28),
-                      Container(
-                        padding: EdgeInsets.all(4),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                _buildCategoryTile(
-                                  context,
-                                  icon: SwitchIcon(),
-                                  label: 'switches',
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SwitchesPage()),
-                                  ),
-                                ),
-                                _buildCategoryTile(
-                                  context,
-                                  icon: RoomIcon(),
-                                  label: 'rooms',
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ListRoom(),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 8),
-                            _buildCategoryTile(
-                              context,
-                              icon: AutomationIcon(),
-                              label: 'automatizações',
-                              fullWidth: true,
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ListSchedule()),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        color: Color.fromARGB(255, 44, 73, 97),
-                        thickness: 1.0,
-                        indent: 10,
-                        endIndent: 10,
-                      ),
-                      _buildAutomationInfo(context),
-                      _buildCarousel(),
-                    ],
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(color: SwitchColors.steel_gray_950),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () => _showLogoutDialog(context),
+                  child: Image.asset(
+                    'lib/assets/logoswitchhome.png',
+                    width: 45,
+                    height: 45,
                   ),
                 ),
+              ],
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 50),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16),
+                      child: Text(
+                        '${_getGreeting(hour)}, $userName!',
+                        style:
+                            SwitchTexts.titleBody(SwitchColors.steel_gray_100),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    SizedBox(height: 28),
+                    Container(
+                      padding: EdgeInsets.all(4),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _buildCategoryTile(
+                                context,
+                                icon: SwitchIcon(),
+                                label: 'switches',
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SwitchesPage()),
+                                ),
+                              ),
+                              _buildCategoryTile(
+                                context,
+                                icon: RoomIcon(),
+                                label: 'rooms',
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ListRoom(),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 8),
+                          _buildCategoryTile(
+                            context,
+                            icon: AutomationIcon(),
+                            label: 'automatizações',
+                            fullWidth: true,
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ListSchedule()),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      color: Color.fromARGB(255, 44, 73, 97),
+                      thickness: 1.0,
+                      indent: 10,
+                      endIndent: 10,
+                    ),
+                    _buildAutomationInfo(context),
+                    _buildCarousel(),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
