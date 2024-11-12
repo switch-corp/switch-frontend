@@ -31,7 +31,7 @@ class HomeApi {
             user: UserModel.fromMap(user),
             schedules: schedules
                 .map(
-                  (e) => ScheduleModel.fromMap(e),
+                  (e) => ModelSchedule.fromMap(e),
                 )
                 .toList());
       } else {

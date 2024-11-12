@@ -3,7 +3,7 @@ import 'package:switchfrontend/src/features/home/models/user.model.dart';
 
 class HomeDataModel {
   UserModel user;
-  List<ScheduleModel> schedules;
+  List<ModelSchedule> schedules;
 
   HomeDataModel({required this.user, required this.schedules});
 }

@@ -39,30 +39,15 @@ EventDate cronToDescriptiveSentence(String cron) {
 
   String minute = parts[0];
   String hour = parts[1];
-  String dayOfMonth = parts[2];
-  String month = parts[3];
-  String dayOfWeek = parts[4];
+  String daysOfWeekString = parts[2];
+
+  List<String> listDaysWeek = daysOfWeekString.split(',');
+
+  List<String> formatedDaysWeek =
+      listDaysWeek.map((day) => _mapDayOfWeek(day)).toList();
 
   return EventDate(
-      eventDate: '$dayOfMonth/$month, ${hour}h$minute', dayOfWeek: dayOfWeek);
-}
-
-String _mapMonth(String month) {
-  const months = {
-    '1': 'janeiro',
-    '2': 'fevereiro',
-    '3': 'março',
-    '4': 'abril',
-    '5': 'maio',
-    '6': 'junho',
-    '7': 'julho',
-    '8': 'agosto',
-    '9': 'setembro',
-    '10': 'outubro',
-    '11': 'novembro',
-    '12': 'dezembro'
-  };
-  return months[month] ?? 'mês inválido';
+      eventDate: '${hour}h$minute', dayOfWeek: formatedDaysWeek.join(' | '));
 }
 
 String _mapDayOfWeek(String day) {
@@ -77,16 +62,4 @@ String _mapDayOfWeek(String day) {
     '7': 'domingo'
   };
   return days[day] ?? 'dia inválido';
-}
-
-class ScheduleDto {
-  String eventName;
-  TimeOfDay eventDate;
-  List<bool> daysWeek;
-  List<String>? switches;
-
-  ScheduleDto(
-      {required this.eventName,
-      required this.daysWeek,
-      required this.eventDate});
 }
